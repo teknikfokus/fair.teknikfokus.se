@@ -3,9 +3,14 @@ A CMS system for doing digital career fairs
 
 ## Installation
 
+Install and setup a PostgreSQL database.
+
+Install npm dependencies.
 ```bash
 $ npm install
 ```
+
+Copy ```.env.example``` to ```.env```
 
 ## Running the app
 
