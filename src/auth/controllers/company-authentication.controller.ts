@@ -1,14 +1,15 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { CompanyPosted } from 'src/auth/models/user.interface';
+import { User } from 'src/auth/models/user.interface';
 import { AuthService } from 'src/auth/services/auth.service';
 import { Observable } from 'rxjs';
 
-@Controller('dashboard/registration')
+@Controller('dashboard')
 export class CompanyAuthenticationController {
     constructor(private companyAuthService: AuthService) {}
 
-    @Post()
-    create(@Body() companyAccount: CompanyPosted): Observable<CompanyPosted>{
-        return this.companyAuthService.createCompanyAccount(companyAccount)
+    @Post('registration')
+    create(@Body() companyAccount: User): Observable<User>{
+        
+        return this.companyAuthService.registerCompanyAccount(companyAccount)
     }
 }
