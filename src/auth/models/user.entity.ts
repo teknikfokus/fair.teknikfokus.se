@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('registered_companies')
-export class CompanyPostEntity {
+export class UserEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -11,7 +11,7 @@ export class CompanyPostEntity {
     @Column({default: ''})
     company_name: string;
 
-    @Column({default: ''})
+    @Column({ select: false })
     password: string;
 
     @Column({default: ''})
