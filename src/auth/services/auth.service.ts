@@ -20,16 +20,14 @@ export class AuthService {
     ) {}
 
     registerCompanyAccount(user: User): Observable<User>{
-        const {email, company_name, password, information} = user;
+        const {email, password} = user;
 
 
         return this.hashPassword(password).pipe(
             switchMap((hashedPassword: string) => {
                 return from(this.companyRepository.save({
                     email,
-                    company_name,
                     password: hashedPassword,
-                    information
                 })).pipe(
                     map((user: User) => {
                         delete user.password;
@@ -44,7 +42,7 @@ export class AuthService {
           this.companyRepository.findOne(
             { email },
             {
-              select: ['id', 'company_name', 'email', 'password', 'information'],
+              select: ['id', 'email', 'password'],
             },
           ),
         ).pipe(
