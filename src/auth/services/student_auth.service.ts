@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { from, Observable, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { Repository } from 'typeorm';
+import { Repository, TransactionManager } from 'typeorm';
 import { StudentUserEntity } from '../models/student_user.entity';
 import { StudentUser } from '../models/student_user.interface';
 import * as bcrypt from 'bcrypt';
@@ -21,7 +21,7 @@ export class StudentAuthService {
 
     registerStudentAccount(user: StudentUser): Observable<StudentUser>{
         const {email, password} = user;
-        if(email.length !== 24 || !email.includes('@student.lu.se')){
+        if((email.replace(/\s+/g, "").length) !== 24 || !email.includes('@student.lu.se')){
           throw new HttpException(
             { status: HttpStatus.FORBIDDEN, error: 'Email address has to be a valid LU-email' },
             HttpStatus.FORBIDDEN,
