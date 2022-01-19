@@ -5,7 +5,7 @@ export class CompanyPostEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({default: ''})
+    @Column({unique:true})
     email: string;
 
     @Column({default: ''})
