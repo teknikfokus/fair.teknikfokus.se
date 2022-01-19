@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './services/auth.service';
-import { CompanyAuthenticationController } from './controllers/company-authentication.controller';
+import { CompanyAuthService } from './services/company_auth.service';
+import { CompanyAuthController} from './controllers/company_auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from './models/user.entity';
+import { CompanyUserEntity } from './models/company_user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtGuard } from './guards/jwt.guard';
 import { JwtStrategy } from './guards/jwt.strategy';
+import { StudentAuthService } from './services/student_auth.service';
+import { StudentAuthController} from './controllers/student_auth.controller';
+import { StudentUserEntity } from './models/student_user.entity';
 
 @Module({
   imports: [JwtModule.registerAsync({
@@ -14,8 +17,8 @@ import { JwtStrategy } from './guards/jwt.strategy';
       signOptions: { expiresIn: '3600s' },
     }),
   }) ,
-  TypeOrmModule.forFeature([UserEntity])],
-  providers: [AuthService,JwtGuard, JwtStrategy],
-  controllers: [CompanyAuthenticationController]
+  TypeOrmModule.forFeature([CompanyUserEntity, StudentUserEntity])],
+  providers: [CompanyAuthService,StudentAuthService,JwtGuard, JwtStrategy],
+  controllers: [CompanyAuthController, StudentAuthController]
 })
 export class AuthenticationModule {}

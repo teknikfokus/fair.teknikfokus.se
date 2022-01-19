@@ -4,22 +4,22 @@ import { JwtService } from '@nestjs/jwt';
 import { from, Observable, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Repository } from 'typeorm';
-import { UserEntity } from '../models/user.entity';
-import { User } from '../models/user.interface';
+import { CompanyUserEntity } from '../models/company_user.entity';
+import { CompanyUser } from '../models/company_user.interface';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
-export class AuthService {
+export class CompanyAuthService {
     hashPassword(password: string): Observable<string> {
         return from(bcrypt.hash(password,12))
     }
     constructor(
-        @InjectRepository(UserEntity)
-        private readonly companyRepository: Repository<UserEntity>,
+        @InjectRepository(CompanyUserEntity)
+        private readonly companyRepository: Repository<CompanyUserEntity>,
         private jwtService: JwtService,
     ) {}
 
-    registerCompanyAccount(user: User): Observable<User>{
+    registerCompanyAccount(user: CompanyUser): Observable<CompanyUser>{
         const {email, password} = user;
 
 
@@ -29,7 +29,7 @@ export class AuthService {
                     email,
                     password: hashedPassword,
                 })).pipe(
-                    map((user: User) => {
+                    map((user: CompanyUser) => {
                         delete user.password;
                         return user;
                     }),
@@ -37,7 +37,7 @@ export class AuthService {
             }),
         );
     }
-    validateUser(email: string, password: string): Observable<User> {
+    validateUser(email: string, password: string): Observable<CompanyUser> {
         return from(
           this.companyRepository.findOne(
             { email },
@@ -46,7 +46,7 @@ export class AuthService {
             },
           ),
         ).pipe(
-          switchMap((user: User) => {
+          switchMap((user: CompanyUser) => {
             if (!user) {
               throw new HttpException(
                 { status: HttpStatus.FORBIDDEN, error: 'Invalid Credentials' },
@@ -70,10 +70,10 @@ export class AuthService {
           }),
         );
       }
-    login(user: User): Observable<string> {
+    login(user: CompanyUser): Observable<string> {
         const { email, password } = user;
         return this.validateUser(email, password).pipe(
-            switchMap((user: User) => {
+            switchMap((user: CompanyUser) => {
                 if (user) {
               // create JWT - credentials
                 return from(this.jwtService.signAsync({ user }));
@@ -82,9 +82,9 @@ export class AuthService {
         );
     }
     
-      getJwtUser(jwt: string): Observable<User | null> {
+      getJwtUser(jwt: string): Observable<CompanyUser | null> {
         return from(this.jwtService.verifyAsync(jwt)).pipe(
-          map(({ user }: { user: User }) => {
+          map(({ user }: { user: CompanyUser }) => {
             return user;
           }),
           catchError(() => {
