@@ -1,15 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Login from './components/Login.vue'
-import Registration from './components/Registration.vue'
-import Job from './components/Job.vue'
-import Companies from './components/Companies.vue'
-import Company from './components/Company.vue'
-import LoginDashboard from './components/dashboard/Login.vue'
-import RegistrationDashboard from './components/dashboard/Registration.vue'
-import CreateJob from './components/dashboard/job/Create.vue'
-import EditJob from './components/dashboard/job/Edit.vue'
-import IndexCompany from './components/dashboard/company/Index.vue'
-import EditCompany from './components/dashboard/company/Edit.vue'
+import Login from '@/views/Login.vue'
+import Registration from '@/views/Registration.vue'
+import Job from '@/views/Job.vue'
+import Companies from '@/views/Companies.vue'
+import Company from '@/views/Company.vue'
+import LoginDashboard from '@/views/dashboard/Login.vue'
+import RegistrationDashboard from '@/views/dashboard/Registration.vue'
+import CreateJob from '@/views/dashboard/job/Create.vue'
+import EditJob from '@/views/dashboard/job/Edit.vue'
+import IndexCompany from '@/views/dashboard/company/Index.vue'
+import EditCompany from '@/views/dashboard/company/Edit.vue'
 
 
 const routes = [
