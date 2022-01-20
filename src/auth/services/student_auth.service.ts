@@ -19,29 +19,52 @@ export class StudentAuthService {
         private jwtService: JwtService,
     ) {}
 
-    registerStudentAccount(user: StudentUser): Observable<StudentUser>{
-        const {email, password} = user;
-        if((email.replace(/\s+/g, "").length) !== 24 || !email.includes('@student.lu.se')){
-          throw new HttpException(
-            { status: HttpStatus.FORBIDDEN, error: 'Email address has to be a valid LU-email' },
-            HttpStatus.FORBIDDEN,
-          );
-        }
-
-        return this.hashPassword(password).pipe(
-            switchMap((hashedPassword: string) => {
-                return from(this.studentRepository.save({
-                    email,
-                    password: hashedPassword,
-                })).pipe(
-                    map((user: StudentUser) => {
-                        delete user.password;
-                        return user;
-                    }),
-                );
-            }),
-        );
+    doesUserExist(email: string): Observable<boolean> {
+      return from(this.studentRepository.findOne({ email })).pipe(
+        switchMap((user: StudentUser) => {
+          return of(!!user);
+        }),
+      );
     }
+    
+
+    registerStudentAccount(user: StudentUser): Observable<StudentUser> {
+      const {email, password } = user;
+  
+      return this.doesUserExist(email).pipe(
+        tap((doesUserExist: boolean) => {
+          if (doesUserExist)
+            throw new HttpException(
+              'A user has already been created with this email address',
+              HttpStatus.BAD_REQUEST,
+            );
+        }),
+        switchMap(() => {
+          if((email.replace(/\s+/g, "").length) !== 24 || !email.includes('-s@student.lu.se')){
+            throw new HttpException(
+              { status: HttpStatus.FORBIDDEN, error: 'Email address has to be a valid LU-email' },
+              HttpStatus.FORBIDDEN,
+            );
+          }
+          return this.hashPassword(password).pipe(
+            switchMap((hashedPassword: string) => {
+              return from(
+                this.studentRepository.save({
+                  email,
+                  password: hashedPassword,
+                }),
+              ).pipe(
+                map((user: StudentUser) => {
+                  delete user.password;
+                  return user;
+                }),
+              );
+            }),
+          );
+        }),
+      );
+    }
+
     validateUser(email: string, password: string): Observable<StudentUser> {
         return from(
           this.studentRepository.findOne(
