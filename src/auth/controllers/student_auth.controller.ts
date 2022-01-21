@@ -3,10 +3,12 @@ import { StudentUser } from 'src/auth/models/student_user.interface';
 import { StudentAuthService } from 'src/auth/services/student_auth.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ForgottenPassword } from '../models/forgottenpassword.interface';
 
 @Controller()
 export class StudentAuthController {
-    constructor(private studentAuthService: StudentAuthService) {}
+    constructor(
+        private studentAuthService: StudentAuthService) {}
 
     @Post('login')
     @HttpCode(HttpStatus.OK)
@@ -22,6 +24,10 @@ export class StudentAuthController {
         return this.studentAuthService.registerStudentAccount(studentAccount)
     }
 
-
+    @Post('forgotpassword')
+    newpassword(@Body() forgottenPassword: ForgottenPassword): Observable<ForgottenPassword>{
+        return this.studentAuthService.createForgottenPasswordToken(forgottenPassword)
+    }
+    
 
 }

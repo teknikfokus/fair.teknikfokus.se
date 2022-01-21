@@ -9,6 +9,7 @@ import { JwtStrategy } from './guards/jwt.strategy';
 import { StudentAuthService } from './services/student_auth.service';
 import { StudentAuthController} from './controllers/student_auth.controller';
 import { StudentUserEntity } from './models/student_user.entity';
+import { ForgottenPasswordEntity } from './models/forgottenpassword.entity';
 
 @Module({
   imports: [JwtModule.registerAsync({
@@ -17,7 +18,7 @@ import { StudentUserEntity } from './models/student_user.entity';
       signOptions: { expiresIn: '3600s' },
     }),
   }) ,
-  TypeOrmModule.forFeature([CompanyUserEntity, StudentUserEntity])],
+  TypeOrmModule.forFeature([CompanyUserEntity, StudentUserEntity, ForgottenPasswordEntity])],
   providers: [CompanyAuthService,StudentAuthService,JwtGuard, JwtStrategy],
   controllers: [CompanyAuthController, StudentAuthController]
 })
