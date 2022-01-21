@@ -7,6 +7,8 @@ import { Repository, TransactionManager } from 'typeorm';
 import { StudentUserEntity } from '../models/student_user.entity';
 import { StudentUser } from '../models/student_user.interface';
 import * as bcrypt from 'bcrypt';
+import { ForgottenPassword } from '../models/forgottenpassword.interface';
+import { ForgottenPasswordEntity } from '../models/forgottenpassword.entity';
 
 @Injectable()
 export class StudentAuthService {
@@ -16,8 +18,13 @@ export class StudentAuthService {
     constructor(
         @InjectRepository(StudentUserEntity)
         private readonly studentRepository: Repository<StudentUserEntity>,
+        
+        @InjectRepository(ForgottenPasswordEntity)
+        private readonly forgottenPasswordRepository: Repository<ForgottenPasswordEntity>,
+
         private jwtService: JwtService,
     ) {}
+
 
     doesUserExist(email: string): Observable<boolean> {
       return from(this.studentRepository.findOne({ email })).pipe(
@@ -64,7 +71,7 @@ export class StudentAuthService {
         }),
       );
     }
-
+    
     validateUser(email: string, password: string): Observable<StudentUser> {
         return from(
           this.studentRepository.findOne(
@@ -120,4 +127,30 @@ export class StudentAuthService {
           }),
         );
       }
-}
+      createForgottenPasswordToken(forgottenPassword: ForgottenPassword): Observable<ForgottenPassword> {
+        const {email} = forgottenPassword;
+    
+        return this.doesUserExist(email).pipe(
+          tap((doesUserExist: boolean) => {
+            if (!doesUserExist)
+              throw new HttpException(
+                'This user does not exist.',
+                HttpStatus.BAD_REQUEST,
+              );
+          }),
+          switchMap(() => {
+                return from(
+                  this.forgottenPasswordRepository.save({
+                    email,
+                    newPasswordToken: (Math.floor(Math.random() * (9000000)) + 1000000).toString(), //Generate 7 digits number,
+                    timestamp: new Date(),
+                  }),
+                ).pipe(
+                  map((user: ForgottenPassword) => {
+                    return user;
+                  }),
+                );
+              }),
+            );
+      }
+    }
