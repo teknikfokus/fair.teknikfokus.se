@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import Index from '@/views/Index.vue'
 import Login from '@/views/Login.vue'
 import Registration from '@/views/Registration.vue'
 import Job from '@/views/Job.vue'
@@ -13,7 +14,8 @@ import EditCompany from '@/views/dashboard/company/Edit.vue'
 
 
 const routes = [
-    { path: '/', component: Login },
+    { path: '/', component: Index },
+    { path: '/login', component: Login },
     { path: '/registration', component: Registration },
     { path: '/companies', component: Companies },
     { path: '/companies/:id', component: Company },
