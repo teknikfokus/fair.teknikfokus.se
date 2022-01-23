@@ -25,6 +25,17 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Docker
+
+Change ```POSTGRES_HOST``` to ```postgres-db``` in ```.env```.
+
+Then start the project with Docker Compose, the default ```docker-compose.yml``` is setup for development and includes a PostgreSQL database.
+
+```bash
+# run docker-compose
+$ docker-compose up
+```
+
 ## Test
 
 ```bash
