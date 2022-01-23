@@ -11,6 +11,7 @@ import CreateJob from '@/views/dashboard/job/Create.vue'
 import EditJob from '@/views/dashboard/job/Edit.vue'
 import IndexCompany from '@/views/dashboard/company/Index.vue'
 import EditCompany from '@/views/dashboard/company/Edit.vue'
+import ListJobs from '@/views/dashboard/job/List.vue/'
 
 
 const routes = [
@@ -26,6 +27,7 @@ const routes = [
     { path: '/dashboard/company/edit', component: EditCompany },
     { path: '/dashboard/company/job/create', component: CreateJob },
     { path: '/dashboard/company/job/:id/edit', component: EditJob },
+    { path: '/dashboard/company/job/list/', component: ListJobs },
 ];
 
 const router = createRouter({
