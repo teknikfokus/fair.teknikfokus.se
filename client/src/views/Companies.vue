@@ -1,10 +1,17 @@
 <template>
-  
+  <section>
+    <company-grid :current="true"/>
+  </section>
 </template>
 
 <script>
-export default {
+import CompanyGrid from '@/components/CompanyGrid.vue'
 
+
+export default {
+  components: {
+    CompanyGrid
+  },
 }
 </script>
 
