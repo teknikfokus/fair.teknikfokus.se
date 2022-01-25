@@ -28,7 +28,7 @@ export class CompanyProfileController {
         switchMap((user: CompanyUser) => {
           if(user.company_id != null) {
             throw new HttpException(
-              { status: HttpStatus.FORBIDDEN, error: 'You have already created an account.' },
+              { status: HttpStatus.FORBIDDEN, error: 'You have already created an profile.' },
               HttpStatus.FORBIDDEN,
             );
           }
@@ -37,7 +37,7 @@ export class CompanyProfileController {
       );
     }
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard,IsCreatorGuard)
   @UseInterceptors(FileInterceptor('file', saveImageToStorage))
   @Post('dashboard/company/upload_image')
   @HttpCode(HttpStatus.OK)
