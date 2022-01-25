@@ -19,6 +19,7 @@ export class CompanyAuthService {
         private jwtService: JwtService,
     ) {}
 
+
     findUserById(id: number): Observable<CompanyUser> {
       return from(
         this.companyRepository.findOne({ id }),
