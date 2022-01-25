@@ -13,55 +13,51 @@ import { CompanyProfileService } from '../services/company-profile.service';
 @Controller('dashboard/company')
 export class CompanyProfileController {
 
-    constructor(
-        private companyProfileService: CompanyProfileService,
-        private companyAuthService: CompanyAuthService
-        ) {}
+  constructor(
+    private companyProfileService: CompanyProfileService,
+    private companyAuthService: CompanyAuthService
+  ) {}
 
     // , IsCreatorGuard
-    @UseGuards(JwtGuard)
-    @Post()
-    @HttpCode(HttpStatus.OK)
-    register_company_profile(
-        @Body() profile: CompanyProfile, @Request() req): Observable<CompanyUser> {
-
-        return from(this.companyAuthService.findUserById(req.user.id)).pipe(
-            switchMap((user: CompanyUser) => {
-                if(user.company_id != null) {
-                    throw new HttpException(
-                        { status: HttpStatus.FORBIDDEN, error: 'You have already created an account.' },
-                        HttpStatus.FORBIDDEN,
-                      );
-                }
-                return this.companyProfileService.registerCompanyProfile(profile, req.user.id);
-            })
-        );
-        
+  @UseGuards(JwtGuard)
+  @Post()
+  @HttpCode(HttpStatus.OK)
+  register_company_profile(
+    @Body() profile: CompanyProfile, @Request() req): Observable<CompanyUser> {
+      return from(this.companyAuthService.findUserById(req.user.id)).pipe(
+        switchMap((user: CompanyUser) => {
+          if(user.company_id != null) {
+            throw new HttpException(
+              { status: HttpStatus.FORBIDDEN, error: 'You have already created an account.' },
+              HttpStatus.FORBIDDEN,
+            );
+          }
+          return this.companyProfileService.registerCompanyProfile(profile, req.user.id);
+        })
+      );
     }
 
-    @UseGuards(JwtGuard)
-    @UseInterceptors(FileInterceptor('file', saveImageToStorage))
-    @Post('upload_image')
-    @HttpCode(HttpStatus.OK)
-    uploadImage(
-        @UploadedFile() file: Express.Multer.File,
-        @Request() req): Observable<{modifiedFileName: string } | { error: string }> {
-        const fileName = file?.filename;
+  @UseGuards(JwtGuard)
+  @UseInterceptors(FileInterceptor('file', saveImageToStorage))
+  @Post('upload_image')
+  @HttpCode(HttpStatus.OK)
+  uploadImage(
+    @UploadedFile() file: Express.Multer.File,
+    @Request() req): Observable<{modifiedFileName: string } | { error: string }> {
+    const fileName = file?.filename;
 
-        if (!fileName) return of({ error: 'File must be a png, jpg/jpeg' });
+    if (!fileName) return of({ error: 'File must be a png, jpg/jpeg' });
 
-        const imagesFolderPath = join(process.cwd(), 'images');
-        const fullImagePath = join(imagesFolderPath + '/' + file.filename);
-
-        const user_id = req.user.id;
-            return this.companyProfileService.updateUserImageById(user_id, fileName).pipe(
-                map(() => ({
-                    modifiedFileName: file.filename,
-                    })),
-                );
-
-            removeFile(fullImagePath);
-            return of({ error: 'File content does not match extension!' });
-        }
+    const imagesFolderPath = join(process.cwd(), 'images');
+    const fullImagePath = join(imagesFolderPath + '/' + file.filename);
+    const user_id = req.user.id;
+    return this.companyProfileService.updateUserImageById(user_id, fileName).pipe(
+      map(() => ({
+        modifiedFileName: file.filename,
+      })),
+    );
+    removeFile(fullImagePath);
+    return of({ error: 'File content does not match extension!' });
+  }
 }
 
