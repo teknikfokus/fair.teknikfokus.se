@@ -10,7 +10,7 @@ import { removeFile, saveImageToStorage } from '../helpers/image-storage';
 import { CompanyProfile } from '../models/company_profile.interface';
 import { CompanyProfileService } from '../services/company-profile.service';
 
-@Controller('')
+@Controller()
 export class CompanyProfileController {
 
   constructor(
@@ -20,10 +20,10 @@ export class CompanyProfileController {
 
     // , IsCreatorGuard
   @UseGuards(JwtGuard)
-  @Post()
+  @Post('dashboard/company')
   @HttpCode(HttpStatus.OK)
   register_company_profile(
-    @Body('dashboard/company') profile: CompanyProfile, @Request() req): Observable<CompanyUser> {
+    @Body() profile: CompanyProfile, @Request() req): Observable<CompanyUser> {
       return from(this.companyAuthService.findUserById(req.user.id)).pipe(
         switchMap((user: CompanyUser) => {
           if(user.company_id != null) {

@@ -35,19 +35,6 @@ export class CompanyProfileService {
       }),
     );
   }
-
-  findUserById(id: number): Observable<CompanyProfile> {
-    return from(
-      this.companyProfileRepository.findOne({ id }),
-    ).pipe(
-      map((user: CompanyProfile) => {
-        if (!user) {
-          throw new HttpException('Profile not found', HttpStatus.NOT_FOUND);
-        }
-        return user;
-      }),
-    );
-  }
   
   findProfileById(id: number): Observable<CompanyProfile> {
     return from(
@@ -62,11 +49,17 @@ export class CompanyProfileService {
     );
   }
 
-  updateUserImageById(id: number, image_path: string): Observable<UpdateResult> {
-    const profile: CompanyProfile = new CompanyProfileEntity();
-    profile.id = id;
-    profile.image_path = image_path;
-    return from(this.companyProfileRepository.update(id, profile));
+  updateUserImageById(id: number, image_path: string): Observable<CompanyProfile> {
+    return from(
+      this.companyProfileRepository.findOne({ id }),
+    ).pipe(
+      map((profile: CompanyProfile) => {
+        profile.id = id;
+        profile.image_path = image_path;
+        from(this.companyProfileRepository.update(id, profile));
+        return profile;
+      }),
+    );
   }
     
   getAllCompanyProfiles(): Promise<CompanyProfileEntity[]> {
