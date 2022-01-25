@@ -56,8 +56,7 @@ export class CompanyProfileController {
         modifiedFileName: file.filename,
       })),
     );
-    removeFile(fullImagePath);
-    return of({ error: 'File content does not match extension!' });
   }
+
 }
 
