@@ -22,7 +22,7 @@ export class CompanyProfileController {
   @UseGuards(JwtGuard, IsCompanyGuard)
   @Post('dashboard/company')
   @HttpCode(HttpStatus.OK)
-  register_company_profile(
+  registerCompanyProfile(
     
     @Body() profile: CompanyProfile, @Request() req): Observable<CompanyUser> {
       /*
@@ -45,6 +45,27 @@ export class CompanyProfileController {
         })
       );
     }
+
+  @UseGuards(JwtGuard, IsCompanyGuard, IsCreatorGuard)
+  @Post('dashboard/company/edit')
+  @HttpCode(HttpStatus.OK)
+  editCompanyProfile(
+    @Body() companyEdits: CompanyProfile, @Request() req): Observable<CompanyProfile> {
+    return from(this.companyAuthService.findUserById(req.user.id)).pipe(
+      switchMap((user: CompanyUser) => {
+        if(user.company_id == null) {
+          throw new HttpException(
+            { status: HttpStatus.FORBIDDEN, error: 'Company profile has not been created yet.' },
+            HttpStatus.FORBIDDEN,
+          );
+        }
+        return this.companyProfileService.editCompanyProfile(companyEdits, user.company_id);
+      })
+    );
+    }
+
+
+
 
   @UseGuards(JwtGuard,IsCreatorGuard, IsCompanyGuard)
   @UseInterceptors(FileInterceptor('file', saveImageToStorage))

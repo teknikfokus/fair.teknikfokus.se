@@ -1,8 +1,8 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { from, map, Observable } from 'rxjs';
+import { from, map,switchMap, Observable } from 'rxjs';
 import { CompanyAuthService } from 'src/auth/services/company_auth.service';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { CompanyProfileEntity } from '../models/company_profile.entity';
 import { CompanyProfile } from '../models/company_profile.interface';
 
@@ -31,6 +31,25 @@ export class CompanyProfileService {
         this.companyAuthService.updateCompanyProfileById(user_id, profile.id);
         return profile;
       }),
+    );
+  }
+  
+  editCompanyProfile(newdata: CompanyProfile,profileId: number): Observable<CompanyProfile> {
+    return from(this.findProfileById(profileId)).pipe(
+      map((profile: CompanyProfile) => {
+        newdata.image_path = profile.image_path;
+        /*
+          profile.company_name = company_name,
+          profile.company_information = company_information,
+          profile.meeting_link = meeting_link,
+          profile.image_path = profile.image_path
+          profile.summer_internship = summer_internship,
+          profile.master_thesis = master_thesis,
+          profile.trainee_programme = trainee_programme
+          */
+          from(this.companyProfileRepository.update(profile.id,newdata));
+          return profile;
+        }),
     );
   }
   
