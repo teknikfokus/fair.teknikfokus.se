@@ -48,6 +48,19 @@ export class CompanyProfileService {
       }),
     );
   }
+  
+  findProfileById(id: number): Observable<CompanyProfile> {
+    return from(
+      this.companyProfileRepository.findOne({ id }),
+    ).pipe(
+      map((profile: CompanyProfile) => {
+        if (!profile) {
+          throw new HttpException('Company not found', HttpStatus.NOT_FOUND);
+        }
+        return profile;
+      }),
+    );
+  }
 
   updateUserImageById(id: number, image_path: string): Observable<UpdateResult> {
     const profile: CompanyProfile = new CompanyProfileEntity();
