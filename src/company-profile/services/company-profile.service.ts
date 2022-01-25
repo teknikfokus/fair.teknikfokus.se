@@ -1,13 +1,8 @@
 import { HttpException, HttpStatus, Injectable, UploadedFile, Request, Logger } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { join } from 'path';
 import { from, map, Observable, of, switchMap } from 'rxjs';
-import { CompanyUserEntity } from 'src/auth/models/company_user.entity';
-import { CompanyUser } from 'src/auth/models/company_user.interface';
 import { CompanyAuthService } from 'src/auth/services/company_auth.service';
-import { Repository, UpdateResult } from 'typeorm';
-import { removeFile } from '../helpers/image-storage';
+import { Repository } from 'typeorm';
 import { CompanyProfileEntity } from '../models/company_profile.entity';
 import { CompanyProfile } from '../models/company_profile.interface';
 

@@ -108,8 +108,9 @@ export class CompanyAuthService {
         return this.validateUser(email, password).pipe(
             switchMap((user: CompanyUser) => {
                 if (user) {
+                  
               // create JWT - credentials
-                return from(this.jwtService.signAsync({ user }));
+                return from(this.jwtService.signAsync({ user: {...user, type: "company"} }));
                 }
             }),
         );

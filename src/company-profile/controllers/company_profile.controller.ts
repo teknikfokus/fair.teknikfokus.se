@@ -1,12 +1,12 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards, UseInterceptors, Request, UploadedFile, HttpException, Logger} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { join } from 'path';
 import { from, map, Observable, of, switchMap, tap } from 'rxjs';
+import { IsCompanyGuard } from 'src/auth/guards/is-company.guard';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { CompanyUser } from 'src/auth/models/company_user.interface';
 import { CompanyAuthService } from 'src/auth/services/company_auth.service';
 import { IsCreatorGuard } from '../guards/is-creator.guard';
-import { removeFile, saveImageToStorage } from '../helpers/image-storage';
+import { saveImageToStorage } from '../helpers/image-storage';
 import { CompanyProfile } from '../models/company_profile.interface';
 import { CompanyProfileService } from '../services/company-profile.service';
 
@@ -19,16 +19,25 @@ export class CompanyProfileController {
   ) {}
 
     // , IsCreatorGuard
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, IsCompanyGuard)
   @Post('dashboard/company')
   @HttpCode(HttpStatus.OK)
   register_company_profile(
+    
     @Body() profile: CompanyProfile, @Request() req): Observable<CompanyUser> {
+      /*
+      if(req.user.type != 'company') {
+        throw new HttpException(
+          { status: HttpStatus.FORBIDDEN, error: 'Unauthorized.' },
+          HttpStatus.FORBIDDEN,
+        );
+      }
+      */
       return from(this.companyAuthService.findUserById(req.user.id)).pipe(
         switchMap((user: CompanyUser) => {
           if(user.company_id != null) {
             throw new HttpException(
-              { status: HttpStatus.FORBIDDEN, error: 'You have already created an profile.' },
+              { status: HttpStatus.FORBIDDEN, error: 'You have already created a profile.' },
               HttpStatus.FORBIDDEN,
             );
           }
@@ -37,7 +46,7 @@ export class CompanyProfileController {
       );
     }
 
-  @UseGuards(JwtGuard,IsCreatorGuard)
+  @UseGuards(JwtGuard,IsCreatorGuard, IsCompanyGuard)
   @UseInterceptors(FileInterceptor('file', saveImageToStorage))
   @Post('dashboard/company/upload_image')
   @HttpCode(HttpStatus.OK)
@@ -50,9 +59,6 @@ export class CompanyProfileController {
 
     return from(this.companyAuthService.findUserById(req.user.id)).pipe(
       switchMap((user: CompanyUser) => {
-        const imagesFolderPath = join(process.cwd(), 'images');
-        const fullImagePath = join(imagesFolderPath + '/' + file.filename);
-        const user_id = req.user.id;
         return this.companyProfileService.updateUserImageById(user.company_id, fileName).pipe(
           map(() => ({
             modifiedFileName: file.filename,
