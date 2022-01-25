@@ -1,6 +1,6 @@
-import { HttpException, HttpStatus, Injectable, UploadedFile, Request, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { from, map, Observable, of, switchMap } from 'rxjs';
+import { from, map, Observable } from 'rxjs';
 import { CompanyAuthService } from 'src/auth/services/company_auth.service';
 import { Repository } from 'typeorm';
 import { CompanyProfileEntity } from '../models/company_profile.entity';
