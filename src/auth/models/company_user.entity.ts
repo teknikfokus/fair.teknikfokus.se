@@ -13,4 +13,5 @@ export class CompanyUserEntity {
 
     @Column({ select: false })
     password: string;
+
 }
