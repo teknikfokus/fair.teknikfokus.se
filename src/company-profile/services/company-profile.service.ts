@@ -16,12 +16,15 @@ export class CompanyProfileService {
     ) {}
 
   registerCompanyProfile(profile: CompanyProfile, user_id: number): Observable<CompanyProfile> {
-    const { company_name, company_information, meeting_link } = profile;
+    const { company_name, company_information, meeting_link, summer_internship, master_thesis, trainee_programme } = profile;
     return from(
       this.companyProfileRepository.save({
         company_name,
         company_information,
         meeting_link,
+        summer_internship,
+        master_thesis,
+        trainee_programme
       }),
     ).pipe(
       map((profile: CompanyProfile) => {
@@ -60,7 +63,7 @@ export class CompanyProfileService {
   getAllCompanyProfiles(): Promise<CompanyProfileEntity[]> {
     return this.companyProfileRepository.find(
       {
-        select: ['company_name', 'company_information', 'image_path', 'meeting_link'],
+        select: ['company_name', 'image_path'],
       },
     );
   }
