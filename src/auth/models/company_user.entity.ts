@@ -5,7 +5,7 @@ export class CompanyUserEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ nullable: true })
     company_id: number;
 
     @Column({unique:true})

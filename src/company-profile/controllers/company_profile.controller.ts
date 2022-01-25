@@ -48,13 +48,18 @@ export class CompanyProfileController {
 
     if (!fileName) return of({ error: 'File must be a png, jpg/jpeg' });
 
-    const imagesFolderPath = join(process.cwd(), 'images');
-    const fullImagePath = join(imagesFolderPath + '/' + file.filename);
-    const user_id = req.user.id;
-    return this.companyProfileService.updateUserImageById(user_id, fileName).pipe(
-      map(() => ({
-        modifiedFileName: file.filename,
-      })),
+    return from(this.companyAuthService.findUserById(req.user.id)).pipe(
+      switchMap((user: CompanyUser) => {
+        const imagesFolderPath = join(process.cwd(), 'images');
+        const fullImagePath = join(imagesFolderPath + '/' + file.filename);
+        const user_id = req.user.id;
+        return this.companyProfileService.updateUserImageById(user.company_id, fileName).pipe(
+          map(() => ({
+            modifiedFileName: file.filename,
+          })),
+        );
+        }
+      )
     );
   }
   @UseGuards(JwtGuard)

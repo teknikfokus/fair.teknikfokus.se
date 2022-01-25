@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, UploadedFile, Request } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UploadedFile, Request, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { join } from 'path';

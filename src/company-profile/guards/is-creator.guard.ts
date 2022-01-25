@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, Logger } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { CompanyUser } from 'src/auth/models/company_user.interface';
@@ -23,13 +23,11 @@ export class IsCreatorGuard implements CanActivate {
 
     //if (user.role === 'admin') return true; // allow admins to get make requests
 
-    const user_id = user.company_id;
-    const profile_id = params.id;
-
+    const user_id = user.id;
     // Determine if logged-in user is the same as the user that created the feed post
     return this.userService.findUserById(user_id).pipe(
       switchMap((company_user: CompanyUser) =>
-        this.companyProfileService.findProfileById(profile_id).pipe(
+        this.companyProfileService.findProfileById(company_user.company_id).pipe(
           map((company_profile: CompanyProfile) => {
             let isAuthor = company_user.company_id === company_profile.id;
             return isAuthor;
