@@ -17,13 +17,13 @@ export class CompanyProfileService {
   constructor(
     private companyAuthService: CompanyAuthService,
       @InjectRepository(CompanyProfileEntity)
-      private readonly company_profile_repository: Repository<CompanyProfileEntity>
+      private readonly companyProfileRepository: Repository<CompanyProfileEntity>
     ) {}
 
   registerCompanyProfile(profile: CompanyProfile, user_id: number): Observable<CompanyProfile> {
     const { company_name, company_information, meeting_link } = profile;
     return from(
-      this.company_profile_repository.save({
+      this.companyProfileRepository.save({
         company_name,
         company_information,
         meeting_link,
@@ -38,7 +38,7 @@ export class CompanyProfileService {
 
   findUserById(id: number): Observable<CompanyProfile> {
     return from(
-      this.company_profile_repository.findOne({ id }),
+      this.companyProfileRepository.findOne({ id }),
     ).pipe(
       map((user: CompanyProfile) => {
         if (!user) {
@@ -53,11 +53,15 @@ export class CompanyProfileService {
     const profile: CompanyProfile = new CompanyProfileEntity();
     profile.id = id;
     profile.image_path = image_path;
-    return from(this.company_profile_repository.update(id, profile));
+    return from(this.companyProfileRepository.update(id, profile));
   }
     
-  getAllUsers() {
-    return this.company_profile_repository;
+  getAllCompanyProfiles(): Promise<CompanyProfileEntity[]> {
+    return this.companyProfileRepository.find(
+      {
+        select: ['company_name', 'company_information', 'image_path', 'meeting_link'],
+      },
+    );
   }
 
 }

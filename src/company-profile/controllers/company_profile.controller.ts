@@ -10,7 +10,7 @@ import { removeFile, saveImageToStorage } from '../helpers/image-storage';
 import { CompanyProfile } from '../models/company_profile.interface';
 import { CompanyProfileService } from '../services/company-profile.service';
 
-@Controller('dashboard/company')
+@Controller('')
 export class CompanyProfileController {
 
   constructor(
@@ -23,7 +23,7 @@ export class CompanyProfileController {
   @Post()
   @HttpCode(HttpStatus.OK)
   register_company_profile(
-    @Body() profile: CompanyProfile, @Request() req): Observable<CompanyUser> {
+    @Body('dashboard/company') profile: CompanyProfile, @Request() req): Observable<CompanyUser> {
       return from(this.companyAuthService.findUserById(req.user.id)).pipe(
         switchMap((user: CompanyUser) => {
           if(user.company_id != null) {
@@ -39,7 +39,7 @@ export class CompanyProfileController {
 
   @UseGuards(JwtGuard)
   @UseInterceptors(FileInterceptor('file', saveImageToStorage))
-  @Post('upload_image')
+  @Post('dashboard/company/upload_image')
   @HttpCode(HttpStatus.OK)
   uploadImage(
     @UploadedFile() file: Express.Multer.File,
@@ -57,6 +57,10 @@ export class CompanyProfileController {
       })),
     );
   }
-
+  @UseGuards(JwtGuard)
+  @Get('companies')
+  getAllProfiles() {
+    return this.companyProfileService.getAllCompanyProfiles();
+  }
 }
 
