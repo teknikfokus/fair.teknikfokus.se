@@ -29,7 +29,7 @@ export class IsCreatorGuard implements CanActivate {
       switchMap((company_user: CompanyUser) =>
         this.companyProfileService.findProfileById(company_user.company_id).pipe(
           map((company_profile: CompanyProfile) => {
-            let isAuthor = company_user.company_id === company_profile.id;
+            let isAuthor = company_user.company_id === company_profile.id && company_user.company_id !== null;
             return isAuthor;
           }),
         ),
