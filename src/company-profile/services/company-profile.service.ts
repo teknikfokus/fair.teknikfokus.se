@@ -43,7 +43,7 @@ export class CompanyProfileService {
       map((profile: CompanyProfile) => {
         newdata.image_path = profile.image_path;
         from(this.companyProfileRepository.update(profile.id,newdata));
-        return profile;
+        return newdata;
       }),
     );
   }

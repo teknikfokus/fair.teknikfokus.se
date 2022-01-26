@@ -11,7 +11,7 @@ export class CompanyProfileEntity {
     @Column()
     company_information: string;
 
-    @Column({ nullable: true })
+    @Column({ default: 'default.jpg' })
     image_path: string;
 
     @Column()
