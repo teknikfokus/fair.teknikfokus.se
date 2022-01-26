@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  backend:
+    image: backend:latest
+    build:
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./.env:/project/app/.env
+      - ./src/:/project/app/src
+      - ./tsconfig.build.json:/project/app/tsconfig.build.json
+      - ./tsconfig.json:/project/app/tsconfig.json
+      - ./.eslintrc.js:/project/app/.eslintrc.js
+      - ./nest-cli.json:/project/app/nest-cli.json
+    depends_on:
+      - postgres-db
+    ports:
+      - "3001:3001"
+
+  frontend:
+    image: frontend:latest
+    build:
+      dockerfile: ./client/Dockerfile
+    volumes:
+      - ./client/index.html:/project/app/index.html
+      - ./client/tailwind.config.js:/project/app/tailwind.config.js
+      - ./client/vite.config.js:/project/app/vite.config.js
+      - ./client/postcss.config.js:/project/app/postcss.config.js
+      - ./client/src/:/project/app/src
+      - ./client/public/:/project/app/public
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+
+  postgres-db:
+    image: postgres:14
+    env_file:
+      - .env
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    restart: on-failure
+
+volumes:
+  postgres:
