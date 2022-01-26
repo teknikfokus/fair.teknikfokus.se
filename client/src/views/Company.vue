@@ -10,17 +10,17 @@
 
     <div class="text-center mt-14">
       <h3 class="text-4xl font-semibold">Want to chat further with the company?</h3>
-      <a href="#" class="mt-6 relative inline-block justify-center py-6 px-12 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">
+      <router-link to="#" class="mt-6 relative inline-block justify-center py-6 px-12 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">
         Talk to the representative online
-      </a>
+      </router-link>
     </div>
 
     <div class="mt-14">
       <h3 class="text-4xl font-semibold">Jobs/thesis</h3>
       <div class="mt-3 grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-      <a href="/companies/1/job/1" v-for="n in 6" :key="n" class="bg-white h-44 rounded-xl shadow-xl hover:shadow-2xl flex justify-center items-center text-xl font-medium text-center px-4">
+      <router-link to="/companies/1/job/1" v-for="n in 6" :key="n" class="bg-white h-44 rounded-xl shadow-xl hover:shadow-2xl flex justify-center items-center text-xl font-medium text-center px-4">
         Summerjob
-      </a>
+      </router-link>
     </div>
     </div>
   </section>

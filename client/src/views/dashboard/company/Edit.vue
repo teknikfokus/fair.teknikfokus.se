@@ -43,7 +43,7 @@
       <label for="both"> Both days</label>
       <br>
     </div>
-    <a href="#" class="mt-3 relative inline-block justify-center py-2 px-7 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">Send</a>
+    <router-link to="#" class="mt-3 relative inline-block justify-center py-2 px-7 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">Send</router-link>
   </section>
 </template>
 

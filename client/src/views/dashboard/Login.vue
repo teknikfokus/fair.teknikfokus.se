@@ -22,9 +22,9 @@
 
         <div class="flex items-center justify-between">
           <div class="text-sm">
-            <a href="#" class="font-medium text-teknikfokus-primary hover:text-teknikfokus-primary-light">
+            <router-link to="#" class="font-medium text-teknikfokus-primary hover:text-teknikfokus-primary-light">
               Forgot your password?
-            </a>
+            </router-link>
           </div>
 
           <div>

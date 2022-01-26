@@ -1,13 +1,13 @@
 <template>
   <div class="flex justify-between">
-      <a href="#" @click="goBack()" class="text-gray-600 flex items-center group text-lg">
+      <router-link to="#" @click="goBack()" class="text-gray-600 flex items-center group text-lg">
         <ChevronDoubleLeftIcon class="w-4 h-4 pt-0.5"/>
         <span class="group-hover:underline">Back</span>
-      </a>
+      </router-link>
 
-      <a href="/" >
+      <router-link to="/" >
         <HomeIcon class="w-8 h-8 text-gray-600"/>
-      </a>
+      </router-link>
     </div>
 </template>
 
