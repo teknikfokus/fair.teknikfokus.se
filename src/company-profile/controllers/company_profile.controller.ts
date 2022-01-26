@@ -81,7 +81,7 @@ export class CompanyProfileController {
   @Get('companies/:company_name')
   getProfile(@Param() param) {
     let slug_company_name = slugify(param.company_name);
-    return this.companyProfileService.getProfile(param.company_name);
+    return this.companyProfileService.getProfile(slug_company_name);
   }
 
   @UseGuards(JwtGuard, IsCompanyGuard,IsCreatorGuard)
