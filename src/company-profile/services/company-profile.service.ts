@@ -63,6 +63,19 @@ export class CompanyProfileService {
     );
   }
 
+  findJobsById(id: number): Observable<Job> {
+    return from(
+      this.jobRepository.findOne({ id }),
+    ).pipe(
+      map((job: Job) => {
+        if (!job) {
+          throw new HttpException('Job not found', HttpStatus.NOT_FOUND);
+        }
+        return job;
+      }),
+    );
+  }
+
   updateUserImageById(id: number, image_path: string): Observable<CompanyProfile> {
     return from(
       this.companyProfileRepository.findOne({ id }),
@@ -106,5 +119,24 @@ export class CompanyProfileService {
         company_id: user_id
       }),
     )
+  }
+
+  editJobProfile(editJob: Job,profileId: number, jobid): Observable<CompanyProfile> {
+    return from(this.findJobsById(jobid)).pipe(
+      map((job: Job) => {
+        if(job.company_id !== profileId) {
+          throw new HttpException('FORBIDDEN', HttpStatus.FORBIDDEN);
+        }
+        from(this.jobRepository.update(job,editJob));
+        return editJob;
+      }),
+    );
+  }
+  getAllJobs(): Promise<JobEntity[]> {
+    return this.jobRepository.find(
+      {
+        select: ['id', 'job_position', 'job_description'],
+      },
+    );
   }
 }

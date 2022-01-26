@@ -95,5 +95,17 @@ export class CompanyProfileController {
     );
   }
 
+  @UseGuards(JwtGuard, IsCompanyGuard, IsCreatorGuard)
+  @Post('dashboard/company/job/:jobid')
+  @HttpCode(HttpStatus.OK)
+  editJobProfile(
+    @Body() jobEdits: Job, @Request() req, @Param() param): Observable<CompanyProfile> {
+    return from(this.companyAuthService.findUserById(req.user.id)).pipe(
+      switchMap((job: Job) => {
+        return this.companyProfileService.editJobProfile(jobEdits, req.company_id, param.jobid);
+      })
+    );
+  }
+
 }
 
