@@ -1,8 +1,8 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { from, map,switchMap, Observable } from 'rxjs';
+import { from, map,Observable } from 'rxjs';
 import { CompanyAuthService } from 'src/auth/services/company_auth.service';
-import { Repository, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CompanyProfileEntity } from '../models/company_profile.entity';
 import { CompanyProfile } from '../models/company_profile.interface';
 import { JobEntity } from '../models/job.entity';
@@ -107,60 +107,6 @@ export class CompanyProfileService {
       {
         select: ['name', 'image_path'],
       },
-    );
-  }
-
-  createJob(profile: Job, user_id: number): Observable<Job> {
-    const { job_description, job_position } = profile;
-    return from(
-      this.jobRepository.save({
-        job_description,
-        job_position,
-        company_id: user_id
-      }),
-    )
-  }
-
-  editJobProfile(editJob: Job,profileId: number, jobid): Observable<CompanyProfile> {
-    return from(this.findJobsById(jobid)).pipe(
-      map((job: Job) => {
-        if(job.company_id !== profileId) {
-          throw new HttpException('FORBIDDEN', HttpStatus.FORBIDDEN);
-        }
-        from(this.jobRepository.update(job,editJob));
-        return editJob;
-      }),
-    );
-  }
-  getAllJobs(): Promise<JobEntity[]> {
-    return this.jobRepository.find(
-      {
-        select: ['id', 'job_position', 'job_description'],
-      },
-    );
-  }
-  getJobsFromCompany(company_name : string): Observable<JobEntity[]> {
-    return this.getProfile(company_name).pipe(
-      switchMap((profile: CompanyProfile) => {
-        return this.jobRepository.find(
-          {
-            select: ['id', 'job_position', 'job_description'],
-            where: {'company_id': profile.id}
-          },
-        );
-      }),
-    );
-  }
-  getJob(id: number): Observable<CompanyProfile> {
-    return from(
-      this.jobRepository.findOne({ id }),
-    ).pipe(
-      map((job: Job) => {
-        if (!job) {
-          throw new HttpException('Company not found', HttpStatus.NOT_FOUND);
-        }
-        return job;
-      }),
     );
   }
 }

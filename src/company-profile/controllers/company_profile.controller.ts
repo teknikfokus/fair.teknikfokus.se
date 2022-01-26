@@ -1,7 +1,6 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards, UseInterceptors, Request, UploadedFile, HttpException, Logger} from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards, UseInterceptors, Request, UploadedFile, HttpException} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { from, map, Observable, of, switchMap, tap } from 'rxjs';
-import slugify from 'slugify';
+import { from, map, Observable, of, switchMap } from 'rxjs';
 import { IsCompanyGuard } from 'src/auth/guards/is-company.guard';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { CompanyUser } from 'src/auth/models/company_user.interface';
@@ -9,8 +8,6 @@ import { CompanyAuthService } from 'src/auth/services/company_auth.service';
 import { IsCreatorGuard } from '../guards/is-creator.guard';
 import { saveImageToStorage } from '../helpers/image-storage';
 import { CompanyProfile } from '../models/company_profile.interface';
-import { JobEntity } from '../models/job.entity';
-import { Job } from '../models/job.interface';
 import { CompanyProfileService } from '../services/company-profile.service';
 @Controller()
 export class CompanyProfileController {
@@ -84,37 +81,6 @@ export class CompanyProfileController {
     return this.companyProfileService.getProfile(param.company_name);
   }
 
-  @UseGuards(JwtGuard, IsCompanyGuard,IsCreatorGuard)
-  @Post('dashboard/company/job/create')
-  @HttpCode(HttpStatus.OK)
-  createJob(@Body() newJob: Job, @Request() req): Observable<CompanyUser> {
-    return from(this.companyAuthService.findUserById(req.user.id)).pipe(
-      switchMap((user: CompanyUser) => {
-        return this.companyProfileService.createJob(newJob, user.company_id);
-      })
-    );
-  }
-
-  @UseGuards(JwtGuard, IsCompanyGuard, IsCreatorGuard)
-  @Post('dashboard/company/job/:jobid')
-  @HttpCode(HttpStatus.OK)
-  editJobProfile(
-    @Body() jobEdits: Job, @Request() req, @Param() param): Observable<CompanyProfile> {
-    return from(this.companyAuthService.findUserById(req.user.id)).pipe(
-      switchMap((job: Job) => {
-        return this.companyProfileService.editJobProfile(jobEdits, req.company_id, param.jobid);
-      })
-    );
-  }
-
-  @UseGuards(JwtGuard)
-  @Get('dashboard/companies/:company_name/jobs')
-  @HttpCode(HttpStatus.OK)
-  getJobsFromCompany(
-    @Request() req, @Param() param): Observable<JobEntity[]> {
-    return this.companyProfileService.getJobsFromCompany(param.company_name);
-  }
-  
   @UseGuards(JwtGuard)
   @Get('companies/:job_id')
   getJob(@Param() param) {

@@ -12,6 +12,8 @@ import { IsCreatorGuard } from './guards/is-creator.guard';
 import { CompanyProfileEntity } from './models/company_profile.entity';
 import { JobEntity } from './models/job.entity';
 import { CompanyProfileService } from './services/company-profile.service';
+import { JobController } from './controllers/job.controller';
+import { JobService } from './services/job.service';
 
 @Module({
   imports: [AuthenticationModule, JwtModule.registerAsync({
@@ -21,7 +23,7 @@ import { CompanyProfileService } from './services/company-profile.service';
     }),
   }),
   TypeOrmModule.forFeature([CompanyProfileEntity, CompanyUserEntity, JobEntity])],
-  controllers: [CompanyAuthController, CompanyProfileController],
-  providers: [CompanyAuthService, CompanyProfileService, IsCreatorGuard, JwtGuard, JwtStrategy]
+  controllers: [CompanyAuthController, CompanyProfileController, JobController],
+  providers: [CompanyAuthService, CompanyProfileService, IsCreatorGuard, JwtGuard, JwtStrategy, JobService]
 })
 export class UserProfileModule {}
