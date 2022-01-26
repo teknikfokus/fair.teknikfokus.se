@@ -113,7 +113,12 @@ export class CompanyProfileController {
   getJobsFromCompany(
     @Request() req, @Param() param): Observable<JobEntity[]> {
     return this.companyProfileService.getJobsFromCompany(param.company_name);
-
+  }
+  
+  @UseGuards(JwtGuard)
+  @Get('companies/:job_id')
+  getJob(@Param() param) {
+    return this.companyProfileService.getProfile(param.job_id);
   }
 }
 

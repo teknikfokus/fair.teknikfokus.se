@@ -151,4 +151,16 @@ export class CompanyProfileService {
       }),
     );
   }
+  getJob(id: number): Observable<CompanyProfile> {
+    return from(
+      this.jobRepository.findOne({ id }),
+    ).pipe(
+      map((job: Job) => {
+        if (!job) {
+          throw new HttpException('Company not found', HttpStatus.NOT_FOUND);
+        }
+        return job;
+      }),
+    );
+  }
 }
