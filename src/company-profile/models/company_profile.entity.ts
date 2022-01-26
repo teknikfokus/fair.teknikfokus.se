@@ -6,10 +6,13 @@ export class CompanyProfileEntity {
     id: number;
 
     @Column()
-    company_name: string;
+    name: string;
 
     @Column()
-    company_information: string;
+    slug_name: string;
+
+    @Column()
+    information: string;
 
     @Column({ default: 'default.jpg' })
     image_path: string;

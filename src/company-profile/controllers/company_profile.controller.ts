@@ -1,6 +1,7 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards, UseInterceptors, Request, UploadedFile, HttpException, Logger} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { from, map, Observable, of, switchMap, tap } from 'rxjs';
+import slugify from 'slugify';
 import { IsCompanyGuard } from 'src/auth/guards/is-company.guard';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { CompanyUser } from 'src/auth/models/company_user.interface';
@@ -10,7 +11,6 @@ import { saveImageToStorage } from '../helpers/image-storage';
 import { CompanyProfile } from '../models/company_profile.interface';
 import { Job } from '../models/job.interface';
 import { CompanyProfileService } from '../services/company-profile.service';
-
 @Controller()
 export class CompanyProfileController {
 
@@ -70,10 +70,18 @@ export class CompanyProfileController {
       )
     );
   }
+
   @UseGuards(JwtGuard)
   @Get('companies')
   getAllProfiles() {
     return this.companyProfileService.getAllCompanyProfiles();
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('companies/:company_name')
+  getProfile(@Param() param) {
+    let slug_company_name = slugify(param.company_name);
+    return this.companyProfileService.getProfile(param.company_name);
   }
 
   @UseGuards(JwtGuard, IsCompanyGuard,IsCreatorGuard)

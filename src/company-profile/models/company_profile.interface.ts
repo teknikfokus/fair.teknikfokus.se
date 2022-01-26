@@ -1,7 +1,8 @@
 export interface CompanyProfile {
     id?: number;
-    company_name?: string;
-    company_information?: string;
+    name?: string;
+    slug_name?: string;
+    information?: string;
     image_path?: string;
     meeting_link?: string;
     summer_internship?: boolean;

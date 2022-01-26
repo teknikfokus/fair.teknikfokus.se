@@ -7,6 +7,7 @@ import { CompanyProfileEntity } from '../models/company_profile.entity';
 import { CompanyProfile } from '../models/company_profile.interface';
 import { JobEntity } from '../models/job.entity';
 import { Job } from '../models/job.interface';
+import slugify from 'slugify';
 
 @Injectable()
 export class CompanyProfileService {
@@ -20,11 +21,12 @@ export class CompanyProfileService {
     ) {}
 
   registerCompanyProfile(profile: CompanyProfile, user_id: number): Observable<CompanyProfile> {
-    const { company_name, company_information, meeting_link, summer_internship, master_thesis, trainee_programme } = profile;
+    const { name, information, meeting_link, summer_internship, master_thesis, trainee_programme } = profile;
     return from(
       this.companyProfileRepository.save({
-        company_name,
-        company_information,
+        name,
+        slug_name: slugify(name),
+        information,
         meeting_link,
         summer_internship,
         master_thesis,
@@ -73,11 +75,24 @@ export class CompanyProfileService {
       }),
     );
   }
+
+  getProfile(slug_name: string): Observable<CompanyProfile> {
+    return from(
+      this.companyProfileRepository.findOne({ slug_name }),
+    ).pipe(
+      map((profile: CompanyProfile) => {
+        if (!profile) {
+          throw new HttpException('Company not found', HttpStatus.NOT_FOUND);
+        }
+        return profile;
+      }),
+    );
+  }
     
   getAllCompanyProfiles(): Promise<CompanyProfileEntity[]> {
     return this.companyProfileRepository.find(
       {
-        select: ['company_name', 'image_path'],
+        select: ['name', 'image_path'],
       },
     );
   }
