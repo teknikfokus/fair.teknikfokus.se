@@ -43,5 +43,12 @@ services:
       - "5432:5432"
     restart: on-failure
 
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    restart: on-failure
+
 volumes:
   postgres:
