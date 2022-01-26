@@ -35,4 +35,25 @@ const router = createRouter({
     routes,
 });
 
+const allowedRoutes = [
+  '/',
+  '/login',
+  '/registration',
+  '/dashboard',
+  '/dashboard/registration',
+]
+
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = localStorage.getItem('token');
+  if (!allowedRoutes.includes(to.path) && !isAuthenticated) {
+    if(to.path.includes("dashboard")) {
+      next("/dashboard")
+    } else {
+      next("/")
+    }
+  } else {
+    next()
+  }
+})
+
 export default router;
