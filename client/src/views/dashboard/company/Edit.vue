@@ -20,9 +20,6 @@
         v-model="profileEditor"
      />
 
-    <p style="white-space: pre-line;">{{ profileEditor }}</p>
-
-
     <h1 class="mt-4 text-xl font-semibold">Upload company logo (.jpg, .png or .svg)</h1> <br>
     <div class="flex w-full items-center justify-center bg-grey-lighter">
       <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white">
