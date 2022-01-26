@@ -1,7 +1,7 @@
 <template>
   <section class="pt-8 px-4 max-w-5xl mx-auto">
     <nav-bar/>
-    <h1 class="mt-16 text-3xl font-semibold">Enter your company's information</h1><br/>
+    <h1 class="mt-4 text-xl font-semibold">Enter your company's information</h1><br/>
     <editor
        api-key="tjoqjkiq6re91rc0o4p5mxpe24smdqlqwv0c7f1w74pep3bo"
        :init="{
@@ -20,7 +20,10 @@
         v-model="profileEditor"
      />
 
-    <h1 class="mt-16 text-xl font-semibold">Upload company logo (.jpg, .png or .svg)</h1> <br>
+    <p style="white-space: pre-line;">{{ profileEditor }}</p>
+
+
+    <h1 class="mt-4 text-xl font-semibold">Upload company logo (.jpg, .png or .svg)</h1> <br>
     <div class="flex w-full items-center justify-center bg-grey-lighter">
       <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white">
           <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -31,7 +34,7 @@
       </label>
     </div>
 
-    <h1 class="mt-16 text-xl font-semibold">What days is your company attending the fair?</h1>
+    <h1 class="mt-4 mb-1 text-xl font-semibold">What days is your company attending the fair?</h1>
     <div>
       <input type="radio" id="day1" value="1" v-model="day" name="days">
       <label for="day1"> 16th of February</label>
@@ -41,9 +44,12 @@
       <br>
       <input type="radio" id="both" value="3" v-model="day" name="days">
       <label for="both"> Both days</label>
-      <br>
     </div>
-    <router-link to="#" class="mt-3 relative inline-block justify-center py-2 px-7 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">Send</router-link>
+    <h1 class="mt-4 mb-1 text-xl font-semibold">Meeting link (for example Zoom or Microsoft Teams)</h1>
+    <div>
+      <input type="text" v-model="meetingLink">
+    </div>
+    <router-link type="submit" to="#" class="mt-3 relative inline-block justify-center py-2 px-7 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">Submit</router-link>
   </section>
 </template>
 

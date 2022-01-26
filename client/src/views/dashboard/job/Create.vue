@@ -1,7 +1,7 @@
 <template>
   <section class="pt-8 px-4 max-w-5xl mx-auto">
     <nav-bar />
-    <h1 class="mt-4 text-3xl font-semibold">Job description</h1><br/>
+    <h1 class="mt-4 text-xl font-semibold">Job description</h1><br/>
     <editor
        api-key="tjoqjkiq6re91rc0o4p5mxpe24smdqlqwv0c7f1w74pep3bo"
        :init="{
@@ -19,7 +19,10 @@
        }"
         v-model="jobEditor"
      />
-     <input v-model="jobTitle"  placeholder="Job title" class="mt-5"><br>
+    <h1 class="mt-4 mb-1 text-xl font-semibold">Job title (will be displayed in the list)</h1>
+    <div>
+      <input type="text" v-model="jobTitle">
+    </div>
     <router-link to="#" class="mt-3 relative inline-block justify-center py-2 px-7 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">Send</router-link>
 
   </section>

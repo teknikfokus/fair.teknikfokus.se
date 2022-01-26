@@ -12,7 +12,7 @@ import EditJob from '@/views/dashboard/job/Edit.vue'
 import IndexCompany from '@/views/dashboard/company/Index.vue'
 import EditCompany from '@/views/dashboard/company/Edit.vue'
 import ListJobs from '@/views/dashboard/job/List.vue/'
-
+    
 
 const routes = [
     { path: '/', component: Index },
