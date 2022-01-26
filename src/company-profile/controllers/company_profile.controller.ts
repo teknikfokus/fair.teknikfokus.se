@@ -9,6 +9,7 @@ import { CompanyAuthService } from 'src/auth/services/company_auth.service';
 import { IsCreatorGuard } from '../guards/is-creator.guard';
 import { saveImageToStorage } from '../helpers/image-storage';
 import { CompanyProfile } from '../models/company_profile.interface';
+import { JobEntity } from '../models/job.entity';
 import { Job } from '../models/job.interface';
 import { CompanyProfileService } from '../services/company-profile.service';
 @Controller()
@@ -80,8 +81,7 @@ export class CompanyProfileController {
   @UseGuards(JwtGuard)
   @Get('companies/:company_name')
   getProfile(@Param() param) {
-    let slug_company_name = slugify(param.company_name);
-    return this.companyProfileService.getProfile(slug_company_name);
+    return this.companyProfileService.getProfile(param.company_name);
   }
 
   @UseGuards(JwtGuard, IsCompanyGuard,IsCreatorGuard)
@@ -107,5 +107,13 @@ export class CompanyProfileController {
     );
   }
 
+  @UseGuards(JwtGuard)
+  @Get('dashboard/companies/:company_name/jobs')
+  @HttpCode(HttpStatus.OK)
+  getJobsFromCompany(
+    @Request() req, @Param() param): Observable<JobEntity[]> {
+    return this.companyProfileService.getJobsFromCompany(param.company_name);
+
+  }
 }
 

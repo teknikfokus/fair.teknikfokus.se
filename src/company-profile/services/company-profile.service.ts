@@ -139,4 +139,16 @@ export class CompanyProfileService {
       },
     );
   }
+  getJobsFromCompany(company_name : string): Observable<JobEntity[]> {
+    return this.getProfile(company_name).pipe(
+      switchMap((profile: CompanyProfile) => {
+        return this.jobRepository.find(
+          {
+            select: ['id', 'job_position', 'job_description'],
+            where: {'company_id': profile.id}
+          },
+        );
+      }),
+    );
+  }
 }
