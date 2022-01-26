@@ -8,6 +8,7 @@ import { CompanyAuthService } from 'src/auth/services/company_auth.service';
 import { IsCreatorGuard } from '../guards/is-creator.guard';
 import { saveImageToStorage } from '../helpers/image-storage';
 import { CompanyProfile } from '../models/company_profile.interface';
+import { Job } from '../models/job.interface';
 import { CompanyProfileService } from '../services/company-profile.service';
 
 @Controller()
@@ -18,33 +19,22 @@ export class CompanyProfileController {
     private companyAuthService: CompanyAuthService
   ) {}
 
-    // , IsCreatorGuard
   @UseGuards(JwtGuard, IsCompanyGuard)
   @Post('dashboard/company')
   @HttpCode(HttpStatus.OK)
-  registerCompanyProfile(
-    
-    @Body() profile: CompanyProfile, @Request() req): Observable<CompanyUser> {
-      /*
-      if(req.user.type != 'company') {
-        throw new HttpException(
-          { status: HttpStatus.FORBIDDEN, error: 'Unauthorized.' },
-          HttpStatus.FORBIDDEN,
-        );
-      }
-      */
-      return from(this.companyAuthService.findUserById(req.user.id)).pipe(
-        switchMap((user: CompanyUser) => {
-          if(user.company_id != null) {
-            throw new HttpException(
-              { status: HttpStatus.FORBIDDEN, error: 'You have already created a profile.' },
-              HttpStatus.FORBIDDEN,
-            );
-          }
-          return this.companyProfileService.registerCompanyProfile(profile, req.user.id);
-        })
-      );
-    }
+  registerCompanyProfile(@Body() profile: CompanyProfile, @Request() req): Observable<CompanyUser> {
+    return from(this.companyAuthService.findUserById(req.user.id)).pipe(
+      switchMap((user: CompanyUser) => {
+        if(user.company_id != null) {
+          throw new HttpException(
+            { status: HttpStatus.FORBIDDEN, error: 'You have already created a profile.' },
+            HttpStatus.FORBIDDEN,
+          );
+        }
+        return this.companyProfileService.registerCompanyProfile(profile, req.user.id);
+      })
+    );
+  }
 
   @UseGuards(JwtGuard, IsCompanyGuard, IsCreatorGuard)
   @Post('dashboard/company/edit')
@@ -53,19 +43,10 @@ export class CompanyProfileController {
     @Body() companyEdits: CompanyProfile, @Request() req): Observable<CompanyProfile> {
     return from(this.companyAuthService.findUserById(req.user.id)).pipe(
       switchMap((user: CompanyUser) => {
-        if(user.company_id == null) {
-          throw new HttpException(
-            { status: HttpStatus.FORBIDDEN, error: 'Company profile has not been created yet.' },
-            HttpStatus.FORBIDDEN,
-          );
-        }
         return this.companyProfileService.editCompanyProfile(companyEdits, user.company_id);
       })
     );
-    }
-
-
-
+  }
 
   @UseGuards(JwtGuard,IsCreatorGuard, IsCompanyGuard)
   @UseInterceptors(FileInterceptor('file', saveImageToStorage))
@@ -94,5 +75,17 @@ export class CompanyProfileController {
   getAllProfiles() {
     return this.companyProfileService.getAllCompanyProfiles();
   }
+
+  @UseGuards(JwtGuard, IsCompanyGuard,IsCreatorGuard)
+  @Post('dashboard/company/job/create')
+  @HttpCode(HttpStatus.OK)
+  createJob(@Body() newJob: Job, @Request() req): Observable<CompanyUser> {
+    return from(this.companyAuthService.findUserById(req.user.id)).pipe(
+      switchMap((user: CompanyUser) => {
+        return this.companyProfileService.createJob(newJob, user.company_id);
+      })
+    );
+  }
+
 }
 

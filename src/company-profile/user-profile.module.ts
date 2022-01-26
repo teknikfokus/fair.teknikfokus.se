@@ -10,6 +10,7 @@ import { CompanyAuthService } from 'src/auth/services/company_auth.service';
 import { CompanyProfileController } from './controllers/company_profile.controller';
 import { IsCreatorGuard } from './guards/is-creator.guard';
 import { CompanyProfileEntity } from './models/company_profile.entity';
+import { JobEntity } from './models/job.entity';
 import { CompanyProfileService } from './services/company-profile.service';
 
 @Module({
@@ -19,7 +20,7 @@ import { CompanyProfileService } from './services/company-profile.service';
       signOptions: { expiresIn: '3600s' },
     }),
   }),
-  TypeOrmModule.forFeature([CompanyProfileEntity, CompanyUserEntity])],
+  TypeOrmModule.forFeature([CompanyProfileEntity, CompanyUserEntity, JobEntity])],
   controllers: [CompanyAuthController, CompanyProfileController],
   providers: [CompanyAuthService, CompanyProfileService, IsCreatorGuard, JwtGuard, JwtStrategy]
 })

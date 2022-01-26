@@ -5,12 +5,16 @@ import { CompanyAuthService } from 'src/auth/services/company_auth.service';
 import { Repository, UpdateResult } from 'typeorm';
 import { CompanyProfileEntity } from '../models/company_profile.entity';
 import { CompanyProfile } from '../models/company_profile.interface';
+import { JobEntity } from '../models/job.entity';
+import { Job } from '../models/job.interface';
 
 @Injectable()
 export class CompanyProfileService {
 
   constructor(
-    private companyAuthService: CompanyAuthService,
+      private companyAuthService: CompanyAuthService,
+      @InjectRepository(JobEntity)
+      private readonly jobRepository: Repository<JobEntity>,
       @InjectRepository(CompanyProfileEntity)
       private readonly companyProfileRepository: Repository<CompanyProfileEntity>
     ) {}
@@ -38,18 +42,9 @@ export class CompanyProfileService {
     return from(this.findProfileById(profileId)).pipe(
       map((profile: CompanyProfile) => {
         newdata.image_path = profile.image_path;
-        /*
-          profile.company_name = company_name,
-          profile.company_information = company_information,
-          profile.meeting_link = meeting_link,
-          profile.image_path = profile.image_path
-          profile.summer_internship = summer_internship,
-          profile.master_thesis = master_thesis,
-          profile.trainee_programme = trainee_programme
-          */
-          from(this.companyProfileRepository.update(profile.id,newdata));
-          return profile;
-        }),
+        from(this.companyProfileRepository.update(profile.id,newdata));
+        return profile;
+      }),
     );
   }
   
@@ -87,4 +82,14 @@ export class CompanyProfileService {
     );
   }
 
+  createJob(profile: Job, user_id: number): Observable<Job> {
+    const { job_description, job_position } = profile;
+    return from(
+      this.jobRepository.save({
+        job_description,
+        job_position,
+        company_id: user_id
+      }),
+    )
+  }
 }
