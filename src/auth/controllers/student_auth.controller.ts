@@ -18,7 +18,7 @@ export class StudentAuthController {
         .pipe(map((jwt: string) => ({ token: jwt })));
     }
 
-    @Post('register')
+    @Post('registration')
     create(@Body() studentAccount: StudentUser): Observable<StudentUser>{
         
         return this.studentAuthService.registerStudentAccount(studentAccount)
