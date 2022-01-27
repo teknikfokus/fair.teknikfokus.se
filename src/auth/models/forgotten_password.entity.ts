@@ -8,8 +8,8 @@ export class ForgottenPasswordEntity {
   @Column({ unique: true })
   email: String;
 
-  @Column()
-  new_password_token: String;
+  @Column({ unique: true })
+  token_link: String;
 
   @Column()
   timestamp: Date;

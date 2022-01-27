@@ -8,6 +8,10 @@ import { StudentUserEntity } from '../models/student_user.entity';
 import { StudentUser } from '../models/student_user.interface';
 import * as bcrypt from 'bcrypt';
 import { ForgottenPasswordEntity } from '../models/forgotten_password.entity';
+import { v4 as uuidv4 } from 'uuid';
+import { link } from 'fs';
+import { MailService } from 'src/mail/mail.service';
+import passport from 'passport';
 
 @Injectable()
 export class StudentAuthService {
@@ -24,6 +28,8 @@ export class StudentAuthService {
     private readonly forgottenPasswordRepository: Repository<ForgottenPasswordEntity>,
 
     private jwtService: JwtService,
+
+    private mailService: MailService,
   ) { }
 
   doesUserExist(email: string): Observable<boolean> {
@@ -142,29 +148,135 @@ export class StudentAuthService {
       }),
     );
   }
+
+  sendRecoveryLinkMail(token: ForgottenPasswordEntity) {
+    this.mailService.sendMail(
+      <string>token.email,
+      "Återställ ditt lösenord",
+      "Här kommer länk för att återställa ditt lösenord: " + process.env.URL + "/recovery/" + token.token_link
+    );
+  }
+
+  getForgottenPasswordByTokenLink(link: string) {
+    return from(this.forgottenPasswordRepository.findOne({ token_link: link })).pipe(
+      switchMap((token: ForgottenPasswordEntity) => {
+        return of(token);
+      }),
+    );
+  }
+
+  getForgottenPasswordByEmail(email: string) {
+    email = email.toLocaleLowerCase();
+    return from(this.forgottenPasswordRepository.findOne({ email })).pipe(
+      switchMap((token: ForgottenPasswordEntity) => {
+        return of(token);
+      }),
+    );
+  }
+
   createForgottenPasswordToken(email: string) {
+    email = email.toLocaleLowerCase();
     return from(this.doesUserExist(email).pipe(
-      tap((doesUserExist: boolean) => {
+      switchMap((doesUserExist: boolean) => {
         if (!doesUserExist) {
           this.logger.warn("Someone tried to generate forgotten password token for non-existant student user");
-          return;
+          return of(null);
         }
 
-        this.forgottenPasswordRepository.save({
-          email,
-          new_password_token: (Math.floor(Math.random() * (9000000)) + 1000000).toString(), //Generate 7 digits number,
-          timestamp: new Date(),
-        });
+        return from(this.getForgottenPasswordByEmail(email)).pipe(
+          tap((token: ForgottenPasswordEntity) => {
+            const halfHour = Date.now() - (60 * 30 * 1000);
 
-        this.logger.log("Succesfully generated forgotten password token");
+            if (token != null && token.timestamp.getTime() < halfHour) {
+              const token_link = uuidv4();
+
+              this.forgottenPasswordRepository.update(token.id, {
+                token_link: token_link,
+                timestamp: new Date()
+              });
+
+              token.token_link = token_link;
+
+              this.logger.log("Succesfully updated forgotten password token");
+
+              this.sendRecoveryLinkMail(token);
+            } else if (token == null) {
+              const token_link = uuidv4();
+
+              this.forgottenPasswordRepository.save({
+                email,
+                token_link: token_link,
+                timestamp: new Date(),
+              });
+
+              this.logger.log("Succesfully generated forgotten password token");
+
+              this.sendRecoveryLinkMail({
+                id: null,
+                email: email,
+                token_link: token_link,
+                timestamp: null
+              });
+            }
+          })
+        );
       }),
       map(() => {
         return {
-          "message": 'E-mail sent away with link to password',
+          "message": 'E-mail sent away with link to recover password if user exists',
           "statusCode": '201'
         };
       })
     ));
+  }
+
+  updatePasswordWithLink(token_link: string, password: string) {
+    return this.getForgottenPasswordByTokenLink(token_link).pipe(
+      switchMap((token: ForgottenPasswordEntity) => {
+        const oneHour = Date.now() - (60 * 60 * 1000);
+
+        if (token == null) {
+          throw new HttpException('Link not found', HttpStatus.NOT_FOUND);
+        } else if (token.timestamp.getTime() < oneHour) {
+          throw new HttpException('Link expired', HttpStatus.GONE);
+        }
+
+        const email = <string>token.email;
+
+        return from(
+          this.studentRepository.findOne(
+            { email: email },
+            {
+              select: ['id'],
+            },
+          ),
+        ).pipe(
+          switchMap((user: StudentUser) => {
+            if (user == null) {
+              this.logger.warn('Could not find user when trying to recover password');
+              throw new HttpException('Link expired', HttpStatus.GONE);
+            }
+
+            const user_id = user.id;
+
+            return this.hashPassword(password).pipe(
+              tap((hashedPassword: string) => {
+                this.studentRepository.update(user_id, {
+                  password: hashedPassword,
+                });
+                this.forgottenPasswordRepository.delete(token.id);
+              }),
+              map(() => {
+                return {
+                  "message": 'Password succesfully updated',
+                  "statusCode": '200'
+                };
+              }),
+            );
+          }),
+        );
+      }),
+    );
   }
 
   updateStudentProfileById(id: number, student_id: number): Observable<UpdateResult> {

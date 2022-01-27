@@ -25,8 +25,14 @@ export class StudentAuthController {
     }
 
     @Post('forgotpassword')
-    newpassword(@Body() user: StudentUser) {
+    sendLinkToRecovery(@Body() user: StudentUser) {
         const { email } = user;
         return this.studentAuthService.createForgottenPasswordToken(email)
+    }
+
+    @Post('recovery')
+    @HttpCode(HttpStatus.OK)
+    loginWithLink(@Body() token_link: { id: string, password: string }) {
+        return this.studentAuthService.updatePasswordWithLink(token_link.id, token_link.password)
     }
 }
