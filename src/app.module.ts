@@ -4,7 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthenticationModule } from './auth/authentication.module';
-import { UserProfileModule } from './user-profile/user-profile.module';
+import { CompanyProfileModule } from './company-profile/company-profile.module';
+import { StudentProfileModule } from './student-profile/student-profile.module';
 
 
 @Module({
@@ -21,7 +22,8 @@ import { UserProfileModule } from './user-profile/user-profile.module';
       synchronize: true,
     }),
     AuthenticationModule,
-    UserProfileModule
+    CompanyProfileModule,
+    StudentProfileModule
   ],
   controllers: [AppController],
   providers: [AppService],

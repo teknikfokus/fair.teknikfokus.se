@@ -49,6 +49,12 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Send e-mail through SMTP
+
+Change ```MAIL_TRANSPORT``` in ```.env``` to your SMTP server, optionally with an username and password.
+
+If you want to use [MailHog](https://github.com/mailhog/MailHog) for testing purposes and you're running the default ```docker-compose.yml```, change ```MAIL_TRANSPORT``` to ```mailhog:1025```.
+
 ## License
 
 fair.teknikfokus.se is [MIT licensed](LICENSE).

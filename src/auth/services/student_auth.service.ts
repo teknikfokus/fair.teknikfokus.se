@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { from, Observable, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { Repository, TransactionManager } from 'typeorm';
+import { Repository, TransactionManager, UpdateResult } from 'typeorm';
 import { StudentUserEntity } from '../models/student_user.entity';
 import { StudentUser } from '../models/student_user.interface';
 import * as bcrypt from 'bcrypt';
@@ -27,18 +27,33 @@ export class StudentAuthService {
 
 
     doesUserExist(email: string): Observable<boolean> {
-      return from(this.studentRepository.findOne({ email })).pipe(
+      email = email.toLocaleLowerCase();
+      return from(this.studentRepository.findOne({ email})).pipe(
         switchMap((user: StudentUser) => {
           return of(!!user);
         }),
       );
     }
-    
+
+    findStudentUserById(id: number): Observable<StudentUser> {
+      return from(
+        this.studentRepository.findOne({ id }),
+      ).pipe(
+        map((user: StudentUser) => {
+          if (!user) {
+            throw new HttpException('Student not found', HttpStatus.NOT_FOUND);
+          }
+          delete user.password;
+          return user;
+        }),
+      );
+    }
 
     registerStudentAccount(user: StudentUser): Observable<StudentUser> {
       const {email, password } = user;
-  
-      return this.doesUserExist(email).pipe(
+      const lowerEmail = email.toLocaleLowerCase();
+
+      return this.doesUserExist(lowerEmail).pipe(
         tap((doesUserExist: boolean) => {
           if (doesUserExist)
             throw new HttpException(
@@ -57,7 +72,7 @@ export class StudentAuthService {
             switchMap((hashedPassword: string) => {
               return from(
                 this.studentRepository.save({
-                  email,
+                  email: lowerEmail,
                   password: hashedPassword,
                 }),
               ).pipe(
@@ -73,10 +88,13 @@ export class StudentAuthService {
     }
     
     validateUser(email: string, password: string): Observable<StudentUser> {
+      const lowerEmail = email.toLocaleLowerCase();
       return from(
         this.studentRepository.findOne(
-          { email },
-            {select: ['id', 'email', 'password'],},
+          { email : lowerEmail},
+          {
+            select: ['id', 'email', 'password', 'student_profile_id'],
+          },
         ),
       ).pipe(
         switchMap((user: StudentUser) => {
@@ -108,7 +126,7 @@ export class StudentAuthService {
           switchMap((user: StudentUser) => {
             if (user) {
               // create JWT - credentials
-              return from(this.jwtService.signAsync({ user }));
+              return from(this.jwtService.signAsync({ user: {...user, type: "student"} }));
             }
           }),
        );
@@ -150,5 +168,12 @@ export class StudentAuthService {
           }),
        );
      }
+
+     updateStudentProfileById(id: number, student_id: number): Observable<UpdateResult> {
+      const user: StudentUser = new StudentUserEntity();
+      user.id = id;
+      user.student_profile_id = student_id;
+      return from(this.studentRepository.update(id, user));
+    }
   }
 
