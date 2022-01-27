@@ -18,7 +18,7 @@ export class JobController {
         private companyAuthService: CompanyAuthService
       ) {}
 
-    @UseGuards(JwtGuard, IsCompanyGuard,IsCreatorGuard)
+    @UseGuards(JwtGuard, IsCompanyGuard)
     @Post('dashboard/company/job/create')
     @HttpCode(HttpStatus.OK)
     createJob(@Body() newJob: Job, @Request() req): Observable<CompanyUser> {
