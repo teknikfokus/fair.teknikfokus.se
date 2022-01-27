@@ -38,7 +38,8 @@ export class StudentAuthService {
 
     registerStudentAccount(user: StudentUser): Observable<StudentUser> {
       const {email, password } = user;
-      var lowerEmail = email.toLocaleLowerCase();
+      const lowerEmail = email.toLocaleLowerCase();
+
       return this.doesUserExist(lowerEmail).pipe(
         tap((doesUserExist: boolean) => {
           if (doesUserExist)
@@ -58,7 +59,7 @@ export class StudentAuthService {
             switchMap((hashedPassword: string) => {
               return from(
                 this.studentRepository.save({
-                  email:lowerEmail,
+                  email: lowerEmail,
                   password: hashedPassword,
                 }),
               ).pipe(
@@ -74,7 +75,7 @@ export class StudentAuthService {
     }
     
     validateUser(email: string, password: string): Observable<StudentUser> {
-        var lowerEmail = email.toLocaleLowerCase();
+        const lowerEmail = email.toLocaleLowerCase();
         return from(
           this.studentRepository.findOne(
             { email : lowerEmail},

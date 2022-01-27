@@ -4,7 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthenticationModule } from './auth/authentication.module';
-import { CompaniesModule } from './companies/companies.module';
 
 @Module({
   imports: [
@@ -18,8 +17,7 @@ import { CompaniesModule } from './companies/companies.module';
       database: process.env.POSTGRES_DATABASE,
       autoLoadEntities: true
     }),
-    AuthenticationModule,
-    CompaniesModule
+    AuthenticationModule
   ],
   controllers: [AppController],
   providers: [AppService],

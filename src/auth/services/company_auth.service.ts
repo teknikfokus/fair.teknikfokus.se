@@ -27,7 +27,8 @@ export class CompanyAuthService {
       );
     }
     registerCompanyAccount(user: CompanyUser): Observable<CompanyUser> {
-      const{ email, password } = user;
+      const { email, password } = user;
+  
       return this.doesUserExist(email).pipe(
         tap((doesUserExist: boolean) => {
           if (doesUserExist)
@@ -41,7 +42,7 @@ export class CompanyAuthService {
             switchMap((hashedPassword: string) => {
               return from(
                 this.companyRepository.save({
-                  email ,
+                  email,
                   password: hashedPassword,
                 }),
               ).pipe(
