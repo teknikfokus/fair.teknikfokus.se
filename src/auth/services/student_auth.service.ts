@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { from, Observable, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { Repository, TransactionManager } from 'typeorm';
+import { Repository, TransactionManager, UpdateResult } from 'typeorm';
 import { StudentUserEntity } from '../models/student_user.entity';
 import { StudentUser } from '../models/student_user.interface';
 import * as bcrypt from 'bcrypt';
@@ -33,7 +33,20 @@ export class StudentAuthService {
         }),
       );
     }
-    
+
+    findStudentUserById(id: number): Observable<StudentUser> {
+      return from(
+        this.studentRepository.findOne({ id }),
+      ).pipe(
+        map((user: StudentUser) => {
+          if (!user) {
+            throw new HttpException('Student not found', HttpStatus.NOT_FOUND);
+          }
+          delete user.password;
+          return user;
+        }),
+      );
+    }
 
     registerStudentAccount(user: StudentUser): Observable<StudentUser> {
       const {email, password } = user;
@@ -76,7 +89,7 @@ export class StudentAuthService {
       return from(
         this.studentRepository.findOne(
           { email },
-            {select: ['id', 'email', 'password'],},
+            {select: ['id', 'email', 'password', 'student_id'],},
         ),
       ).pipe(
         switchMap((user: StudentUser) => {
@@ -105,10 +118,10 @@ export class StudentAuthService {
     login(user: StudentUser): Observable<string> {
       const { email, password } = user;
         return this.validateUser(email, password).pipe(
-          switchMap((studentUser: StudentUser) => {
-            if (studentUser) {
+          switchMap((user: StudentUser) => {
+            if (user) {
               // create JWT - credentials
-              return from(this.jwtService.signAsync({ studentUser }));
+              return from(this.jwtService.signAsync({ user: {...user, type: "student"} }));
             }
           }),
        );
@@ -150,4 +163,11 @@ export class StudentAuthService {
           }),
        );
      }
+
+     updateStudentProfileById(id: number, student_id: number): Observable<UpdateResult> {
+      const user: StudentUser = new StudentUserEntity();
+      user.id = id;
+      user.student_id = student_id;
+      return from(this.studentRepository.update(id, user));
+    }
   }
