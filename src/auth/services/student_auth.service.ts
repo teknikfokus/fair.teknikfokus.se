@@ -89,7 +89,7 @@ export class StudentAuthService {
       return from(
         this.studentRepository.findOne(
           { email },
-            {select: ['id', 'email', 'password', 'student_id'],},
+            {select: ['id', 'email', 'password', 'student_profile_id'],},
         ),
       ).pipe(
         switchMap((user: StudentUser) => {
@@ -167,7 +167,7 @@ export class StudentAuthService {
      updateStudentProfileById(id: number, student_id: number): Observable<UpdateResult> {
       const user: StudentUser = new StudentUserEntity();
       user.id = id;
-      user.student_id = student_id;
+      user.student_profile_id = student_id;
       return from(this.studentRepository.update(id, user));
     }
   }

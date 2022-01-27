@@ -23,7 +23,7 @@ export class StudentProfileController {
   registerstudentProfile(@Body() profile: StudentProfile, @Request() req): Observable<StudentUser> {
     return from(this.studentAuthService.findStudentUserById(req.user.id)).pipe(
       switchMap((user: StudentUser) => {
-        if(user.student_id != null) {
+        if(user.student_profile_id != null) {
           throw new HttpException(
             { status: HttpStatus.FORBIDDEN, error: 'You have already created a profile.' },
             HttpStatus.FORBIDDEN,
@@ -41,7 +41,7 @@ export class StudentProfileController {
     @Body() studentEdits: StudentProfile, @Request() req): Observable<StudentProfile> {
     return from(this.studentAuthService.findStudentUserById(req.user.id)).pipe(
       switchMap((user: StudentUser) => {
-        return this.studentProfileService.editStudentProfile(studentEdits, user.student_id);
+        return this.studentProfileService.editStudentProfile(studentEdits, user.student_profile_id);
       })
     );
   }
@@ -59,7 +59,7 @@ export class StudentProfileController {
 
     return from(this.studentAuthService.findStudentUserById(req.user.id)).pipe(
       switchMap((user: StudentUser) => {
-        return this.studentProfileService.updateUserImageById(user.student_id, fileName).pipe(
+        return this.studentProfileService.updateUserImageById(user.student_profile_id, fileName).pipe(
           map(() => ({
             modifiedFileName: file.filename,
           })),

@@ -6,7 +6,7 @@ export class StudentUserEntity {
     id: number;
 
     @Column({ nullable: true })
-    student_id: number;
+    student_profile_id: number;
 
     @Column({unique:true})
     email: string;
