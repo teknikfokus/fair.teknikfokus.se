@@ -4,6 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthenticationModule } from './auth/authentication.module';
+import { UserProfileModule } from './company-profile/user-profile.module';
+
 
 @Module({
   imports: [
@@ -14,10 +16,12 @@ import { AuthenticationModule } from './auth/authentication.module';
       port: parseInt(<string>process.env.POSTGRES_PORT),
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE,
-      autoLoadEntities: true
+      database: process.env.POSTGRES_DB,
+      autoLoadEntities: true,
+      synchronize: true,
     }),
-    AuthenticationModule
+    AuthenticationModule,
+    UserProfileModule
   ],
   controllers: [AppController],
   providers: [AppService],
