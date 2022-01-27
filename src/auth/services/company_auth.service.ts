@@ -45,8 +45,9 @@ export class CompanyAuthService {
     }
     registerCompanyAccount(user: CompanyUser): Observable<CompanyUser> {
       const { email, password } = user;
+      const lowerEmail = email.toLocaleLowerCase();
   
-      return this.doesUserExist(email).pipe(
+      return this.doesUserExist(lowerEmail).pipe(
         tap((doesUserExist: boolean) => {
           if (doesUserExist)
             throw new HttpException(
@@ -59,7 +60,7 @@ export class CompanyAuthService {
             switchMap((hashedPassword: string) => {
               return from(
                 this.companyRepository.save({
-                  email,
+                  email: lowerEmail,
                   password: hashedPassword,
                 }),
               ).pipe(
@@ -80,7 +81,7 @@ export class CompanyAuthService {
           this.companyRepository.findOne(
             { email },
             {
-              select: ['id', 'email', 'password', 'company_id'],
+              select: ['id', 'email', 'password', 'company_profile_id'],
             },
           ),
         ).pipe(
@@ -135,7 +136,7 @@ export class CompanyAuthService {
       updateCompanyProfileById(id: number, company_id: number): Observable<UpdateResult> {
         const user: CompanyUser = new CompanyUserEntity();
         user.id = id;
-        user.company_id = company_id;
+        user.company_profile_id = company_id;
         return from(this.companyRepository.update(id, user));
       }
 }

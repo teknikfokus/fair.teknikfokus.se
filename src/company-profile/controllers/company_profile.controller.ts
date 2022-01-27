@@ -23,7 +23,7 @@ export class CompanyProfileController {
   registerCompanyProfile(@Body() profile: CompanyProfile, @Request() req): Observable<CompanyUser> {
     return from(this.companyAuthService.findUserById(req.user.id)).pipe(
       switchMap((user: CompanyUser) => {
-        if(user.company_id != null) {
+        if(user.company_profile_id != null) {
           throw new HttpException(
             { status: HttpStatus.FORBIDDEN, error: 'You have already created a profile.' },
             HttpStatus.FORBIDDEN,
@@ -41,7 +41,7 @@ export class CompanyProfileController {
     @Body() companyEdits: CompanyProfile, @Request() req): Observable<CompanyProfile> {
     return from(this.companyAuthService.findUserById(req.user.id)).pipe(
       switchMap((user: CompanyUser) => {
-        return this.companyProfileService.editCompanyProfile(companyEdits, user.company_id);
+        return this.companyProfileService.editCompanyProfile(companyEdits, user.company_profile_id);
       })
     );
   }
@@ -59,7 +59,7 @@ export class CompanyProfileController {
 
     return from(this.companyAuthService.findUserById(req.user.id)).pipe(
       switchMap((user: CompanyUser) => {
-        return this.companyProfileService.updateUserImageById(user.company_id, fileName).pipe(
+        return this.companyProfileService.updateUserImageById(user.company_profile_id, fileName).pipe(
           map(() => ({
             modifiedFileName: file.filename,
           })),
@@ -68,7 +68,7 @@ export class CompanyProfileController {
       )
     );
   }
-
+  
   @UseGuards(JwtGuard)
   @Get('companies')
   getAllProfiles() {

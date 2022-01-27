@@ -24,7 +24,7 @@ export class JobController {
     createJob(@Body() newJob: Job, @Request() req): Observable<CompanyUser> {
       return from(this.companyAuthService.findUserById(req.user.id)).pipe(
         switchMap((user: CompanyUser) => {
-          return this.jobService.createJob(newJob, user.company_id);
+          return this.jobService.createJob(newJob, user.company_profile_id);
         })
       );
     }
@@ -36,7 +36,7 @@ export class JobController {
       @Body() jobEdits: Job, @Request() req, @Param() param): Observable<CompanyProfile> {
       return from(this.companyAuthService.findUserById(req.user.id)).pipe(
         switchMap((user: CompanyUser) => {
-          return this.jobService.editJobProfile(jobEdits, user.company_id, param.jobid);
+          return this.jobService.editJobProfile(jobEdits, user.company_profile_id, param.jobid);
         })
       );
     }
