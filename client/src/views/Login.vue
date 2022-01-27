@@ -70,7 +70,7 @@ export default {
     async onSubmit() {
       try {
         const res = await http.post("/login", this.form);
-        localStorage.setItem('token', JSON.stringify(res.data.token));
+        localStorage.setItem('token', res.data.token);
         this.$router.replace("/companies");
       } catch (err) {
         if(err.response.status == 400) {
