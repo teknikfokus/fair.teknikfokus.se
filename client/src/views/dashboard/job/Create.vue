@@ -1,12 +1,12 @@
 <template>
   <section class="p-8 px-4 max-w-5xl mx-auto">
     <nav-bar />
-    <div class="space-y-4">
+    <form class="space-y-4" @submit.prevent="onSubmit" method="POST">
       <h1 class="mt-4 text-xl font-semibold">Job description</h1>
       <div>
         <label for="title" class="block text-sm font-medium text-gray-700">Job Title</label>
         <div class="mt-1">
-          <input v-model="jobTitle" type="text" name="title" id="title" class="focus:ring-teknikfokus-primary-light focus:border-tekring-teknikfokus-primary-light block w-full max-w-md px-2 sm:text-sm border-gray-300 rounded-md shadow-sm"/>
+          <input v-model="form.job_position" type="text" name="title" id="title" class="focus:ring-teknikfokus-primary-light focus:border-tekring-teknikfokus-primary-light block w-full max-w-md px-2 sm:text-sm border-gray-300 rounded-md shadow-sm"/>
         </div>
       </div>
 
@@ -29,22 +29,55 @@
               alignleft aligncenter alignright alignjustify | \
               bullist numlist outdent indent | removeformat | help'
           }"
-            v-model="jobEditor"
+            v-model="form.job_description"
         />
       </div>
-      <router-link to="#" class="mt-3 relative inline-block justify-center py-2 px-7 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">Send</router-link>
-    </div>
+
+      <p v-if="error" class="text-red-600 text-lg font-semibold">{{ error }}</p>
+      <p v-if="status" class="text-green-800 text-lg font-semibold">{{ status }}</p>
+
+
+      <button type="submit" class="relative py-2 px-4 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">
+        Submit
+      </button>     
+      </form>
   </section>
 </template>
 
 <script>
 import NavBar from '@/components/NavBar.vue'
 import Editor from '@tinymce/tinymce-vue'
+import http from '@/axios'
 
 export default {
   components: {
     NavBar,
     'editor': Editor
+  },
+  data() {
+    return {
+      form: {
+        job_position: '',
+        job_description: '',
+      },
+      error: '',
+      status: '',
+    }
+  },
+  methods: {
+    async onSubmit() {
+      try {
+        const res = await http.post("dashboard/company/job/create", this.form);
+        if(res.status === 200) {
+          this.status = "Published!"
+          this.form.job_description = '';
+          this.form.job_position = '';
+        }
+      } catch (err) {
+        console.log(err);
+        this.error = "Something went wrong."
+      }
+    }
   }
 }
 </script>
