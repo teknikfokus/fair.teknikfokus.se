@@ -21,8 +21,8 @@
      />
 
     <h1 class="mt-4 text-xl font-semibold">Upload company logo (.jpg, .png or .svg)</h1> <br>
-    <div class="flex w-full items-center justify-center bg-grey-lighter">
-      <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white">
+    <div>
+      <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-teknikfokus-primary hover:text-white">
           <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
               <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
           </svg>
@@ -44,7 +44,7 @@
     </div>
     <h1 class="mt-4 mb-1 text-xl font-semibold">Meeting link (for example Zoom or Microsoft Teams)</h1>
     <div>
-      <input type="text" v-model="meetingLink">
+      <input type="text" v-model="meetingLink" class="focus:ring-teknikfokus-primary-light focus:border-tekring-teknikfokus-primary-light block w-full max-w-md px-2 sm:text-sm border-gray-300 rounded-md shadow-sm">
     </div>
     <router-link type="submit" to="#" class="mt-3 relative inline-block justify-center py-2 px-7 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">Submit</router-link>
   </section>
