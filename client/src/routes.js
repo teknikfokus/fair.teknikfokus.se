@@ -52,7 +52,7 @@ router.beforeEach((to, from, next) => {
     if(to.path.includes("dashboard")) {
       next("/dashboard")
     } else {
-      next("/")
+      next("/login")
     }
   } else {
     next()
