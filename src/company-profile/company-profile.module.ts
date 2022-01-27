@@ -28,4 +28,4 @@ import { JobService } from './services/job.service';
   controllers: [CompanyAuthController, CompanyProfileController, JobController],
   providers: [CompanyAuthService, CompanyProfileService, IsCreatorGuard, JwtGuard, JwtStrategy, JobService]
 })
-export class UserProfileModule {}
+export class CompanyProfileModule {}

@@ -5,6 +5,9 @@ export class StudentUserEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({ nullable: true })
+    student_profile_id: number;
+
     @Column({unique:true})
     email: string;
 
