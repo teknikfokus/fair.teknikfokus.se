@@ -1,6 +1,7 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards, UseInterceptors, Request, UploadedFile, HttpException, Put} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { from, map, Observable, of, switchMap } from 'rxjs';
+import { IsCompanyGuard } from 'src/auth/guards/is-company.guard';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { StudentUser } from 'src/auth/models/student_user.interface';
 import { StudentAuthService } from 'src/auth/services/student_auth.service';
@@ -68,22 +69,16 @@ export class StudentProfileController {
     );
   }
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, IsCompanyGuard)
   @Get('students')
   getAllProfiles() {
     return this.studentProfileService.getAllStudentProfiles();
   }
 
   @UseGuards(JwtGuard)
-  @Get('companies/:student_name')
+  @Get('student/:id')
   getProfile(@Param() param) {
-    return this.studentProfileService.getProfile(param.student_name);
-  }
-
-  @UseGuards(JwtGuard)
-  @Get('companies/:job_id')
-  getJob(@Param() param) {
-    return this.studentProfileService.getProfile(param.job_id);
+    return this.studentProfileService.getProfile(param.id);
   }
 }
 
