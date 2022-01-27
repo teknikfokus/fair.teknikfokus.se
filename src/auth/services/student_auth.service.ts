@@ -27,7 +27,8 @@ export class StudentAuthService {
 
 
     doesUserExist(email: string): Observable<boolean> {
-      return from(this.studentRepository.findOne({ email })).pipe(
+      email = email.toLocaleLowerCase();
+      return from(this.studentRepository.findOne({ email})).pipe(
         switchMap((user: StudentUser) => {
           return of(!!user);
         }),
@@ -37,8 +38,9 @@ export class StudentAuthService {
 
     registerStudentAccount(user: StudentUser): Observable<StudentUser> {
       const {email, password } = user;
-  
-      return this.doesUserExist(email).pipe(
+      const lowerEmail = email.toLocaleLowerCase();
+
+      return this.doesUserExist(lowerEmail).pipe(
         tap((doesUserExist: boolean) => {
           if (doesUserExist)
             throw new HttpException(
@@ -57,7 +59,7 @@ export class StudentAuthService {
             switchMap((hashedPassword: string) => {
               return from(
                 this.studentRepository.save({
-                  email,
+                  email: lowerEmail,
                   password: hashedPassword,
                 }),
               ).pipe(
@@ -73,10 +75,13 @@ export class StudentAuthService {
     }
     
     validateUser(email: string, password: string): Observable<StudentUser> {
+      const lowerEmail = email.toLocaleLowerCase();
       return from(
         this.studentRepository.findOne(
-          { email },
-            {select: ['id', 'email', 'password'],},
+          { email : lowerEmail},
+          {
+            select: ['id', 'email', 'password'],
+          },
         ),
       ).pipe(
         switchMap((user: StudentUser) => {

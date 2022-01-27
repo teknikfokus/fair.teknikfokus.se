@@ -75,6 +75,7 @@ export class CompanyAuthService {
       );
     }    
     validateUser(email: string, password: string): Observable<CompanyUser> {
+        email = email.toLowerCase();
         return from(
           this.companyRepository.findOne(
             { email },
