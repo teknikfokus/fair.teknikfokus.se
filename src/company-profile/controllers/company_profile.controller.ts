@@ -69,7 +69,7 @@ export class CompanyProfileController {
     );
   }
 
-  @UseGuards(JwtGuard)
+  @UseGuards()
   @Get('companies')
   getAllProfiles() {
     return this.companyProfileService.getAllCompanyProfiles();
@@ -79,12 +79,6 @@ export class CompanyProfileController {
   @Get('companies/:company_name')
   getProfile(@Param() param) {
     return this.companyProfileService.getProfile(param.company_name);
-  }
-
-  @UseGuards(JwtGuard)
-  @Get('companies/:job_id')
-  getJob(@Param() param) {
-    return this.companyProfileService.getProfile(param.job_id);
   }
 }
 

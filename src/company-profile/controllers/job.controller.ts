@@ -42,7 +42,7 @@ export class JobController {
     }
   
     @UseGuards(JwtGuard)
-    @Get('dashboard/companies/:company_name/jobs')
+    @Get('companies/:company_name/jobs')
     @HttpCode(HttpStatus.OK)
     getJobsFromCompany(
       @Param() param): Observable<JobEntity[]> {
