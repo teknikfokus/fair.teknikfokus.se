@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  backend:
+    image: backend:latest-prod
+    build:
+      dockerfile: ./Dockerfile.prod
+    volumes:
+      - ./.env:/project/app/.env
+    ports:
+      - "3001:3001"
