@@ -2,7 +2,7 @@
   <section class="pt-8 px-4 max-w-5xl mx-auto">
     <nav-bar /> 
     <h1 class="mt-16 text-3xl font-semibold">Welcome to your dashboard</h1>
-    <div class="grid grid-cols-4 gap-4">
+    <div class="grid md:grid-cols-4 sm:grid-cols-2 gap-4">
       <router-link to="/" class="text-center mt-6 relative inline-block justify-center py-6 px-12 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">
         Show profile
       </router-link>
