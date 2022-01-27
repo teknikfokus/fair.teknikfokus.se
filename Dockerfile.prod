@@ -1,0 +1,18 @@
+FROM node:16-alpine
+
+WORKDIR /project/app
+
+COPY ./*.json ./
+COPY ./src ./src
+COPY ./.eslintrc.js ./
+COPY ./.prettierrc ./
+COPY ./tsconfig.build.json ./
+COPY ./tsconfig.json ./
+COPY ./nest-cli.json ./
+
+RUN npm install
+RUN npm run build
+
+ENV NODE_ENV=production
+
+CMD npm run start:prod
