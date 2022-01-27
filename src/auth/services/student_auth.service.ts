@@ -105,10 +105,10 @@ export class StudentAuthService {
     login(user: StudentUser): Observable<string> {
       const { email, password } = user;
         return this.validateUser(email, password).pipe(
-          switchMap((user: StudentUser) => {
-            if (user) {
+          switchMap((studentUser: StudentUser) => {
+            if (studentUser) {
               // create JWT - credentials
-              return from(this.jwtService.signAsync({ user }));
+              return from(this.jwtService.signAsync({ studentUser }));
             }
           }),
        );

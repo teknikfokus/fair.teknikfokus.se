@@ -11,7 +11,10 @@ import { MailModule } from 'src/mail/mail.module';
 import { CompanyProfileController } from './controllers/company_profile.controller';
 import { IsCreatorGuard } from './guards/is-creator.guard';
 import { CompanyProfileEntity } from './models/company_profile.entity';
+import { JobEntity } from './models/job.entity';
 import { CompanyProfileService } from './services/company-profile.service';
+import { JobController } from './controllers/job.controller';
+import { JobService } from './services/job.service';
 
 @Module({
   imports: [AuthenticationModule, JwtModule.registerAsync({
@@ -20,9 +23,9 @@ import { CompanyProfileService } from './services/company-profile.service';
       signOptions: { expiresIn: '3600s' },
     }),
   }),
-  TypeOrmModule.forFeature([CompanyProfileEntity, CompanyUserEntity]),
+  TypeOrmModule.forFeature([CompanyProfileEntity, CompanyUserEntity, JobEntity]),
   MailModule],
-  controllers: [CompanyAuthController, CompanyProfileController],
-  providers: [CompanyAuthService, CompanyProfileService, IsCreatorGuard, JwtGuard, JwtStrategy]
+  controllers: [CompanyAuthController, CompanyProfileController, JobController],
+  providers: [CompanyAuthService, CompanyProfileService, IsCreatorGuard, JwtGuard, JwtStrategy, JobService]
 })
 export class UserProfileModule {}
