@@ -10,6 +10,7 @@ import { StudentAuthService } from './services/student_auth.service';
 import { StudentAuthController} from './controllers/student_auth.controller';
 import { StudentUserEntity } from './models/student_user.entity';
 import { ForgottenPasswordEntity } from './models/forgottenpassword.entity';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [JwtModule.registerAsync({
@@ -17,8 +18,9 @@ import { ForgottenPasswordEntity } from './models/forgottenpassword.entity';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '3600s' },
     }),
-  }) ,
-  TypeOrmModule.forFeature([CompanyUserEntity, StudentUserEntity, ForgottenPasswordEntity])],
+  }),
+  TypeOrmModule.forFeature([CompanyUserEntity, StudentUserEntity, ForgottenPasswordEntity]),
+  MailModule],
   providers: [CompanyAuthService,StudentAuthService,JwtGuard, JwtStrategy],
   controllers: [CompanyAuthController, StudentAuthController]
 })

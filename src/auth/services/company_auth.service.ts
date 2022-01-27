@@ -6,6 +6,7 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Repository, UpdateResult } from 'typeorm';
 import { CompanyUserEntity } from '../models/company_user.entity';
 import { CompanyUser } from '../models/company_user.interface';
+import { MailService } from '../../mail/mail.service'
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -17,7 +18,9 @@ export class CompanyAuthService {
         @InjectRepository(CompanyUserEntity)
         private readonly companyRepository: Repository<CompanyUserEntity>,
         private jwtService: JwtService,
+        private mailService: MailService,
     ) {}
+
 
     findUserById(id: number): Observable<CompanyUser> {
       return from(
@@ -62,6 +65,7 @@ export class CompanyAuthService {
               ).pipe(
                 map((user: CompanyUser) => {
                   delete user.password;
+                  this.mailService.sendMail(user.email, "Välkommen!", "Välkommen till Teknikfokus");
                   return user;
                 }),
               );

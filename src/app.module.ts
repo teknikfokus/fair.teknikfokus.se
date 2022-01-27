@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { AuthenticationModule } from './auth/authentication.module';
 import { UserProfileModule } from './company-profile/user-profile.module';
 
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true}),
@@ -15,7 +16,7 @@ import { UserProfileModule } from './company-profile/user-profile.module';
       port: parseInt(<string>process.env.POSTGRES_PORT),
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE,
+      database: process.env.POSTGRES_DB,
       autoLoadEntities: true,
       synchronize: true,
     }),

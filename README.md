@@ -25,6 +25,17 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Docker
+
+Change ```POSTGRES_HOST``` to ```postgres-db``` in ```.env```.
+
+Then start the project with Docker Compose, the default ```docker-compose.yml``` is setup for development and includes a PostgreSQL database.
+
+```bash
+# run docker-compose
+$ docker-compose up
+```
+
 ## Test
 
 ```bash
@@ -37,6 +48,12 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Send e-mail through SMTP
+
+Change ```MAIL_TRANSPORT``` in ```.env``` to your SMTP server, optionally with an username and password.
+
+If you want to use [MailHog](https://github.com/mailhog/MailHog) for testing purposes and you're running the default ```docker-compose.yml```, change ```MAIL_TRANSPORT``` to ```mailhog:1025```.
 
 ## License
 
