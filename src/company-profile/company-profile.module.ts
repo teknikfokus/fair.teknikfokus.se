@@ -7,6 +7,7 @@ import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { JwtStrategy } from 'src/auth/guards/jwt.strategy';
 import { CompanyUserEntity } from 'src/auth/models/company_user.entity';
 import { CompanyAuthService } from 'src/auth/services/company_auth.service';
+import { MailModule } from 'src/mail/mail.module';
 import { CompanyProfileController } from './controllers/company_profile.controller';
 import { IsCreatorGuard } from './guards/is-creator.guard';
 import { CompanyProfileEntity } from './models/company_profile.entity';
@@ -22,7 +23,8 @@ import { JobService } from './services/job.service';
       signOptions: { expiresIn: '3600s' },
     }),
   }),
-  TypeOrmModule.forFeature([CompanyProfileEntity, CompanyUserEntity, JobEntity])],
+  TypeOrmModule.forFeature([CompanyProfileEntity, CompanyUserEntity, JobEntity]),
+  MailModule],
   controllers: [CompanyAuthController, CompanyProfileController, JobController],
   providers: [CompanyAuthService, CompanyProfileService, IsCreatorGuard, JwtGuard, JwtStrategy, JobService]
 })
