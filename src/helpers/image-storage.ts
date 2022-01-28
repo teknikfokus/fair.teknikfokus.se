@@ -2,8 +2,6 @@ import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import fs = require('fs');
 import path = require('path');
-import { from, Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 
 type validFileExtension = 'png' | 'jpg' | 'jpeg';
 type validMimeType = 'image/png' | 'image/jpg' | 'image/jpeg';

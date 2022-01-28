@@ -13,20 +13,20 @@ export class JobService {
     private companyProfileService: CompanyProfileService,
     @InjectRepository(JobEntity)
     private readonly jobRepository: Repository<JobEntity>,
-    ) {}
+  ) {}
 
-    findJobsById(id: number): Observable<Job> {
-        return from(
-          this.jobRepository.findOne({ id }),
-        ).pipe(
-          map((job: Job) => {
-            if (!job) {
-              throw new HttpException('Job not found', HttpStatus.NOT_FOUND);
-            }
-            return job;
-          }),
-        );
-      }
+  findJobsById(id: number): Observable<Job> {
+    return from(
+      this.jobRepository.findOne({ id }),
+    ).pipe(
+      map((job: Job) => {
+        if (!job) {
+          throw new HttpException('Job not found', HttpStatus.NOT_FOUND);
+        }
+        return job;
+      }),
+    );
+  }
   createJob(profile: Job, user_id: number): Observable<Job> {
     const { job_description, job_position } = profile;
     return from(

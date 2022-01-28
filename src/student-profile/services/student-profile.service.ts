@@ -12,10 +12,10 @@ import { removeFile } from 'src/helpers/image-storage';
 export class StudentProfileService {
 
   constructor(
-      private studentAuthService: StudentAuthService,
-      @InjectRepository(StudentProfileEntity)
-      private readonly studentProfileRepository: Repository<StudentProfileEntity>
-    ) {}
+    private studentAuthService: StudentAuthService,
+    @InjectRepository(StudentProfileEntity)
+    private readonly studentProfileRepository: Repository<StudentProfileEntity>
+  ) {}
 
   registerStudentProfile(profile: StudentProfile, user_id: number): Observable<StudentProfile> {
     const { name, programme, graduation_year, } = profile;

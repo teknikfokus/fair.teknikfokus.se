@@ -65,8 +65,7 @@ export class StudentProfileController {
             modifiedFileName: file.filename,
           })),
         );
-        }
-      )
+      }),
     );
   }
 
