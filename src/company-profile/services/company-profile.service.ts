@@ -21,12 +21,13 @@ export class CompanyProfileService {
     ) {}
 
   registerCompanyProfile(profile: CompanyProfile, user_id: number): Observable<CompanyProfile> {
-    const { name, information, meeting_link, summer_internship, master_thesis, trainee_programme } = profile;
+    const { name, information, meeting_link, fair_day , summer_internship, master_thesis, trainee_programme } = profile;
     return from(
       this.companyProfileRepository.save({
         name,
         slug_name: slugify(name),
         information,
+        fair_day,
         meeting_link,
         summer_internship,
         master_thesis,
@@ -105,7 +106,7 @@ export class CompanyProfileService {
   getAllCompanyProfiles(): Promise<CompanyProfileEntity[]> {
     return this.companyProfileRepository.find(
       {
-        select: ['name', 'image_path'],
+        select: ['name', 'image_path', 'fair_day'],
       },
     );
   }

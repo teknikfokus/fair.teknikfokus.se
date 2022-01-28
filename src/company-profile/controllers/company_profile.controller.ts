@@ -5,6 +5,7 @@ import { IsCompanyGuard } from 'src/auth/guards/is-company.guard';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { CompanyUser } from 'src/auth/models/company_user.interface';
 import { CompanyAuthService } from 'src/auth/services/company_auth.service';
+import { FairDayGuard } from '../guards/fair_day.guard';
 import { IsCreatorGuard } from '../guards/is-creator.guard';
 import { saveImageToStorage } from '../helpers/image-storage';
 import { CompanyProfile } from '../models/company_profile.interface';
@@ -17,7 +18,7 @@ export class CompanyProfileController {
     private companyAuthService: CompanyAuthService
   ) {}
 
-  @UseGuards(JwtGuard, IsCompanyGuard)
+  @UseGuards(JwtGuard, IsCompanyGuard, FairDayGuard)
   @Post('dashboard/company')
   @HttpCode(HttpStatus.OK)
   registerCompanyProfile(@Body() profile: CompanyProfile, @Request() req): Observable<CompanyUser> {
@@ -68,7 +69,7 @@ export class CompanyProfileController {
       )
     );
   }
-  
+
   @UseGuards(JwtGuard)
   @Get('companies')
   getAllProfiles() {
