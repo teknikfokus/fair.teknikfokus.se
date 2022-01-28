@@ -7,7 +7,7 @@ import { CompanyUser } from 'src/auth/models/company_user.interface';
 import { CompanyAuthService } from 'src/auth/services/company_auth.service';
 import { FairDayGuard } from '../guards/fair_day.guard';
 import { IsCreatorGuard } from '../guards/is-creator.guard';
-import { saveImageToStorage } from '../helpers/image-storage';
+import { saveImageToStorage } from '../../helpers/image-storage';
 import { CompanyProfile } from '../models/company_profile.interface';
 import { CompanyProfileService } from '../services/company-profile.service';
 @Controller()

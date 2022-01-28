@@ -8,6 +8,8 @@ import { CompanyProfile } from '../models/company_profile.interface';
 import { JobEntity } from '../models/job.entity';
 import { Job } from '../models/job.interface';
 import slugify from 'slugify';
+import { removeFile } from '../../helpers/image-storage';
+import { join } from 'path';
 
 @Injectable()
 export class CompanyProfileService {
@@ -83,6 +85,11 @@ export class CompanyProfileService {
       this.companyProfileRepository.findOne({ id }),
     ).pipe(
       map((profile: CompanyProfile) => {
+        const imagesFolderPath = join(process.cwd(), 'images');
+        const fullImagePath = join(imagesFolderPath + '/' + profile.image_path);
+        if(profile.image_path !== 'default.jpg'){
+          removeFile(fullImagePath);
+        }
         profile.id = id;
         profile.image_path = image_path;
         from(this.companyProfileRepository.update(id, profile));

@@ -1,10 +1,12 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, map,Observable } from 'rxjs';
 import { Repository } from 'typeorm';
 import { StudentProfileEntity } from '../models/student_profile.entity';
 import { StudentProfile } from '../models/student_profile.interface';
 import { StudentAuthService } from 'src/auth/services/student_auth.service';
+import { join } from 'path';
+import { removeFile } from 'src/helpers/image-storage';
 
 @Injectable()
 export class StudentProfileService {
@@ -34,6 +36,11 @@ export class StudentProfileService {
   editStudentProfile(newdata: StudentProfile,profileId: number): Observable<StudentProfile> {
     return from(this.findProfileById(profileId)).pipe(
       map((profile: StudentProfile) => {
+        const imagesFolderPath = join(process.cwd(), 'images');
+        const fullImagePath = join(imagesFolderPath + '/' + profile.image_path);
+        if(profile.image_path !== 'default_student.png'){
+          removeFile(fullImagePath);
+        }
         newdata.image_path = profile.image_path;
         from(this.studentProfileRepository.update(profile.id,newdata));
         return newdata;
@@ -59,6 +66,11 @@ export class StudentProfileService {
       this.studentProfileRepository.findOne({ id }),
     ).pipe(
       map((profile: StudentProfile) => {
+        const imagesFolderPath = join(process.cwd(), 'images');
+        const fullImagePath = join(imagesFolderPath + '/' + profile.image_path);
+        if(profile.image_path !== 'default.jpg'){
+          removeFile(fullImagePath);
+        }
         profile.id = id;
         profile.image_path = image_path;
         from(this.studentProfileRepository.update(id, profile));

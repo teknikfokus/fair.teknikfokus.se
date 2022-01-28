@@ -1,8 +1,6 @@
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
-
-import fs from 'fs';
-
+import fs = require('fs');
 import path = require('path');
 import { from, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -18,6 +16,7 @@ const validMimeTypes: validMimeType[] = [
 ];
 
 export const saveImageToStorage = {
+  limits: {fileSize: 10485760},
   storage: diskStorage({
     destination: './images',
     filename: (req, file, cb) => {
