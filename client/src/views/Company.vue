@@ -22,7 +22,7 @@
 
 <script>
 import NavBar from '@/components/NavBar.vue'
-import http from '@/axios'
+import {http} from '@/axios'
 import JobGrid from '../components/JobGrid.vue';
 
 export default {

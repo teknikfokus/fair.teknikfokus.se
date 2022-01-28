@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import http from '@/axios'
+import {http} from '@/axios'
 
 export default {
   name:"JobGrid",

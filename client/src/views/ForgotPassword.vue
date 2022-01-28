@@ -30,7 +30,7 @@
   
 <script>
 import { LockClosedIcon } from '@heroicons/vue/solid'
-import http from '@/axios'
+import {http} from '@/axios'
 
 export default {
   components: {

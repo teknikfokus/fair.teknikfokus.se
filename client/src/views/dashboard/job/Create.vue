@@ -47,7 +47,7 @@
 <script>
 import NavBar from '@/components/NavBar.vue'
 import Editor from '@tinymce/tinymce-vue'
-import http from '@/axios'
+import {http} from '@/axios'
 
 export default {
   components: {
