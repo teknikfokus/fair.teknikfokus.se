@@ -109,16 +109,11 @@ export class CompanyAuthService {
         );
       }
     login(user: CompanyUser): Observable<string> {
-        const { email, password } = user;
-        return this.validateUser(email, password).pipe(
-            switchMap((user: CompanyUser) => {
-                if (user) {
-                  
-              // create JWT - credentials
-                return from(this.jwtService.signAsync({ user: {...user, type: "company"} }));
-                }
-            }),
-        );
+      // create JWT - credentials
+      if (user) {
+        return from(this.jwtService.signAsync({ user: {...user, type: "company"} }));
+      }
+      return;
     }
     
       getJwtUser(jwt: string): Observable<CompanyUser | null> {

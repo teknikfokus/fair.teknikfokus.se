@@ -11,6 +11,9 @@ import { StudentAuthController} from './controllers/student_auth.controller';
 import { StudentUserEntity } from './models/student_user.entity';
 import { ForgottenPasswordEntity } from './models/forgottenpassword.entity';
 import { MailModule } from '../mail/mail.module';
+import { CompanyProfileService } from 'src/company-profile/services/company-profile.service';
+import { CompanyProfileEntity } from 'src/company-profile/models/company_profile.entity';
+import { JobEntity } from 'src/company-profile/models/job.entity';
 
 @Module({
   imports: [JwtModule.registerAsync({
@@ -19,9 +22,9 @@ import { MailModule } from '../mail/mail.module';
       signOptions: { expiresIn: '3600s' },
     }),
   }),
-  TypeOrmModule.forFeature([CompanyUserEntity, StudentUserEntity, ForgottenPasswordEntity]),
+  TypeOrmModule.forFeature([CompanyUserEntity, StudentUserEntity, CompanyProfileEntity, JobEntity, ForgottenPasswordEntity]),
   MailModule],
-  providers: [CompanyAuthService,StudentAuthService,JwtGuard, JwtStrategy],
+  providers: [CompanyAuthService, CompanyProfileService, StudentAuthService, JwtGuard, JwtStrategy],
   controllers: [CompanyAuthController, StudentAuthController]
 })
 export class AuthenticationModule {}
