@@ -45,6 +45,7 @@ export class CompanyProfileService {
     return from(this.findProfileById(profileId)).pipe(
       map((profile: CompanyProfile) => {
         newdata.image_path = profile.image_path;
+        newdata.slug_name = slugify(newdata.name)
         from(this.companyProfileRepository.update(profile.id,newdata));
         return newdata;
       }),

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards, Request} from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards, Request, Logger} from '@nestjs/common';
 import { from, Observable, switchMap } from 'rxjs';
 import { IsCompanyGuard } from 'src/auth/guards/is-company.guard';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
@@ -42,10 +42,18 @@ export class JobController {
     }
   
     @UseGuards(JwtGuard)
-    @Get('dashboard/companies/:company_name/jobs')
+    @Get('companies/:company_name/jobs')
     @HttpCode(HttpStatus.OK)
     getJobsFromCompany(
       @Param() param): Observable<JobEntity[]> {
       return this.jobService.getJobsFromCompany(param.company_name);
+    }
+
+    @UseGuards(JwtGuard)
+    @Get('/companies/:company_name/jobs/:id')
+    @HttpCode(HttpStatus.OK)
+    getJob(
+      @Param() params): Observable<JobEntity[]> {
+        return this.jobService.getJob(params.company_name, params.id);
     }
 }
