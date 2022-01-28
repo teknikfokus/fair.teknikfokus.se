@@ -120,7 +120,7 @@ export class CompanyAuthService {
             }),
         );
     }
-    
+
       getJwtUser(jwt: string): Observable<CompanyUser | null> {
         return from(this.jwtService.verifyAsync(jwt)).pipe(
           map(({ user }: { user: CompanyUser }) => {
