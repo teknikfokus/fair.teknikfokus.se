@@ -51,7 +51,7 @@
   
 <script>
 import { LockClosedIcon } from '@heroicons/vue/solid'
-import http from '@/axios'
+import {http} from '@/axios'
 
 export default {
   components: {
@@ -71,6 +71,7 @@ export default {
       try {
         const res = await http.post("/dashboard", this.form);
         localStorage.setItem('token', res.data.token);
+        localStorage.setItem('company_slug', res.data.company_slug);
         this.$router.replace("/dashboard/company");
       } catch (err) {
         if(err.response.status == 400) {
