@@ -8,6 +8,8 @@ import Companies from '@/views/Companies.vue'
 import Company from '@/views/Company.vue'
 import LoginDashboard from '@/views/dashboard/Login.vue'
 import RegistrationDashboard from '@/views/dashboard/Registration.vue'
+import CreateCompany from '@/views/dashboard/company/Create.vue'
+import EditCompanyImage from '@/views/dashboard/company/Image.vue'
 import CreateJob from '@/views/dashboard/job/Create.vue'
 import EditJob from '@/views/dashboard/job/Edit.vue'
 import IndexCompany from '@/views/dashboard/company/Index.vue'
@@ -26,6 +28,8 @@ const routes = [
     { path: '/dashboard', component: LoginDashboard },
     { path: '/dashboard/registration', component: RegistrationDashboard },
     { path: '/dashboard/company', component: IndexCompany },
+    { path: '/dashboard/company/create', component: CreateCompany },
+    { path: '/dashboard/company/image', component: EditCompanyImage },
     { path: '/dashboard/company/edit', component: EditCompany },
     { path: '/dashboard/company/job/create', component: CreateJob },
     { path: '/dashboard/company/job/:id/edit', component: EditJob },
@@ -55,7 +59,13 @@ router.beforeEach((to, from, next) => {
       next("/login")
     }
   } else {
-    next()
+    if(to.path.includes("dashboard") 
+      && to.path !== "/dashboard/company/create"
+      && localStorage.getItem('company_slug') == "0") {
+      next("/dashboard/company/create")
+    } else {
+      next()
+    }
   }
 })
 

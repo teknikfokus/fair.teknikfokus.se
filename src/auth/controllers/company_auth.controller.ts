@@ -20,6 +20,13 @@ export class CompanyAuthController {
       return this.companyAuthService
         .validateUser(email, password).pipe(
           switchMap((user: CompanyUser) => {
+            if(!user.company_id) {
+              return this.companyAuthService.login(user)
+                .pipe(map((jwt: string) => ({ 
+                  token: jwt,
+                  company_slug: "0",
+                }))); 
+            }
             return from(this.companyProfileService.findProfileById(user.company_id)).pipe(
               switchMap((company: CompanyProfile) => {
                 return this.companyAuthService.login(user)

@@ -68,7 +68,7 @@
       </div>
 
       <button type="submit" class="relative py-2 px-4 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">
-        Submit
+        Create
       </button>    
     </form>
   </section>
@@ -98,18 +98,15 @@ export default {
       error: null,
     }
   },
-  mounted() {
-    http.get("/companies/" + localStorage.getItem('company_slug'))
-      .then(
-        (response) => {
-          this.form = response.data;
-        }
-      );
-  },
   methods: {
     async onSubmit() {
       try {
-        const res = await http.post("/dashboard/company/edit", this.form);
+        const res = await http.post("/dashboard/company", this.form);
+        console.log(res);
+        localStorage.setItem("company_slug", res.data.slug_name);
+        if(res.status == 200) {
+          this.$router.push("/dashboard/company/image");
+        }
       } catch (err) {
         if(err.response.status == 400) {
           this.$router.push("/login");
