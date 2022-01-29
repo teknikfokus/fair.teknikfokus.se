@@ -9,7 +9,7 @@ import { JwtStrategy } from './guards/jwt.strategy';
 import { StudentAuthService } from './services/student_auth.service';
 import { StudentAuthController} from './controllers/student_auth.controller';
 import { StudentUserEntity } from './models/student_user.entity';
-import { ForgottenPasswordEntity } from './models/forgottenpassword.entity';
+import { ForgottenPasswordEntity } from './models/forgotten_password.entity';
 import { MailModule } from '../mail/mail.module';
 
 @Module({

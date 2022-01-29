@@ -14,6 +14,7 @@ import { FairDayGuard } from 'src/company-profile/guards/fair_day.guard';
 import { CompanyProfileEntity } from 'src/company-profile/models/company_profile.entity';
 import { JobEntity } from 'src/company-profile/models/job.entity';
 import { CompanyProfileService } from 'src/company-profile/services/company-profile.service';
+
 import { MailModule } from 'src/mail/mail.module';
 import { StudentProfileController } from './controllers/student_profile.controller';
 import { IsCreatorGuard } from './guards/is-creator.guard';
