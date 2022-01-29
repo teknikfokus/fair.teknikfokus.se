@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { from, map,switchMap, Observable } from 'rxjs';
+import { from, map,switchMap, Observable, using } from 'rxjs';
 import { Repository } from 'typeorm';
 import { CompanyProfile } from '../models/company_profile.interface';
 import { JobEntity } from '../models/job.entity';
@@ -13,20 +13,20 @@ export class JobService {
     private companyProfileService: CompanyProfileService,
     @InjectRepository(JobEntity)
     private readonly jobRepository: Repository<JobEntity>,
-    ) {}
+  ) {}
 
-    findJobsById(id: number): Observable<Job> {
-        return from(
-          this.jobRepository.findOne({ id }),
-        ).pipe(
-          map((job: Job) => {
-            if (!job) {
-              throw new HttpException('Job not found', HttpStatus.NOT_FOUND);
-            }
-            return job;
-          }),
-        );
-      }
+  findJobsById(id: number): Observable<Job> {
+    return from(
+      this.jobRepository.findOne({ id }),
+    ).pipe(
+      map((job: Job) => {
+        if (!job) {
+          throw new HttpException('Job not found', HttpStatus.NOT_FOUND);
+        }
+        return job;
+      }),
+    );
+  }
   createJob(profile: Job, user_id: number): Observable<Job> {
     const { job_description, job_position } = profile;
     return from(
@@ -68,15 +68,16 @@ export class JobService {
       }),
     );
   }
-  getJob(id: number): Observable<CompanyProfile> {
-    return from(
-      this.jobRepository.findOne({ id }),
-    ).pipe(
-      map((job: Job) => {
-        if (!job) {
-          throw new HttpException('Company not found', HttpStatus.NOT_FOUND);
-        }
-        return job;
+
+  getJob(company_name: string, id: number): Observable<JobEntity[]> {
+    return this.companyProfileService.getProfile(company_name).pipe(
+      switchMap((profile: CompanyProfile) => {
+        return this.jobRepository.find(
+          {
+            select: ['id', 'job_position', 'job_description'],
+            where: {'id': id}
+          },
+        );
       }),
     );
   }

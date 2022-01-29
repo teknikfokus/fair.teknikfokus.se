@@ -6,7 +6,7 @@ export class CompanyUserEntity {
     id: number;
 
     @Column({ nullable: true })
-    company_id: number;
+    company_profile_id: number;
 
     @Column({ unique: true })
     email: string;

@@ -27,9 +27,9 @@ export class IsCreatorGuard implements CanActivate {
     // Determine if logged-in user is the same as the user that created the feed post
     return this.userService.findUserById(user_id).pipe(
       switchMap((company_user: CompanyUser) =>
-        this.companyProfileService.findProfileById(company_user.company_id).pipe(
+        this.companyProfileService.findProfileById(company_user.company_profile_id).pipe(
           map((company_profile: CompanyProfile) => {
-            let isAuthor = company_user.company_id === company_profile.id && company_user.company_id !== null;
+            let isAuthor = company_user.company_profile_id === company_profile.id && company_user.company_profile_id !== null;
             return isAuthor;
           }),
         ),

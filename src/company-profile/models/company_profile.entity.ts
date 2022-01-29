@@ -26,6 +26,9 @@ export class CompanyProfileEntity {
     @Column({default: false})
     master_thesis: boolean;
 
+    @Column({default: 0})
+    fair_day: number;
+
     @Column({default: false})
     trainee_programme: boolean;
 

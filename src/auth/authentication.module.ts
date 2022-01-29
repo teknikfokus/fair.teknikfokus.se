@@ -16,7 +16,7 @@ import { MailModule } from '../mail/mail.module';
   imports: [JwtModule.registerAsync({
     useFactory: () => ({
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '3600s' },
+      signOptions: { expiresIn: '432000s' },
     }),
   }),
   TypeOrmModule.forFeature([CompanyUserEntity, StudentUserEntity, ForgottenPasswordEntity]),

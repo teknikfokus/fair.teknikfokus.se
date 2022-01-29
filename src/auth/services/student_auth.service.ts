@@ -68,7 +68,7 @@ export class StudentAuthService {
           );
       }),
       switchMap(() => {
-        if ((email.replace(/\s+/g, "").length) !== 24 || !email.includes('-s@student.lu.se')) {
+        if((email.replace(/\s+/g, "").length) !== 24 || !email.includes('-s@student.lu.se')){
           throw new HttpException(
             { status: HttpStatus.FORBIDDEN, error: 'Email address has to be a valid LU-email' },
             HttpStatus.FORBIDDEN,
@@ -92,7 +92,7 @@ export class StudentAuthService {
       }),
     );
   }
-
+  
   validateUser(email: string, password: string): Observable<StudentUser> {
     const lowerEmail = email.toLocaleLowerCase();
     return from(
@@ -120,24 +120,24 @@ export class StudentAuthService {
               { status: HttpStatus.FORBIDDEN, error: 'Invalid Credentials' },
               HttpStatus.FORBIDDEN,
             );
-
           }),
         );
       }),
     );
   }
+
   login(user: StudentUser): Observable<string> {
     const { email, password } = user;
     return this.validateUser(email, password).pipe(
       switchMap((user: StudentUser) => {
         if (user) {
           // create JWT - credentials
-          return from(this.jwtService.signAsync({ user: { ...user, type: "student" } }));
+          return from(this.jwtService.signAsync({ user: {...user, type: "student"} }));
         }
       }),
     );
   }
-
+  
   getJwtUser(jwt: string): Observable<StudentUser | null> {
     return from(this.jwtService.verifyAsync(jwt)).pipe(
       map(({ user }: { user: StudentUser }) => {
@@ -147,6 +147,13 @@ export class StudentAuthService {
         return of(null);
       }),
     );
+  }
+
+  updateStudentProfileById(id: number, student_id: number): Observable<UpdateResult> {
+    const user: StudentUser = new StudentUserEntity();
+    user.id = id;
+    user.student_profile_id = student_id;
+    return from(this.studentRepository.update(id, user));
   }
 
   sendRecoveryLinkMail(token: ForgottenPasswordEntity) {
@@ -277,12 +284,5 @@ export class StudentAuthService {
         );
       }),
     );
-  }
-
-  updateStudentProfileById(id: number, student_id: number): Observable<UpdateResult> {
-    const user: StudentUser = new StudentUserEntity();
-    user.id = id;
-    user.student_profile_id = student_id;
-    return from(this.studentRepository.update(id, user));
   }
 }
