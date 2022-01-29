@@ -1,6 +1,8 @@
 <template>
   <section>
-    <company-grid :current="true"/>
+    <img src="@/assets/logo-black-text.svg" alt="Teknikfokus" class="w-32 block mx-auto mt-6" />
+
+    <company-grid/>
   </section>
 </template>
 
