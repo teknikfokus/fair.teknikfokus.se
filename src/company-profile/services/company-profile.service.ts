@@ -105,7 +105,7 @@ export class CompanyProfileService {
   getAllCompanyProfiles(): Promise<CompanyProfileEntity[]> {
     return this.companyProfileRepository.find(
       {
-        select: ['name', 'slug_name', 'image_path'],
+        select: ['name', 'slug_name', 'image_path', 'summer_internship', 'master_thesis', 'trainee_programme'],
       },
     );
   }
