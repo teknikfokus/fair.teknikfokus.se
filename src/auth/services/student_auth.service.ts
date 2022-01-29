@@ -92,7 +92,7 @@ export class StudentAuthService {
       }),
     );
   }
-
+  
   validateUser(email: string, password: string): Observable<StudentUser> {
     const lowerEmail = email.toLocaleLowerCase();
     return from(
@@ -149,64 +149,12 @@ export class StudentAuthService {
     );
   }
 
-  createForgottenPasswordToken(forgottenPassword: ForgottenPassword): Observable<ForgottenPassword> {
-    const {email} = forgottenPassword;
-
-    return this.doesUserExist(email).pipe(
-      tap((doesUserExist: boolean) => {
-        if (!doesUserExist){
-          throw new HttpException(
-            'This user does not exist.',
-            HttpStatus.BAD_REQUEST,
-          );
-        }
-      }),
-      switchMap(() => {
-        return from(
-          this.forgottenPasswordRepository.save({
-            email,
-            newPasswordToken: (Math.floor(Math.random() * (9000000)) + 1000000).toString(), //Generate 7 digits number,
-            timestamp: new Date(),
-          }),
-          ).pipe(
-            map((user: ForgottenPassword) => {
-              return user;
-            }),
-          );
-          }),
-        );
-      }),
-    );
-  }
-  login(user: StudentUser): Observable<string> {
-    const { email, password } = user;
-    return this.validateUser(email, password).pipe(
-      switchMap((user: StudentUser) => {
-        if (user) {
-          // create JWT - credentials
-          return from(this.jwtService.signAsync({ user: { ...user, type: "student" } }));
-        }
-      }),
-    );
-  }
-
-  getJwtUser(jwt: string): Observable<StudentUser | null> {
-    return from(this.jwtService.verifyAsync(jwt)).pipe(
-      map(({ user }: { user: StudentUser }) => {
-        return user;
-      }),
-      catchError(() => {
-        return of(null);
-
-      }),
-    );
-  }
-
   updateStudentProfileById(id: number, student_id: number): Observable<UpdateResult> {
     const user: StudentUser = new StudentUserEntity();
     user.id = id;
     user.student_profile_id = student_id;
     return from(this.studentRepository.update(id, user));
+  }
 
   sendRecoveryLinkMail(token: ForgottenPasswordEntity) {
     this.mailService.sendMail(
@@ -336,13 +284,5 @@ export class StudentAuthService {
         );
       }),
     );
-  }
-}
-
-  updateStudentProfileById(id: number, student_id: number): Observable<UpdateResult> {
-    const user: StudentUser = new StudentUserEntity();
-    user.id = id;
-    user.student_profile_id = student_id;
-    return from(this.studentRepository.update(id, user));
   }
 }
