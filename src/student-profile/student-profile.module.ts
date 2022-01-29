@@ -6,7 +6,7 @@ import { StudentAuthController } from 'src/auth/controllers/student_auth.control
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { JwtStrategy } from 'src/auth/guards/jwt.strategy';
 import { CompanyUserEntity } from 'src/auth/models/company_user.entity';
-import { ForgottenPasswordEntity } from 'src/auth/models/forgottenpassword.entity';
+import { ForgottenPasswordEntity } from 'src/auth/models/forgotten_password.entity';
 import { StudentUserEntity } from 'src/auth/models/student_user.entity';
 import { CompanyAuthService } from 'src/auth/services/company_auth.service';
 import { StudentAuthService } from 'src/auth/services/student_auth.service';
