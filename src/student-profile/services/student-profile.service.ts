@@ -79,6 +79,24 @@ export class StudentProfileService {
     );
   }
 
+  updateUserCVById(id: number, cv_path: string): Observable<StudentProfile> {
+    return from(
+      this.studentProfileRepository.findOne({ id }),
+    ).pipe(
+      map((profile: StudentProfile) => {
+        const imagesFolderPath = join(process.cwd(), 'images');
+        const fullImagePath = join(imagesFolderPath + '/' + profile.image_path);
+        if(profile.image_path !== 'default_student.png'){
+          removeFile(fullImagePath);
+        }
+        profile.id = id;
+        profile.cv_path = cv_path;
+        from(this.studentProfileRepository.update(id, profile));
+        return profile;
+      }),
+    );
+  }
+
   getProfile(id: number): Observable<StudentProfile> {
     return from(
       this.studentProfileRepository.findOne({ id }),
