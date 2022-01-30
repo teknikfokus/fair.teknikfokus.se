@@ -18,7 +18,7 @@ export class CompanyProfileController {
     private companyAuthService: CompanyAuthService
   ) {}
 
-  @UseGuards(JwtGuard, IsCompanyGuard, FairDayGuard)
+  @UseGuards(JwtGuard, IsCompanyGuard)
   @Post('dashboard/company')
   @HttpCode(HttpStatus.OK)
   registerCompanyProfile(@Body() profile: CompanyProfile, @Request() req): Observable<CompanyUser> {
