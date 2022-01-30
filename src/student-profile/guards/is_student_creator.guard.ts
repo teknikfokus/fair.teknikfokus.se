@@ -7,7 +7,7 @@ import { StudentProfile } from '../models/student_profile.interface';
 import { StudentProfileService } from '../services/student-profile.service';
 
 @Injectable()
-export class IsCreatorGuard implements CanActivate {
+export class IsStudentCreatorGuard implements CanActivate {
   constructor(
     private studentAuthService: StudentAuthService,
     private studentProfileService: StudentProfileService,
@@ -19,7 +19,7 @@ export class IsCreatorGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const { user, params }: { user: StudentUser; params: { id: number } } = request;
 
-    if (!user || !params) return false;
+    if (!user || !params || !user.student_profile_id) return false;
 
     //if (user.role === 'admin') return true; // allow admins to get make requests
 

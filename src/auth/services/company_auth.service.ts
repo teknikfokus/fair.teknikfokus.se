@@ -140,4 +140,18 @@ export class CompanyAuthService {
     user.company_profile_id = company_id;
     return from(this.companyRepository.update(id, user));
   }
+
+  passwordReset(id: number, new_password: string): Observable<UpdateResult> {
+    const user: CompanyUser = new CompanyUserEntity();
+    user.id = id;
+
+    return this.hashPassword(new_password).pipe(
+      switchMap((hashedPassword: string) => {
+        user.password = hashedPassword;
+        return from(
+          this.companyRepository.update(id, user),
+        )
+      }),
+    );
+  }
 }

@@ -6,7 +6,7 @@ import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { CompanyUser } from 'src/auth/models/company_user.interface';
 import { CompanyAuthService } from 'src/auth/services/company_auth.service';
 import { FairDayGuard } from '../guards/fair_day.guard';
-import { IsCreatorGuard } from '../guards/is-creator.guard';
+import { IsCompanyCreatorGuard } from '../guards/is_company_creator.guard';
 import { saveImageToStorage } from '../../helpers/image-storage';
 import { CompanyProfile } from '../models/company_profile.interface';
 import { CompanyProfileService } from '../services/company-profile.service';
@@ -35,7 +35,7 @@ export class CompanyProfileController {
     );
   }
 
-  @UseGuards(JwtGuard, IsCompanyGuard, IsCreatorGuard)
+  @UseGuards(JwtGuard, IsCompanyGuard, IsCompanyCreatorGuard)
   @Post('dashboard/company/edit')
   @HttpCode(HttpStatus.OK)
   editCompanyProfile(
@@ -47,7 +47,7 @@ export class CompanyProfileController {
     );
   }
 
-  @UseGuards(JwtGuard,IsCreatorGuard, IsCompanyGuard)
+  @UseGuards(JwtGuard,IsCompanyCreatorGuard, IsCompanyGuard)
   @UseInterceptors(FileInterceptor('file', saveImageToStorage))
   @Post('dashboard/company/upload_image')
   @HttpCode(HttpStatus.OK)

@@ -4,7 +4,7 @@ import { IsCompanyGuard } from 'src/auth/guards/is-company.guard';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { CompanyUser } from 'src/auth/models/company_user.interface';
 import { CompanyAuthService } from 'src/auth/services/company_auth.service';
-import { IsCreatorGuard } from '../guards/is-creator.guard';
+import { IsCompanyCreatorGuard } from '../guards/is_company_creator.guard';
 import { CompanyProfile } from '../models/company_profile.interface';
 import { JobEntity } from '../models/job.entity';
 import { Job } from '../models/job.interface';
@@ -18,7 +18,7 @@ export class JobController {
         private companyAuthService: CompanyAuthService
       ) {}
 
-    @UseGuards(JwtGuard, IsCompanyGuard,IsCreatorGuard)
+    @UseGuards(JwtGuard, IsCompanyGuard,IsCompanyCreatorGuard)
     @Post('dashboard/company/job/create')
     @HttpCode(HttpStatus.OK)
     createJob(@Body() newJob: Job, @Request() req): Observable<CompanyUser> {
@@ -29,7 +29,7 @@ export class JobController {
       );
     }
   
-    @UseGuards(JwtGuard, IsCompanyGuard, IsCreatorGuard)
+    @UseGuards(JwtGuard, IsCompanyGuard, IsCompanyCreatorGuard)
     @Post('dashboard/company/job/:jobid')
     @HttpCode(HttpStatus.OK)
     editJobProfile(
