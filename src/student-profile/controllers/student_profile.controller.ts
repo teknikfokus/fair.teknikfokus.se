@@ -6,11 +6,12 @@ import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { StudentUser } from 'src/auth/models/student_user.interface';
 import { StudentAuthService } from 'src/auth/services/student_auth.service';
 import { FairDayGuard } from 'src/company-profile/guards/fair_day.guard';
-import { IsCreatorGuard } from '../guards/is-creator.guard';
+import { IsStudentCreatorGuard } from '../guards/is_student_creator.guard';
 import { saveImageToStorage } from 'src/helpers/image-storage';
 import { StudentProfile } from '../models/student_profile.interface';
 import { StudentProfileService } from '../services/student-profile.service';
 import { saveCVToStorage } from 'src/helpers/pdf-storage';
+import { IsStudentGuard } from 'src/auth/guards/is-student.guard';
 @Controller()
 export class StudentProfileController {
 
@@ -36,7 +37,7 @@ export class StudentProfileController {
     );
   }
 
-  @UseGuards(JwtGuard,IsCreatorGuard)
+  @UseGuards(JwtGuard,IsStudentCreatorGuard, IsStudentGuard)
   @Put('student/profile')
   @HttpCode(HttpStatus.OK)
   editstudentProfile(
@@ -48,7 +49,7 @@ export class StudentProfileController {
     );
   }
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, IsStudentCreatorGuard, IsStudentGuard)
   @Get('student/profile')
   getMyProfile(@Request() req) {
     return from(this.studentAuthService.findStudentUserById(req.user.id)).pipe(
@@ -58,7 +59,7 @@ export class StudentProfileController {
     );
   }
 
-  @UseGuards(JwtGuard,IsCreatorGuard)
+  @UseGuards(JwtGuard,IsStudentCreatorGuard, IsStudentGuard)
   @UseInterceptors(FileInterceptor('file', saveImageToStorage))
   @Post('student/upload_image')
   @HttpCode(HttpStatus.OK)
@@ -80,7 +81,7 @@ export class StudentProfileController {
       );
     }
     
-  @UseGuards(JwtGuard,IsCreatorGuard)
+  @UseGuards(JwtGuard,IsStudentCreatorGuard, IsStudentGuard)
   @UseInterceptors(FileInterceptor('file', saveCVToStorage))
   @Post('student/upload_cv')
   @HttpCode(HttpStatus.OK)

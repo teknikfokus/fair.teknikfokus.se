@@ -9,7 +9,7 @@ import { CompanyUserEntity } from 'src/auth/models/company_user.entity';
 import { CompanyAuthService } from 'src/auth/services/company_auth.service';
 import { MailModule } from 'src/mail/mail.module';
 import { CompanyProfileController } from './controllers/company_profile.controller';
-import { IsCreatorGuard } from './guards/is-creator.guard';
+import { IsCompanyCreatorGuard } from './guards/is_company_creator.guard';
 import { CompanyProfileEntity } from './models/company_profile.entity';
 import { JobEntity } from './models/job.entity';
 import { CompanyProfileService } from './services/company-profile.service';
@@ -26,6 +26,6 @@ import { JobService } from './services/job.service';
   TypeOrmModule.forFeature([CompanyProfileEntity, CompanyUserEntity, JobEntity]),
   MailModule],
   controllers: [CompanyAuthController, CompanyProfileController, JobController],
-  providers: [CompanyAuthService, CompanyProfileService, IsCreatorGuard, JwtGuard, JwtStrategy, JobService]
+  providers: [CompanyAuthService, CompanyProfileService, IsCompanyCreatorGuard, JwtGuard, JwtStrategy, JobService]
 })
 export class CompanyProfileModule {}

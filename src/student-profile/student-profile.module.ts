@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthenticationModule } from 'src/auth/authentication.module';
 import { StudentAuthController } from 'src/auth/controllers/student_auth.controller';
+import { IsStudentGuard } from 'src/auth/guards/is-student.guard';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { JwtStrategy } from 'src/auth/guards/jwt.strategy';
 import { CompanyUserEntity } from 'src/auth/models/company_user.entity';
@@ -16,7 +17,7 @@ import { JobEntity } from 'src/company-profile/models/job.entity';
 import { CompanyProfileService } from 'src/company-profile/services/company-profile.service';
 import { MailModule } from 'src/mail/mail.module';
 import { StudentProfileController } from './controllers/student_profile.controller';
-import { IsCreatorGuard } from './guards/is-creator.guard';
+import { IsStudentCreatorGuard } from './guards/is_student_creator.guard';
 import { StudentProfileEntity } from './models/student_profile.entity';
 import { StudentProfileService } from './services/student-profile.service';
 
@@ -28,9 +29,11 @@ import { StudentProfileService } from './services/student-profile.service';
       signOptions: { expiresIn: '43200s' },
     }),
   }),
-  TypeOrmModule.forFeature([StudentProfileEntity, StudentUserEntity, CompanyUserEntity, JobEntity, CompanyProfileEntity, ForgottenPasswordEntity])
-  ,MailModule],
+  TypeOrmModule.forFeature([StudentProfileEntity, StudentUserEntity, 
+    CompanyUserEntity, JobEntity, CompanyProfileEntity, ForgottenPasswordEntity])
+    ,MailModule],
   controllers: [StudentAuthController, StudentProfileController],
-  providers: [StudentAuthService, StudentProfileService, CompanyAuthService, CompanyProfileService, IsCreatorGuard, JwtGuard, JwtStrategy, FairDayGuard]
+  providers: [StudentAuthService, StudentProfileService, CompanyAuthService, 
+    CompanyProfileService, IsStudentGuard, IsStudentCreatorGuard, JwtGuard, JwtStrategy, FairDayGuard]
 })
 export class StudentProfileModule {}

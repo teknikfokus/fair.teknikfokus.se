@@ -7,7 +7,7 @@ import { CompanyProfile } from '../models/company_profile.interface';
 import { CompanyProfileService } from '../services/company-profile.service';
 
 @Injectable()
-export class IsCreatorGuard implements CanActivate {
+export class IsCompanyCreatorGuard implements CanActivate {
   constructor(
     private userService: CompanyAuthService,
     private companyProfileService: CompanyProfileService,
