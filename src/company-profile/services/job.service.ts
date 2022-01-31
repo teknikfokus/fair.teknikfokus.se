@@ -15,7 +15,7 @@ export class JobService {
     private readonly jobRepository: Repository<JobEntity>,
   ) {}
 
-  findJobsById(id: number): Observable<Job> {
+  findJobById(id: number): Observable<Job> {
     return from(
       this.jobRepository.findOne({ id }),
     ).pipe(
@@ -39,7 +39,7 @@ export class JobService {
   }
 
   editJobProfile(editJob: Job,profileId: number, jobid: number): Observable<CompanyProfile> {
-    return from(this.findJobsById(jobid)).pipe(
+    return from(this.findJobById(jobid)).pipe(
       map((job: Job) => {
         if(job.company_id !== profileId) {
           throw new HttpException('FORBIDDEN', HttpStatus.FORBIDDEN);
@@ -63,19 +63,6 @@ export class JobService {
           {
             select: ['id', 'job_position', 'job_description'],
             where: {'company_id': profile.id}
-          },
-        );
-      }),
-    );
-  }
-
-  getJob(company_name: string, id: number): Observable<JobEntity[]> {
-    return this.companyProfileService.getProfile(company_name).pipe(
-      switchMap((profile: CompanyProfile) => {
-        return this.jobRepository.find(
-          {
-            select: ['id', 'job_position', 'job_description'],
-            where: {'id': id}
           },
         );
       }),

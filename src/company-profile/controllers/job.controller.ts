@@ -54,7 +54,7 @@ export class JobController {
     @Get('/companies/:company_name/jobs/:id')
     @HttpCode(HttpStatus.OK)
     getJob(
-      @Param() params): Observable<JobEntity[]> {
-        return this.jobService.getJob(params.company_name, params.id);
+      @Param() params): Observable<Job> {
+        return this.jobService.findJobById(params.id);
     }
 }
