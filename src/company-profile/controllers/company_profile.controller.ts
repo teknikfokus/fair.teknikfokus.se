@@ -5,8 +5,9 @@ import { IsCompanyGuard } from 'src/auth/guards/is-company.guard';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { CompanyUser } from 'src/auth/models/company_user.interface';
 import { CompanyAuthService } from 'src/auth/services/company_auth.service';
+import { FairDayGuard } from '../guards/fair_day.guard';
 import { IsCreatorGuard } from '../guards/is-creator.guard';
-import { saveImageToStorage } from '../helpers/image-storage';
+import { saveImageToStorage } from '../../helpers/image-storage';
 import { CompanyProfile } from '../models/company_profile.interface';
 import { CompanyProfileService } from '../services/company-profile.service';
 @Controller()
@@ -17,13 +18,13 @@ export class CompanyProfileController {
     private companyAuthService: CompanyAuthService
   ) {}
 
-  @UseGuards(JwtGuard, IsCompanyGuard)
+  @UseGuards(JwtGuard, IsCompanyGuard, FairDayGuard)
   @Post('dashboard/company')
   @HttpCode(HttpStatus.OK)
   registerCompanyProfile(@Body() profile: CompanyProfile, @Request() req): Observable<CompanyUser> {
     return from(this.companyAuthService.findUserById(req.user.id)).pipe(
       switchMap((user: CompanyUser) => {
-        if(user.company_id != null) {
+        if(user.company_profile_id != null) {
           throw new HttpException(
             { status: HttpStatus.FORBIDDEN, error: 'You have already created a profile.' },
             HttpStatus.FORBIDDEN,
@@ -41,7 +42,7 @@ export class CompanyProfileController {
     @Body() companyEdits: CompanyProfile, @Request() req): Observable<CompanyProfile> {
     return from(this.companyAuthService.findUserById(req.user.id)).pipe(
       switchMap((user: CompanyUser) => {
-        return this.companyProfileService.editCompanyProfile(companyEdits, user.company_id);
+        return this.companyProfileService.editCompanyProfile(companyEdits, user.company_profile_id);
       })
     );
   }
@@ -59,7 +60,7 @@ export class CompanyProfileController {
 
     return from(this.companyAuthService.findUserById(req.user.id)).pipe(
       switchMap((user: CompanyUser) => {
-        return this.companyProfileService.updateUserImageById(user.company_id, fileName).pipe(
+        return this.companyProfileService.updateUserImageById(user.company_profile_id, fileName).pipe(
           map(() => ({
             modifiedFileName: file.filename,
           })),

@@ -8,6 +8,8 @@ import { CompanyProfile } from '../models/company_profile.interface';
 import { JobEntity } from '../models/job.entity';
 import { Job } from '../models/job.interface';
 import slugify from 'slugify';
+import { removeFile } from '../../helpers/image-storage';
+import { join } from 'path';
 
 @Injectable()
 export class CompanyProfileService {
@@ -21,12 +23,13 @@ export class CompanyProfileService {
     ) {}
 
   registerCompanyProfile(profile: CompanyProfile, user_id: number): Observable<CompanyProfile> {
-    const { name, information, meeting_link, summer_internship, master_thesis, trainee_programme } = profile;
+    const { name, information, meeting_link, fair_day , summer_internship, master_thesis, trainee_programme } = profile;
     return from(
       this.companyProfileRepository.save({
         name,
         slug_name: slugify(name),
         information,
+        fair_day,
         meeting_link,
         summer_internship,
         master_thesis,
@@ -44,6 +47,7 @@ export class CompanyProfileService {
     return from(this.findProfileById(profileId)).pipe(
       map((profile: CompanyProfile) => {
         newdata.image_path = profile.image_path;
+        newdata.slug_name = slugify(newdata.name)
         from(this.companyProfileRepository.update(profile.id,newdata));
         return newdata;
       }),
@@ -81,6 +85,11 @@ export class CompanyProfileService {
       this.companyProfileRepository.findOne({ id }),
     ).pipe(
       map((profile: CompanyProfile) => {
+        const imagesFolderPath = join(process.cwd(), 'images');
+        const fullImagePath = join(imagesFolderPath + '/' + profile.image_path);
+        if(profile.image_path !== 'default.jpg'){
+          removeFile(fullImagePath);
+        }
         profile.id = id;
         profile.image_path = image_path;
         from(this.companyProfileRepository.update(id, profile));
@@ -105,7 +114,7 @@ export class CompanyProfileService {
   getAllCompanyProfiles(): Promise<CompanyProfileEntity[]> {
     return this.companyProfileRepository.find(
       {
-        select: ['name', 'slug_name', 'image_path', 'summer_internship', 'master_thesis', 'trainee_programme'],
+        select: ['name', 'slug_name', 'image_path', 'summer_internship', 'master_thesis', 'trainee_programme', 'fair_day'],
       },
     );
   }

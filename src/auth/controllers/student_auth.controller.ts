@@ -3,7 +3,7 @@ import { StudentUser } from 'src/auth/models/student_user.interface';
 import { StudentAuthService } from 'src/auth/services/student_auth.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ForgottenPassword } from '../models/forgottenpassword.interface';
+import { ForgottenPassword } from '../models/forgotten_password.interface';
 
 @Controller()
 export class StudentAuthController {
@@ -25,9 +25,14 @@ export class StudentAuthController {
     }
 
     @Post('forgotpassword')
-    newpassword(@Body() forgottenPassword: ForgottenPassword): Observable<ForgottenPassword>{
-        return this.studentAuthService.createForgottenPasswordToken(forgottenPassword)
+    sendLinkToRecovery(@Body() user: StudentUser) {
+        const { email } = user;
+        return this.studentAuthService.createForgottenPasswordToken(email)
     }
-    
 
+    @Post('recovery')
+    @HttpCode(HttpStatus.OK)
+    loginWithLink(@Body() token_link: { id: string, password: string }) {
+        return this.studentAuthService.updatePasswordWithLink(token_link.id, token_link.password)
+    }
 }

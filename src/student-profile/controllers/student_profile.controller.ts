@@ -5,8 +5,9 @@ import { IsCompanyGuard } from 'src/auth/guards/is-company.guard';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { StudentUser } from 'src/auth/models/student_user.interface';
 import { StudentAuthService } from 'src/auth/services/student_auth.service';
+import { FairDayGuard } from 'src/company-profile/guards/fair_day.guard';
 import { IsCreatorGuard } from '../guards/is-creator.guard';
-import { saveImageToStorage } from '../helpers/image-storage';
+import { saveImageToStorage } from 'src/helpers/image-storage';
 import { StudentProfile } from '../models/student_profile.interface';
 import { StudentProfileService } from '../services/student-profile.service';
 @Controller()
@@ -64,18 +65,17 @@ export class StudentProfileController {
             modifiedFileName: file.filename,
           })),
         );
-        }
-      )
+      }),
     );
   }
 
-  @UseGuards(JwtGuard, IsCompanyGuard)
+  @UseGuards(JwtGuard, IsCompanyGuard, FairDayGuard)
   @Get('students')
-  getAllProfiles() {
+  getAllProfiles(@Request() req) {
     return this.studentProfileService.getAllStudentProfiles();
   }
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, IsCompanyGuard)
   @Get('student/:id')
   getProfile(@Param() param) {
     return this.studentProfileService.getProfile(param.id);
