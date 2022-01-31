@@ -1,6 +1,6 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { from, map,Observable } from 'rxjs';
+import { from, map,Observable, of, switchMap, tap } from 'rxjs';
 import { CompanyAuthService } from 'src/auth/services/company_auth.service';
 import { Repository } from 'typeorm';
 import { CompanyProfileEntity } from '../models/company_profile.entity';
@@ -42,14 +42,32 @@ export class CompanyProfileService {
       }),
     );
   }
+
+  doesProfileExist(slug_name: string): Observable<boolean> {
+    return from(this.companyProfileRepository.findOne({ slug_name })).pipe(
+      switchMap((profile: CompanyProfile) => {
+        return of(!!profile);
+      }),
+    );
+  }
   
   editCompanyProfile(newdata: CompanyProfile,profileId: number): Observable<CompanyProfile> {
-    return from(this.findProfileById(profileId)).pipe(
-      map((profile: CompanyProfile) => {
-        newdata.image_path = profile.image_path;
-        newdata.slug_name = slugify(newdata.name)
-        from(this.companyProfileRepository.update(profile.id,newdata));
-        return newdata;
+    return this.doesProfileExist(slugify(newdata.name)).pipe(
+      switchMap((doesUserExist: boolean) => {
+        if (doesUserExist) {
+          throw new HttpException(
+            'A user has already been created with this email address',
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+        return from(this.findProfileById(profileId)).pipe(
+          map((profile: CompanyProfile) => {
+            newdata.image_path = profile.image_path;
+            newdata.slug_name = slugify(newdata.name)
+            from(this.companyProfileRepository.update(profile.id,newdata));
+            return newdata;
+          }),
+        );
       }),
     );
   }
