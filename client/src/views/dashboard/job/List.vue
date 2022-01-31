@@ -1,18 +1,18 @@
 <template>
   <section class="pt-8 px-4 max-w-5xl mx-auto">
     <nav-bar />
-    <job-grid />
+    <job-grid-companies />
   </section>
 </template>
 
 <script>
 import NavBar from '@/components/NavBar.vue'
-import JobGrid from '@/components/JobGrid.vue'
+import JobGridCompanies from '@/components/JobGridCompanies.vue'
 
 export default {
   components: {
     NavBar,
-    JobGrid
+    JobGridCompanies
   }
 }
 </script>

@@ -6,7 +6,7 @@
       <div>
         <label for="title" class="block text-sm font-medium text-gray-700">Job Title</label>
         <div class="mt-1">
-          <input v-model="form.job_position" type="text" name="title" id="title" class="focus:ring-teknikfokus-primary-light focus:border-tekring-teknikfokus-primary-light block w-full max-w-md px-2 sm:text-sm border-gray-300 rounded-md shadow-sm"/>
+          <input v-model="form.job_position" type="text" name="title" id="title" class="focus:ring-teknikfokus-primary-light focus:border-tekring-teknikfokus-primary-light block w-full max-w-md px-2 sm:text-sm border-gray-300 rounded-md shadow-sm" required/>
         </div>
       </div>
 
