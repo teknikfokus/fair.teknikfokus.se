@@ -68,7 +68,8 @@ export class StudentAuthService {
           );
       }),
       switchMap(() => {
-        if((email.replace(/\s+/g, "").length) !== 24 || !email.includes('-s@student.lu.se')){
+        const emailRegex = /^([a-z]{2}[0-9]{4}[a-z]{2}-s|[a-z]{3}\d{2}[a-z]{3})@student\.lu\.se$/;
+        if(!emailRegex.test(lowerEmail)){
           throw new HttpException(
             { status: HttpStatus.FORBIDDEN, error: 'Email address has to be a valid LU-email' },
             HttpStatus.FORBIDDEN,
