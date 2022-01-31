@@ -74,16 +74,24 @@ export class StudentAuthService {
             HttpStatus.FORBIDDEN,
           );
         }
+        const token_link = uuidv4();
+        this.mailService.sendMail(
+          <string>token_link,
+          "Email-verification",
+          "Klick this link to verify your email: " + process.env.URL + "/verify/" + token_link
+        );
         return this.hashPassword(password).pipe(
           switchMap((hashedPassword: string) => {
             return from(
               this.studentRepository.save({
                 email: lowerEmail,
                 password: hashedPassword,
+                verification_token: token_link
               }),
             ).pipe(
               map((user: StudentUser) => {
                 delete user.password;
+                delete user.verification_token;
                 return user;
               }),
             );
@@ -92,6 +100,22 @@ export class StudentAuthService {
       }),
     );
   }
+
+  verifyAccount(verification_token: string) {
+    return from(
+      this.studentRepository.findOne({ verification_token }),
+    ).pipe(
+      map((user: StudentUser) => {
+        if (!user) {
+          throw new HttpException('Student not found', HttpStatus.NOT_FOUND);
+        }
+        user.is_verified = true;
+        from(this.studentRepository.update(user.id, user));
+        delete user.password;
+        return user;
+      }),
+    );   
+  }
   
   validateUser(email: string, password: string): Observable<StudentUser> {
     const lowerEmail = email.toLocaleLowerCase();
@@ -99,7 +123,7 @@ export class StudentAuthService {
       this.studentRepository.findOne(
         { email: lowerEmail },
         {
-          select: ['id', 'email', 'password', 'student_profile_id'],
+          select: ['id', 'email', 'password', 'student_profile_id', 'is_verified'],
         },
       ),
     ).pipe(
@@ -130,10 +154,13 @@ export class StudentAuthService {
     const { email, password } = user;
     return this.validateUser(email, password).pipe(
       switchMap((user: StudentUser) => {
-        if (user) {
-          // create JWT - credentials
-          return from(this.jwtService.signAsync({ user: {...user, type: "student"} }));
+        if (!user || !user.is_verified) {
+          throw new HttpException(
+            { status: HttpStatus.FORBIDDEN, error: 'No valid account was found.' },
+            HttpStatus.FORBIDDEN,
+          );
         }
+        return from(this.jwtService.signAsync({ user: {...user, type: "student"} }));
       }),
     );
   }

@@ -13,5 +13,11 @@ export class StudentUserEntity {
 
     @Column({ select: false })
     password: string;
+    
+    @Column({ unique: true })
+    verification_token: string;
+
+    @Column({ default: false })
+    is_verified: boolean;
 
 }
