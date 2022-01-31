@@ -74,7 +74,9 @@ export class CompanyAuthService {
             );
           }),
         );
-      }
+      })
+    );
+  }
                 
   login(user: CompanyUser): Observable<string> {
     // create JWT - credentials
