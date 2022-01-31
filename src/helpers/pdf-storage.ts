@@ -3,21 +3,18 @@ import { v4 as uuidv4 } from 'uuid';
 import fs = require('fs');
 import path = require('path');
 
-type validFileExtension = 'png' | 'jpg' | 'jpeg' | 'svg';
-type validMimeType = 'image/png' | 'image/jpg' | 'image/jpeg' | 'image/svg';
+type validFileExtension = 'pdf';
+type validMimeType = 'application/pdf';
 
-const validFileExtensions: validFileExtension[] = ['png', 'jpg', 'jpeg', 'svg'];
+const validFileExtensions: validFileExtension[] = ['pdf'];
 const validMimeTypes: validMimeType[] = [
-  'image/png',
-  'image/jpg',
-  'image/jpeg',
-  'image/svg'
+  'application/pdf',
 ];
 
-export const saveImageToStorage = {
-  limits: {fileSize: 10485760},
+export const saveCVToStorage = {
+  limits: {fileSize: 5242880 }, //maxsize: 5MB
   storage: diskStorage({
-    destination: './images',
+    destination: './resumes',
     filename: (req, file, cb) => {
       const fileExtension: string = path.extname(file.originalname);
       const fileName: string = uuidv4() + fileExtension;

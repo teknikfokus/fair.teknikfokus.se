@@ -14,6 +14,9 @@ export class StudentProfileEntity {
     @Column({ default: 'default_student.png' })
     image_path: string;
 
+    @Column({nullable: true})
+    cv_path: string;
+
     @Column()
     graduation_year: string;
 

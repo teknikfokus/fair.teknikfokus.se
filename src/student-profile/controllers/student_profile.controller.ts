@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards, UseInterceptors, Request, UploadedFile, HttpException, Put} from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards, UseInterceptors, Request, UploadedFile, HttpException, Put, Res} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { from, map, Observable, of, switchMap } from 'rxjs';
 import { IsCompanyGuard } from 'src/auth/guards/is-company.guard';
@@ -10,6 +10,7 @@ import { IsCreatorGuard } from '../guards/is-creator.guard';
 import { saveImageToStorage } from 'src/helpers/image-storage';
 import { StudentProfile } from '../models/student_profile.interface';
 import { StudentProfileService } from '../services/student-profile.service';
+import { saveCVToStorage } from 'src/helpers/pdf-storage';
 @Controller()
 export class StudentProfileController {
 
@@ -47,6 +48,16 @@ export class StudentProfileController {
     );
   }
 
+  @UseGuards(JwtGuard)
+  @Get('student/profile')
+  getMyProfile(@Request() req) {
+    return from(this.studentAuthService.findStudentUserById(req.user.id)).pipe(
+      switchMap((user: StudentUser) => {
+        return this.studentProfileService.getProfile(user.student_profile_id);
+      })
+    );
+  }
+
   @UseGuards(JwtGuard,IsCreatorGuard)
   @UseInterceptors(FileInterceptor('file', saveImageToStorage))
   @Post('student/upload_image')
@@ -66,6 +77,28 @@ export class StudentProfileController {
           })),
         );
       }),
+      );
+    }
+    
+  @UseGuards(JwtGuard,IsCreatorGuard)
+  @UseInterceptors(FileInterceptor('file', saveCVToStorage))
+  @Post('student/upload_cv')
+  @HttpCode(HttpStatus.OK)
+  uploadCV(
+    @UploadedFile() file: Express.Multer.File,
+    @Request() req): Observable<{modifiedFileName: string } | { error: string }> {
+    const fileName = file?.filename;
+
+    if (!fileName) return of({ error: 'File must be a pdf.' });
+  
+    return from(this.studentAuthService.findStudentUserById(req.user.id)).pipe(
+      switchMap((user: StudentUser) => {
+        return this.studentProfileService.updateUserCVById(user.student_profile_id, fileName).pipe(
+          map(() => ({
+            modifiedFileName: file.filename,
+          })),
+        );
+      }),
     );
   }
 
@@ -79,6 +112,14 @@ export class StudentProfileController {
   @Get('student/:id')
   getProfile(@Param() param) {
     return this.studentProfileService.getProfile(param.id);
+  }
+
+
+  @UseGuards(JwtGuard)
+  @Get('student/cv/:cv_filename')
+  findCV(@Param() param, @Res() res): Observable<Object> {
+    const cv_filename = param.cv_filename;
+    return of(res.sendFile(cv_filename, { root: './resumes' }));
   }
 }
 

@@ -16,7 +16,6 @@ export class FairDayGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     let today = new Date().toISOString().slice(0, 10)
-    Logger.warn(today)
     const request = context.switchToHttp().getRequest();
     const { user, params }: { user: CompanyUser; params: { id: number } } = request;
     return from(this.companyAuthService.findUserById(user.id)).pipe(
