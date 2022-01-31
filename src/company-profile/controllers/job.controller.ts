@@ -18,6 +18,7 @@ export class JobController {
         private companyAuthService: CompanyAuthService
       ) {}
 
+
     @UseGuards(JwtGuard, IsCompanyGuard, IsCompanyCreatorGuard)
     @Post('dashboard/company/job/create')
     @HttpCode(HttpStatus.OK)

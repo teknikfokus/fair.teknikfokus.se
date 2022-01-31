@@ -84,10 +84,10 @@ export class StudentProfileService {
       this.studentProfileRepository.findOne({ id }),
     ).pipe(
       map((profile: StudentProfile) => {
-        const imagesFolderPath = join(process.cwd(), 'images');
-        const fullImagePath = join(imagesFolderPath + '/' + profile.image_path);
-        if(profile.image_path !== 'default_student.png'){
-          removeFile(fullImagePath);
+        const folderPathPDF = join(process.cwd(), 'resumes');
+        const fullPDFPath = join(folderPathPDF + '/' + profile.cv_path);
+        if(profile.image_path !== null){
+          removeFile(fullPDFPath);
         }
         profile.id = id;
         profile.cv_path = cv_path;
