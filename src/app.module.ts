@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { AuthenticationModule } from './auth/authentication.module';
 import { CompanyProfileModule } from './company-profile/company-profile.module';
 import { StudentProfileModule } from './student-profile/student-profile.module';
+import { ServeStaticModule} from '@nestjs/serve-static'; 
+import { join } from 'path';
 
 
 @Module({
@@ -23,7 +25,10 @@ import { StudentProfileModule } from './student-profile/student-profile.module';
     }),
     AuthenticationModule,
     CompanyProfileModule,
-    StudentProfileModule
+    StudentProfileModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client/dist'),
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
