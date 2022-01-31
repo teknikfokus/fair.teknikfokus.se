@@ -19,13 +19,19 @@
         </div>
       </div>
     </div>
-    <company-grid />
+    <div class="max-w-5xl mx-auto px-4 py-8">
+      <h3 class="text-4xl mt-8 font-bold">Dag 1 - 16/2</h3>
+      <company-grid :companies="this.companiesFirstDay" :link="false"/>
+      <h3 class="text-4xl mt-8 font-bold">Dag 2 - 17/2</h3>
+      <company-grid :companies="this.companiesSecondDay" :link="false"/>
+    </div>
   </section>
 </template>
 
 <script>
 import CountDown from '@/components/CountDown.vue'
 import CompanyGrid from '@/components/CompanyGrid.vue'
+import {http} from '@/axios';
 
 const firstDate = {
   open: new Date('2022-02-16T08:00'),
@@ -45,6 +51,27 @@ export default {
       firstDate,
       secondDate,
     }
+  },
+  data() {
+    return {
+      companies: [],
+    }
+  },
+  mounted() {
+    http.get("/companies")
+    .then(
+      (response) => {
+        this.companies = response.data;
+      }
+    );
+  },
+  computed: {
+    companiesFirstDay() {
+      return this.companies.filter(company => company.fair_day === 1 ||company.fair_day === 3);
+    },
+    companiesSecondDay() {
+      return this.companies.filter(company => company.fair_day === 2 ||company.fair_day === 3);
+    },
   }
 }
 </script>
