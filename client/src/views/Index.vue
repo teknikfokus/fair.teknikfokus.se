@@ -9,12 +9,17 @@
         <h1 class="font-bold md:text-3xl">Career fair</h1>
         <h3 class="normal-case font-medium">16th &amp; 17th OF FEBRUARY</h3>
         <CountDown :firstDate="firstDate" :secondDate="secondDate" />
-        <div class="mt-20 max-w-xl mx-auto grid sm:grid-cols-2 gap-6 px-4">
+        <div class="mt-20 max-w-xl mx-auto grid sm:grid-cols-2 gap-6 px-4" v-if="!isAuthenticated">
           <router-link to="/login" class="relative block justify-center py-6 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">
             Sign in
           </router-link>
           <router-link to="/registration" class="relative block justify-center py-6 border-none text-lg font-medium rounded-md text-white hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">
             Create account
+          </router-link>
+        </div>
+        <div class="mt-20 max-w-xs mx-auto grid sm:grid-cols-1 gap-6 px-4" v-else>
+          <router-link to="/companies" class="relative block justify-center py-6 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">
+            To the fair
           </router-link>
         </div>
       </div>
@@ -72,6 +77,9 @@ export default {
     companiesSecondDay() {
       return this.companies.filter(company => company.fair_day === 2 ||company.fair_day === 3);
     },
+    isAuthenticated() {
+      return localStorage.getItem('token');
+    }
   }
 }
 </script>
