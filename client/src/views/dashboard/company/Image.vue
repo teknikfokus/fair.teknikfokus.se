@@ -8,7 +8,7 @@
       <h1 class="mt-4 text-xl font-semibold">Edit company logo</h1>
 
       <p>Current image:</p>
-      <img :src="'/api/images/' + image" class="w-24 mt-2" />
+      <img v-if="image" :src="endpoint + '/image/' + image" class="w-24 mt-2" />
       <div>
         <h3 class="block text-sm font-medium text-gray-700">Upload company logo (.jpg, .png or .svg)</h3>
         <div class="mt-1">
@@ -35,7 +35,7 @@
 <script>
 import NavBar from '@/components/NavBar.vue'
 import Editor from '@tinymce/tinymce-vue'
-import {http} from '@/axios'
+import {http, endpoint} from '@/axios'
 
 export default {
   components: {
@@ -48,6 +48,11 @@ export default {
       file: '',
       error: null,
       loading: false,
+    }
+  },
+  setup() {
+    return {
+      endpoint,
     }
   },
   mounted() {
