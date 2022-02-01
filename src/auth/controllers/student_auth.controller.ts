@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
 import { StudentUser } from 'src/auth/models/student_user.interface';
 import { StudentAuthService } from 'src/auth/services/student_auth.service';
 import { Observable } from 'rxjs';
@@ -24,7 +24,7 @@ export class StudentAuthController {
         return this.studentAuthService.registerStudentAccount(studentAccount)
     }
 
-    @Put("verify/:token")
+    @Get("verify/:token")
     verifyEmail(@Param() param) {
         return this.studentAuthService.verifyAccount(param.token);
     }
