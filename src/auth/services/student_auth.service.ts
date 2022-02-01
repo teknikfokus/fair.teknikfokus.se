@@ -78,7 +78,7 @@ export class StudentAuthService {
         this.mailService.sendMail(
           lowerEmail,
           "Email-verification",
-          "Click this link to verify your email: " + process.env.URL + "/verify/" + token_link
+          'Click this link to verify your email: <a href="' + process.env.URL + '/verify/' + token_link + '">' + process.env.URL + '/verify/' + token_link + '</a>'
         );
         return this.hashPassword(password).pipe(
           switchMap((hashedPassword: string) => {
@@ -187,7 +187,7 @@ export class StudentAuthService {
     this.mailService.sendMail(
       <string>token.email,
       "Återställ ditt lösenord",
-      "Här kommer länk för att återställa ditt lösenord: " + process.env.URL + "/recovery/" + token.token_link
+      'Här kommer länk för att återställa ditt lösenord: <a href="' + process.env.URL + '/recovery/' + token.token_link + '">' + process.env.URL + '/recovery/' + token.token_link + '</a>'
     );
   }
 
