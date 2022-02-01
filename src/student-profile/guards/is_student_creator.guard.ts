@@ -17,16 +17,14 @@ export class IsStudentCreatorGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
-    const { user, params }: { user: StudentUser; params: { id: number } } = request;
+    const { user }: { user: StudentUser } = request;
 
-    if (!user || !params || !user.student_profile_id) return false;
-
-    //if (user.role === 'admin') return true; // allow admins to get make requests
+    if (!user) return false;
 
     const user_id = user.id;
     // Determine if logged-in user is the same as the user that created the feed post
     return this.studentAuthService.findStudentUserById(user_id).pipe(
-      switchMap((student_user: StudentUser) =>
+      switchMap((student_user: StudentUser) => 
         this.studentProfileService.findProfileById(student_user.student_profile_id).pipe(
           map((student_profile: StudentProfile) => {
             let isAuthor = student_user.student_profile_id === student_profile.id && student_user.student_profile_id !== null;
