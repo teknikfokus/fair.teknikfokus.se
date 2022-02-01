@@ -3,6 +3,7 @@ import Index from '@/views/Index.vue'
 import EmailVerified from '@/views/EmailVerified.vue'
 import Login from '@/views/Login.vue'
 import ForgotPassword from '@/views/ForgotPassword.vue'
+import RecoveryPassword from '@/views/RecoveryPassword.vue'
 import Registration from '@/views/Registration.vue'
 import Job from '@/views/Job.vue'
 import Companies from '@/views/Companies.vue'
@@ -23,6 +24,7 @@ const routes = [
     { path: '/login', component: Login },
     { path: '/registration', component: Registration },
     { path: '/forgotpassword', component: ForgotPassword },
+    { path: '/recovery/:id', component: RecoveryPassword },
     { path: '/verify/:token', component: EmailVerified },
     { path: '/companies', component: Companies },
     { path: '/companies/:id', component: Company },
