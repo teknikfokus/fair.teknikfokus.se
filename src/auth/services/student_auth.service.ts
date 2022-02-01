@@ -76,9 +76,9 @@ export class StudentAuthService {
         }
         const token_link = uuidv4();
         this.mailService.sendMail(
-          <string>token_link,
+          lowerEmail,
           "Email-verification",
-          "Klick this link to verify your email: " + process.env.URL + "/verify/" + token_link
+          "Click this link to verify your email: " + process.env.URL + "/verify/" + token_link
         );
         return this.hashPassword(password).pipe(
           switchMap((hashedPassword: string) => {
