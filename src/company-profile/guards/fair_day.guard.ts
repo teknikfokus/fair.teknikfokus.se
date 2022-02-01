@@ -22,6 +22,9 @@ export class FairDayGuard implements CanActivate {
       switchMap((user: CompanyUser) => {
         return from(this.companyProfileService.findProfileById(user.company_profile_id)).pipe(
           map((profile: CompanyProfile) => {
+            if(profile.slug_name == 'Teknikfokus') {
+              return true;
+            }
             if (profile.fair_day == 1) {
               return today == '2022-02-16';
             }
