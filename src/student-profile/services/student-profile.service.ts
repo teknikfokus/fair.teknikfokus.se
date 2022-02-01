@@ -34,15 +34,9 @@ export class StudentProfileService {
     );
   }
   
-  editStudentProfile(newdata: StudentProfile,profileId: number): Observable<StudentProfile> {
+  editStudentProfile(profileId: number,newdata: StudentProfile): Observable<StudentProfile> {
     return from(this.findProfileById(profileId)).pipe(
       map((profile: StudentProfile) => {
-        const imagesFolderPath = join(process.cwd(), 'images');
-        const fullImagePath = join(imagesFolderPath + '/' + profile.image_path);
-        if(profile.image_path !== 'default_student.png'){
-          removeFile(fullImagePath);
-        }
-        newdata.image_path = profile.image_path;
         from(this.studentProfileRepository.update(profile.id,newdata));
         return newdata;
       }),
@@ -69,7 +63,7 @@ export class StudentProfileService {
       map((profile: StudentProfile) => {
         const imagesFolderPath = join(process.cwd(), 'images');
         const fullImagePath = join(imagesFolderPath + '/' + profile.image_path);
-        if(profile.image_path !== 'default.jpg'){
+        if(profile.image_path !== 'default_student.png'){
           removeFile(fullImagePath);
         }
         profile.id = id;
@@ -87,7 +81,7 @@ export class StudentProfileService {
       map((profile: StudentProfile) => {
         const folderPathPDF = join(process.cwd(), 'resumes');
         const fullPDFPath = join(folderPathPDF + '/' + profile.cv_path);
-        if(profile.image_path !== null){
+        if(profile.cv_path !== null){
           removeFile(fullPDFPath);
         }
         profile.id = id;

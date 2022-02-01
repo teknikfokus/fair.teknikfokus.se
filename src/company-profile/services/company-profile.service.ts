@@ -56,7 +56,7 @@ export class CompanyProfileService {
       switchMap((doesUserExist: boolean) => {
         if (doesUserExist) {
           throw new HttpException(
-            'A user has already been created with this email address',
+            'A user has already been created with this name',
             HttpStatus.BAD_REQUEST,
           );
         }

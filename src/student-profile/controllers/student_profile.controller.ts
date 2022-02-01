@@ -44,7 +44,7 @@ export class StudentProfileController {
     @Body() studentEdits: StudentProfile, @Request() req): Observable<StudentProfile> {
     return from(this.studentAuthService.findStudentUserById(req.user.id)).pipe(
       switchMap((user: StudentUser) => {
-        return this.studentProfileService.editStudentProfile(studentEdits, user.student_profile_id);
+        return this.studentProfileService.editStudentProfile(user.student_profile_id, studentEdits);
       })
     );
   }
