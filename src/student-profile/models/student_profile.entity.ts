@@ -17,6 +17,9 @@ export class StudentProfileEntity {
     @Column({nullable: true})
     cv_path: string;
 
+    @Column({nullable: true})
+    linkedin_url: string;
+
     @Column()
     graduation_year: string;
 

@@ -18,12 +18,13 @@ export class StudentProfileService {
   ) {}
 
   registerStudentProfile(profile: StudentProfile, user_id: number): Observable<StudentProfile> {
-    const { name, programme, graduation_year, } = profile;
+    const { name, programme, graduation_year, linkedin_url } = profile;
     return from(
       this.studentProfileRepository.save({
         name,
         programme,
-        graduation_year
+        graduation_year,
+        linkedin_url,
       }),
     ).pipe(
       map((profile: StudentProfile) => {

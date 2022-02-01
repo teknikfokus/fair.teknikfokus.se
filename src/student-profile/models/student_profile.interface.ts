@@ -4,5 +4,6 @@ export interface StudentProfile {
   programme?: string;
   image_path?: string;
   cv_path?: string;
+  linkedin_url?: string;
   graduation_year?: string;
 }
