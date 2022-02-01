@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Index from '@/views/Index.vue'
+import EmailVerified from '@/views/EmailVerified.vue'
 import Login from '@/views/Login.vue'
 import ForgotPassword from '@/views/ForgotPassword.vue'
 import RecoveryPassword from '@/views/RecoveryPassword.vue'
@@ -24,6 +25,7 @@ const routes = [
     { path: '/registration', component: Registration },
     { path: '/forgotpassword', component: ForgotPassword },
     { path: '/recovery/:id', component: RecoveryPassword },
+    { path: '/verify/:token', component: EmailVerified },
     { path: '/companies', component: Companies },
     { path: '/companies/:id', component: Company },
     { path: '/companies/:id/job/:jobId', component: Job },

@@ -9,7 +9,8 @@ export class MailService {
     await this.mailerService.sendMail({
       to: email,
       subject: subject,
-      text: body
+      text: body,
+      html: body
     });
   }
 }

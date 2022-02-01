@@ -7,7 +7,7 @@
           Create account
         </h2>
          <p class="mt-2 text-center text-sm text-gray-600">
-          You may only register with your ab1122-s@lu.se address
+          You may only register with your ab1122cd-s@lu.se address
         </p>
       </div>
       <form class="mt-8 space-y-6" @submit.prevent="onSubmit" method="POST">
@@ -28,6 +28,8 @@
 
         <div class="space-y-2">
           <p v-if="error" class="text-red-600 text-sm text-center">{{ error }}</p>
+          <p v-if="status" class="text-green-800 font-semibold text-center">{{ status }}</p>
+
 
           <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">
             Create account
@@ -58,6 +60,7 @@ export default {
         password: '',
         retypePassword: '',
       },
+      status: null,
       error: null,
     }
   },
@@ -70,6 +73,10 @@ export default {
 
       try {
         const res = await http.post("/registration", this.form);
+        console.log(res);
+        if(res.status === 201) {
+          this.status = "Email has been sent. Verify your email before logging in! Check your spam folder too.";
+        }
       } catch (err) {
         if(err.response.status == 400) {
           this.$router.push("/login");

@@ -5,10 +5,10 @@ export class CompanyProfileEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ unique: true })
     name: string;
 
-    @Column()
+    @Column({ unique: true })
     slug_name: string;
 
     @Column()

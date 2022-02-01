@@ -76,7 +76,7 @@ export default {
         if(err.response.status == 400) {
           this.$router.push("/login");
         } else if(err.response.status == 403) {
-          this.error = "Wrong credentials."
+          this.error = "Wrong credentials or you need to verify your email address."
         }
       }
     }
