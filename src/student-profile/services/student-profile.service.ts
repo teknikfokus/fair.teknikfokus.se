@@ -18,10 +18,11 @@ export class StudentProfileService {
   ) {}
 
   registerStudentProfile(profile: StudentProfile, user_id: number): Observable<StudentProfile> {
-    const { name, programme, graduation_year, linkedin_url } = profile;
+    const { name, programme, contact_email ,graduation_year, linkedin_url } = profile;
     return from(
       this.studentProfileRepository.save({
         name,
+        contact_email,
         programme,
         graduation_year,
         linkedin_url,
@@ -108,7 +109,7 @@ export class StudentProfileService {
   getAllStudentProfiles(): Promise<StudentProfileEntity[]> {
     return this.studentProfileRepository.find(
       {
-        select: ['name', 'image_path'],
+        select: ['name', 'image_path', 'contact_email'],
       },
     );
   }

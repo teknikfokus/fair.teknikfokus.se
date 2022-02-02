@@ -11,6 +11,9 @@ export class StudentProfileEntity {
     @Column()
     programme: string;
 
+    @Column()
+    contact_email: string;
+
     @Column({ default: 'default_student.png' })
     image_path: string;
 
