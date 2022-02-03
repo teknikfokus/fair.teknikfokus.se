@@ -71,6 +71,7 @@ export default {
       try {
         const res = await http.post("/login", this.form);
         localStorage.setItem('token', res.data.token);
+        localStorage.removeItem("company_slug");
         if(this.$route.query.newaccount) {
           this.$router.replace("/student/profile");
         } else {
