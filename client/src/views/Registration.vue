@@ -73,7 +73,6 @@ export default {
 
       try {
         const res = await http.post("/registration", this.form);
-        console.log(res);
         if(res.status === 201) {
           this.status = "Email has been sent. Verify your email before logging in! Check your spam folder too.";
         }

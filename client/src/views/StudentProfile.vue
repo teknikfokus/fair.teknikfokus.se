@@ -209,7 +209,6 @@ export default {
             "Content-Type": "multipart/form-data"
           }
         });
-        console.log(res);
         this.image = res.data.modifiedFileName;
       } catch (err) {
         console.log(err);
@@ -224,7 +223,6 @@ export default {
             "Content-Type": "multipart/form-data"
           }
         });
-        console.log(res);
         this.cv_error = "";
         this.cv = res.data.modifiedFileName;
       } catch (err) {

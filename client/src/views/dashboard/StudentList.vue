@@ -98,8 +98,6 @@ export default {
         return [];
       }
       let students = this.students.filter(student => {
-        console.log(this.filter.graduation_year);
-        console.log(student.graduation_year);
         if(this.filter.graduation_year !== '' && this.filter.graduation_year != student.graduation_year) {
           return false;
         }
@@ -110,7 +108,6 @@ export default {
 
         return true;
       });
-      console.log(students);
       return students;
     }
   }

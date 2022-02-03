@@ -39,11 +39,9 @@ export default {
     const config = {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     };
-    console.log(config);
     http.get("/companies/" + this.$route.params.id, config)
     .then(
       (response) => {
-        console.log(response.data);
         this.company = response.data;
       }
     );
