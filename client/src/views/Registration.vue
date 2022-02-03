@@ -7,7 +7,7 @@
           Create account
         </h2>
          <p class="mt-2 text-center text-sm text-gray-600">
-          You may only register with your ab1122cd-s@lu.se address
+          You may only register with your ab1122cd-s@student.lu.se address
         </p>
       </div>
       <form class="mt-8 space-y-6" @submit.prevent="onSubmit" method="POST">
