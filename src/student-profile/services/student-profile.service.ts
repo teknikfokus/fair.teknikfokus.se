@@ -109,7 +109,7 @@ export class StudentProfileService {
   getAllStudentProfiles(): Promise<StudentProfileEntity[]> {
     return this.studentProfileRepository.find(
       {
-        select: ['name', 'image_path', 'contact_email'],
+        select: ['name', 'contact_email', 'programme', 'image_path', 'cv_path', 'linkedin_url', 'graduation_year'],
       },
     );
   }

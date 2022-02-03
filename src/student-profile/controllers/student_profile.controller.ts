@@ -116,7 +116,7 @@ export class StudentProfileController {
   }
 
 
-  @UseGuards(JwtGuard)
+  @UseGuards()
   @Get('student/cv/:cv_filename')
   findCV(@Param() param, @Res() res): Observable<Object> {
     const cv_filename = param.cv_filename;
