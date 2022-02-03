@@ -24,7 +24,7 @@ http.interceptors.response.use(function (response) {
   return response;
 }, function (error) {
   if(error.response.status === 401 || error.response.status === 403) {
-    return localStorage.getItem('company_slug') 
+    return localStorage.getItem('company_slug') || window.location.pathname.includes("/dashboard")
      ? router.push("/dashboard")
      : router.push("/");
   }

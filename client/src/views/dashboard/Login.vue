@@ -74,11 +74,7 @@ export default {
         localStorage.setItem('company_slug', res.data.company_slug);
         this.$router.replace("/dashboard/company");
       } catch (err) {
-        if(err.response.status == 400) {
-          this.$router.push("/login");
-        } else if(err.response.status == 403) {
-          this.error = "Wrong credentials."
-        }
+        this.error = "Wrong credentials."
       }
     }
   }
