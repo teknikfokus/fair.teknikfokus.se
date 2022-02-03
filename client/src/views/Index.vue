@@ -25,9 +25,9 @@
       </div>
     </div>
     <div class="max-w-5xl mx-auto px-4 py-8">
-      <h3 class="text-4xl mt-8 font-bold">Dag 1 - 16/2</h3>
+      <h3 class="text-4xl mt-8 font-bold">Day 1 - 16/2</h3>
       <company-grid :companies="this.companiesFirstDay" :link="false"/>
-      <h3 class="text-4xl mt-8 font-bold">Dag 2 - 17/2</h3>
+      <h3 class="text-4xl mt-8 font-bold">Day 2 - 17/2</h3>
       <company-grid :companies="this.companiesSecondDay" :link="false"/>
     </div>
   </section>
