@@ -7,7 +7,7 @@
           <p class="mt-12 text-center text-xl font-semibold text-gray-700">
             Your email has been verified. 
           </p>
-          <router-link to="/login" class="mt-6 relative text-center block justify-center py-6 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">
+          <router-link to="/login?newaccount=true" class="mt-6 relative text-center block justify-center py-6 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">
             Sign in
           </router-link>
         </div>

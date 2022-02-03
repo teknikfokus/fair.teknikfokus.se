@@ -71,7 +71,11 @@ export default {
       try {
         const res = await http.post("/login", this.form);
         localStorage.setItem('token', res.data.token);
-        this.$router.replace("/companies");
+        if(this.$route.query.newaccount) {
+          this.$router.replace("/student/profile");
+        } else {
+          this.$router.replace("/companies");
+        }
       } catch (err) {
         if(err.response.status == 400) {
           this.$router.push("/login");

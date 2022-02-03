@@ -1,6 +1,6 @@
 import axios from "axios";
 import router from "./routes";
-export const endpoint = process.env.NODE_ENV === 'development' ? "http://localhost:3001/api" : "https://fair.teknikfokus.se/api";
+export const endpoint = window.location.hostname === 'localhost' ? "http://localhost:3001/api" : "https://fair.teknikfokus.se/api";
 
 export const http = axios.create({
   baseURL: endpoint,
@@ -23,7 +23,7 @@ http.interceptors.request.use((config) => {
 http.interceptors.response.use(function (response) {
   return response;
 }, function (error) {
-  if(error.response.status === 401) {
+  if(error.response.status === 401 || error.response.status === 403) {
     return localStorage.getItem('company_slug') 
      ? router.push("/dashboard")
      : router.push("/");

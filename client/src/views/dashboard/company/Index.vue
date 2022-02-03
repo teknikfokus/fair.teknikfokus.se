@@ -24,6 +24,12 @@
         All jobs
       </router-link>
     </div>
+    <h3 class="text-2xl font-semibold mt-6">Students - <span class="text-base text-red-600">Only possible on the day(s) of you attending the fair!</span></h3>
+    <div class="mt-6 grid md:grid-cols-3 sm:grid-cols-2 gap-4">
+      <router-link to="/dashboard/students" class="text-center py-6 px-12 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">
+        View all students
+      </router-link>
+    </div>
   </section>
 </template>
 

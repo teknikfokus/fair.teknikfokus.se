@@ -18,12 +18,14 @@ export class StudentProfileService {
   ) {}
 
   registerStudentProfile(profile: StudentProfile, user_id: number): Observable<StudentProfile> {
-    const { name, programme, graduation_year, } = profile;
+    const { name, programme, contact_email ,graduation_year, linkedin_url } = profile;
     return from(
       this.studentProfileRepository.save({
         name,
+        contact_email,
         programme,
-        graduation_year
+        graduation_year,
+        linkedin_url,
       }),
     ).pipe(
       map((profile: StudentProfile) => {
@@ -33,15 +35,9 @@ export class StudentProfileService {
     );
   }
   
-  editStudentProfile(newdata: StudentProfile,profileId: number): Observable<StudentProfile> {
+  editStudentProfile(profileId: number,newdata: StudentProfile): Observable<StudentProfile> {
     return from(this.findProfileById(profileId)).pipe(
       map((profile: StudentProfile) => {
-        const imagesFolderPath = join(process.cwd(), 'images');
-        const fullImagePath = join(imagesFolderPath + '/' + profile.image_path);
-        if(profile.image_path !== 'default_student.png'){
-          removeFile(fullImagePath);
-        }
-        newdata.image_path = profile.image_path;
         from(this.studentProfileRepository.update(profile.id,newdata));
         return newdata;
       }),
@@ -68,7 +64,7 @@ export class StudentProfileService {
       map((profile: StudentProfile) => {
         const imagesFolderPath = join(process.cwd(), 'images');
         const fullImagePath = join(imagesFolderPath + '/' + profile.image_path);
-        if(profile.image_path !== 'default.jpg'){
+        if(profile.image_path !== 'default_student.png'){
           removeFile(fullImagePath);
         }
         profile.id = id;
@@ -86,7 +82,7 @@ export class StudentProfileService {
       map((profile: StudentProfile) => {
         const folderPathPDF = join(process.cwd(), 'resumes');
         const fullPDFPath = join(folderPathPDF + '/' + profile.cv_path);
-        if(profile.image_path !== null){
+        if(profile.cv_path !== null){
           removeFile(fullPDFPath);
         }
         profile.id = id;
@@ -113,7 +109,7 @@ export class StudentProfileService {
   getAllStudentProfiles(): Promise<StudentProfileEntity[]> {
     return this.studentProfileRepository.find(
       {
-        select: ['name', 'image_path'],
+        select: ['name', 'contact_email', 'programme', 'image_path', 'cv_path', 'linkedin_url', 'graduation_year'],
       },
     );
   }

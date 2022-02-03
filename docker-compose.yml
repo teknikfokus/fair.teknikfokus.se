@@ -12,6 +12,9 @@ services:
       - ./tsconfig.json:/project/app/tsconfig.json
       - ./.eslintrc.js:/project/app/.eslintrc.js
       - ./nest-cli.json:/project/app/nest-cli.json
+      - ./images:/project/app/images
+      - ./resumes:/project/app/resumes
+      - ./client/dist/:/project/app/client/dist
     depends_on:
       - postgres-db
     ports:
