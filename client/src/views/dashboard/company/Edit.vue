@@ -2,7 +2,7 @@
   <section class="pt-8 px-4 max-w-5xl mx-auto">
     <nav-bar/>
 
-    <form class="space-y-6" @submit.prevent="onSubmit" method="POST">
+    <form class="space-y-6 py-6" @submit.prevent="onSubmit" method="POST">
 
     
       <h1 class="mt-4 text-xl font-semibold">Enter your company's information</h1>
@@ -31,20 +31,6 @@
         }"
           v-model="form.information"
       />
-
-      <div>
-        <label class="block text-sm font-medium text-gray-700">What days is your company attending the fair?</label>
-        <div class="mt-1">
-          <input type="radio" id="day1" value="1" v-model="form.fair_day" required>
-          <label for="day1"> 16th of February</label>
-          <br>
-          <input type="radio" id="day2" value="2" v-model="form.fair_day">
-          <label for="day2"> 17th of February</label>
-          <br>
-          <input type="radio" id="both" value="3" v-model="form.fair_day">
-          <label for="both"> Both days</label>
-        </div>
-      </div>
 
       <div>
         <label class="block text-sm font-medium text-gray-700">We offer:</label>
@@ -92,7 +78,6 @@ export default {
       form: {
         name: '',
         information: '',
-        fair_day: '',
         meeting_link: '',
         summer_internship: false,
         master_thesis: false,

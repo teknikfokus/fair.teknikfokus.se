@@ -5,7 +5,7 @@
         <span class="group-hover:underline">Back</span>
       </router-link>
 
-      <router-link to="/" >
+      <router-link :to="homeButton" >
         <HomeIcon class="w-8 h-8 text-gray-600"/>
       </router-link>
     </div>
@@ -25,7 +25,14 @@ export default {
       return window.history.length > 2 
     },
     goBack() {
-      this.hasHistory() ? this.$router.go(-1) : this.$router.push('/')
+      this.hasHistory() ? this.$router.go(-1) : this.$router.push(this.homeButton)
+    }
+  },
+  computed: {
+    homeButton() {
+      return localStorage.getItem("company_slug") 
+      ? "/dashboard/company" 
+      : localStorage.getItem("token") ? "/companies" : "/";
     }
   }
 }
