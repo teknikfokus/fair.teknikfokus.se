@@ -30,7 +30,9 @@ export default {
   },
   computed: {
     homeButton() {
-      return localStorage.getItem("company_slug") ? "/dashboard/company" : "/";
+      return localStorage.getItem("company_slug") 
+      ? "/dashboard/company" 
+      : localStorage.getItem("token") ? "/companies" : "/";
     }
   }
 }
