@@ -2,7 +2,7 @@
   <section class="pt-8 px-4 max-w-5xl mx-auto">
     <nav-bar/>
 
-    <form class="space-y-6" @submit.prevent="onSubmit" method="POST">
+    <form class="space-y-6 py-6" @submit.prevent="onSubmit" method="POST">
 
     
       <h1 class="mt-4 text-xl font-semibold">Enter your company's information</h1>
