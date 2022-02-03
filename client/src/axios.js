@@ -23,7 +23,7 @@ http.interceptors.request.use((config) => {
 http.interceptors.response.use(function (response) {
   return response;
 }, function (error) {
-  if(error.response.status === 401 || error.response.status === 403) {
+  if(error.response.status === 401) {
     return localStorage.getItem('company_slug') || window.location.pathname.includes("/dashboard")
      ? router.push("/dashboard")
      : router.push("/");
