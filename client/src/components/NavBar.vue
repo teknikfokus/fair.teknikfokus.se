@@ -1,9 +1,9 @@
 <template>
   <div class="flex justify-between">
-      <router-link to="#" @click="goBack()" class="text-gray-600 flex items-center group text-lg">
+      <span @click="goBack()" class="text-gray-600 flex items-center group text-lg hover:cursor-pointer">
         <ChevronDoubleLeftIcon class="w-4 h-4 pt-0.5"/>
         <span class="group-hover:underline">Back</span>
-      </router-link>
+      </span>
 
       <router-link :to="homeButton" >
         <HomeIcon class="w-8 h-8 text-gray-600"/>

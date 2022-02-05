@@ -20,17 +20,9 @@
           </div>
         </div>
 
-        <div class="flex items-center justify-between">
-          <div class="text-sm">
-            <router-link to="#" class="font-medium text-teknikfokus-primary hover:text-teknikfokus-primary-light">
-              Forgot your password?
-            </router-link>
-          </div>
-
-          <div>
-            <router-link to="/dashboard/registration" class="relative justify-center py-2 text-sm font-medium hover:underlin">
-              Create account
-            </router-link>
+        <div class="text-center">
+          <div class="text-sm font-medium text-teknikfokus-primary hover:text-teknikfokus-primary-light">
+              Forgot your password? Contact us
           </div>
         </div>
 

@@ -11,6 +11,7 @@ import Companies from '@/views/Companies.vue'
 import Company from '@/views/Company.vue'
 import LoginDashboard from '@/views/dashboard/Login.vue'
 import RegistrationDashboard from '@/views/dashboard/Registration.vue'
+import ResetPasswordCompany from '@/views/dashboard/ResetPassword.vue'
 import CreateCompany from '@/views/dashboard/company/Create.vue'
 import StudentList from '@/views/dashboard/StudentList.vue'
 import EditCompanyImage from '@/views/dashboard/company/Image.vue'
@@ -34,6 +35,7 @@ const routes = [
     { path: '/companies/:id/job/:jobId', component: Job },
     { path: '/dashboard', component: LoginDashboard },
     { path: '/dashboard/registration', component: RegistrationDashboard },
+    { path: '/dashboard/resetpassword', component: ResetPasswordCompany },
     { path: '/dashboard/company', component: IndexCompany },
     { path: '/dashboard/students', component: StudentList },
     { path: '/dashboard/company/create', component: CreateCompany },
@@ -61,9 +63,18 @@ const allowedRoutes = [
 
 router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.getItem('token');
-  if(to.path.includes("dashboard") 
+  const isCompany = localStorage.getItem('company_slug');
+  if(to.path == "/dashboard" && isAuthenticated) {
+    if(isCompany) {
+      next("/dashboard/company");
+    } else {
+      next("/companies");
+    }
+  } else if(to.path == "/login" && isAuthenticated) {
+    next("/companies");
+  } else if(to.path.includes("dashboard") 
     && to.path !== "/dashboard/company/create"
-    && localStorage.getItem('company_slug') == "0") {
+    && isCompany == "0") {
     next("/dashboard/company/create")
   } else {
     next()
