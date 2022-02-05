@@ -74,7 +74,7 @@ router.beforeEach((to, from, next) => {
     next("/companies");
   } else if(to.path.includes("dashboard") 
     && to.path !== "/dashboard/company/create"
-    && isCopmany == "0") {
+    && isCompany == "0") {
     next("/dashboard/company/create")
   } else {
     next()
