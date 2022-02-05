@@ -20,7 +20,7 @@
           </div>
         </div>
 
-        <div class="flex items-center justify-between">
+        <div class="text-center">
           <div class="text-sm font-medium text-teknikfokus-primary hover:text-teknikfokus-primary-light">
               Forgot your password? Contact us
           </div>
