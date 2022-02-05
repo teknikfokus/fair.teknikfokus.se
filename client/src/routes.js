@@ -11,6 +11,7 @@ import Companies from '@/views/Companies.vue'
 import Company from '@/views/Company.vue'
 import LoginDashboard from '@/views/dashboard/Login.vue'
 import RegistrationDashboard from '@/views/dashboard/Registration.vue'
+import ResetPasswordCompany from '@/views/dashboard/ResetPassword.vue'
 import CreateCompany from '@/views/dashboard/company/Create.vue'
 import StudentList from '@/views/dashboard/StudentList.vue'
 import EditCompanyImage from '@/views/dashboard/company/Image.vue'
@@ -34,6 +35,7 @@ const routes = [
     { path: '/companies/:id/job/:jobId', component: Job },
     { path: '/dashboard', component: LoginDashboard },
     { path: '/dashboard/registration', component: RegistrationDashboard },
+    { path: '/dashboard/resetpassword', component: ResetPasswordCompany },
     { path: '/dashboard/company', component: IndexCompany },
     { path: '/dashboard/students', component: StudentList },
     { path: '/dashboard/company/create', component: CreateCompany },
