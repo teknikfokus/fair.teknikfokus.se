@@ -63,9 +63,18 @@ const allowedRoutes = [
 
 router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.getItem('token');
-  if(to.path.includes("dashboard") 
+  const isCompany = localStorage.getItem('company_slug');
+  if(to.path == "/dashboard" && isAuthenticated) {
+    if(isCompany) {
+      next("/dashboard/company");
+    } else {
+      next("/companies");
+    }
+  } else if(to.path == "/login" && isAuthenticated) {
+    next("/companies");
+  } else if(to.path.includes("dashboard") 
     && to.path !== "/dashboard/company/create"
-    && localStorage.getItem('company_slug') == "0") {
+    && isCopmany == "0") {
     next("/dashboard/company/create")
   } else {
     next()
