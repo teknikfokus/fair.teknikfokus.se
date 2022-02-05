@@ -45,6 +45,12 @@ export class CompanyAuthController {
 
   @Post('registration')
   create(@Body() companyAccount: CompanyUser): Observable<CompanyUser>{
+    if(process.env.URL !== "localhost:3000") {
+      throw new HttpException(
+        { status: HttpStatus.FORBIDDEN, error: 'Not allowed in production' },
+        HttpStatus.FORBIDDEN,
+      );
+    }
     return this.companyAuthService.registerCompanyAccount(companyAccount)
   }
 
