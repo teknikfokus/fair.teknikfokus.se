@@ -46,7 +46,7 @@ export class CompanyProfileService {
   doesProfileExist(slug_name: string, company_profile_id: number): Observable<boolean> {
     return from(this.companyProfileRepository.findOne({ slug_name })).pipe(
       switchMap((profile: CompanyProfile) => {
-        if(profile.id === company_profile_id) {
+        if(profile && profile.id === company_profile_id) {
           return of(false);
         }
         return of(!!profile);
