@@ -9,5 +9,7 @@ services:
       dockerfile: ./Dockerfile.prod
     volumes:
       - ./.env:/project/app/.env
+      - ./images:/project/app/images
+      - ./resumes:/project/app/resumes
     ports:
       - "3001:3001"
