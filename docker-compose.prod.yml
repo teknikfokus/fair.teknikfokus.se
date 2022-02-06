@@ -3,7 +3,6 @@ version: '3'
 services:
   backend:
     image: backend:latest-prod
-    network_mode: host
     build:
       context: ./
       dockerfile: ./Dockerfile.prod
