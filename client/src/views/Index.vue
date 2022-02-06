@@ -18,7 +18,7 @@
           </router-link>
         </div>
         <div class="mt-20 max-w-xs mx-auto grid sm:grid-cols-1 gap-6 px-4" v-else>
-          <router-link to="/companies" class="relative block justify-center py-6 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">
+          <router-link :to="toTheFair" class="relative block justify-center py-6 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">
             To the fair
           </router-link>
         </div>
@@ -79,6 +79,9 @@ export default {
     },
     isAuthenticated() {
       return localStorage.getItem('token');
+    },
+    toTheFair() {
+      return localStorage.getItem("company_slug") ? "/dashboard/company" : "/companies";
     }
   }
 }

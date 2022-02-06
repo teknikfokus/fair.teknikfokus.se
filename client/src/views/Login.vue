@@ -4,7 +4,7 @@
       <div>
         <img class="mx-auto h-36 w-auto" src="/src/assets/logo-black-text.svg" alt="Workflow" />
         <h2 class="mt-12 text-center text-3xl font-semibold text-gray-900">
-          Sign in to your account
+          Sign in to your student account
         </h2>
       </div>
       <form class="mt-8 space-y-6" @submit.prevent="onSubmit" method="POST">
