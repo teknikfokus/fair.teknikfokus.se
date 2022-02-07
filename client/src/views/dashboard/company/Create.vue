@@ -35,7 +35,7 @@
       <div>
         <label class="block text-sm font-medium text-gray-700">What days is your company attending the fair?</label>
         <div class="mt-1">
-          <input type="radio" id="day1" value="1" v-model="form.fair_day" required>
+          <input type="radio" id="day1" value="1" v-model="form.fair_day">
           <label for="day1"> 16th of February</label>
           <br>
           <input type="radio" id="day2" value="2" v-model="form.fair_day">
