@@ -41,7 +41,7 @@
         </thead>
         <tbody>
           <tr v-for="student in filteredStudents()" :key="student.name" class="border-b text-center">
-            <td class="text-sm text-gray-800 px-6 py-4 whitespace-nowrap"><img :src="endpoint + '/image/' + student.image_path" class="w-24 h-auto" /></td>
+            <td class="text-sm text-gray-800 px-6 py-4 whitespace-nowrap"><img :src="endpoint + '/image/' + student.image_path" class="w-16 max-w-xs h-auto block" /></td>
             <td class="text-sm text-gray-800 px-6 py-4 whitespace-nowrap">{{ student.name }}</td>
             <td class="text-sm text-gray-800 px-6 py-4 whitespace-nowrap">{{ student.contact_email }}</td>
             <td class="text-sm text-gray-800 px-6 py-4 whitespace-nowrap" :title="student.programme">{{ student.programme.substring(0,15) }}...</td>
