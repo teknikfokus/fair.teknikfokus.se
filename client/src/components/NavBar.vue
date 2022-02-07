@@ -5,20 +5,26 @@
         <span class="group-hover:underline">Back</span>
       </span>
 
-      <router-link :to="homeButton" >
-        <HomeIcon class="w-8 h-8 text-gray-600"/>
-      </router-link>
+      <div class="flex">
+        <router-link :to="homeButton" >
+          <HomeIcon class="w-8 h-8 text-gray-600"/>
+        </router-link>
+        <button class="ml-2" @click="logout" title="Logout">
+          <LogoutIcon class="w-8 h-8 text-gray-400"/>
+        </button>
+      </div>
     </div>
 </template>
 
 <script>
-import { HomeIcon, ChevronDoubleLeftIcon } from '@heroicons/vue/outline'
+import { HomeIcon, ChevronDoubleLeftIcon, LogoutIcon } from '@heroicons/vue/outline'
 
 export default {
   name: "NavBar",
   components: {
     HomeIcon,
-    ChevronDoubleLeftIcon
+    ChevronDoubleLeftIcon,
+    LogoutIcon,
   },
   methods: {
     hasHistory () { 
@@ -26,6 +32,12 @@ export default {
     },
     goBack() {
       this.hasHistory() ? this.$router.go(-1) : this.$router.push(this.homeButton)
+    },
+    logout() {
+      let isCompany = localStorage.getItem("company_slug");
+      localStorage.removeItem("token");
+      localStorage.removeItem("company_slug");
+      this.$router.push(isCompany ? "/dashboard" : "/");
     }
   },
   computed: {
