@@ -9,7 +9,7 @@
 
     <div v-if="company.meeting_link" class="text-center mt-14">
       <h3 class="text-4xl font-semibold">Want to chat further with the company?</h3>
-      <a :href="company.meeting_link" class="mt-6 relative inline-block justify-center py-6 px-12 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">
+      <a :href="getClickableLink" target="_blank" class="mt-6 relative inline-block justify-center py-6 px-12 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">
         Talk to the representative online
       </a>
     </div>
@@ -46,6 +46,13 @@ export default {
       }
     );
   },
+  computed: {
+    getClickableLink() {
+      return this.company.meeting_link.startsWith("http://") || this.company.meeting_link.startsWith("https://") ?
+        this.company.meeting_link
+        : 'https://' + this.company.meeting_link;
+    }
+  }
 }
 </script>
 
