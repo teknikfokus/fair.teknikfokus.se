@@ -107,6 +107,8 @@ export default {
       .then(
         (response) => {
           this.form = response.data;
+          this.displayiFrame = response.data.iframe;
+          this.form.iframe = '';
         }
       );
   },
