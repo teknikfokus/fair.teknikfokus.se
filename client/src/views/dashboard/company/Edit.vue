@@ -33,6 +33,17 @@
       />
 
       <div>
+        <label for="iframe" class="block text-sm font-medium text-gray-700">Iframe with video (youtube / vimeo)</label>
+        <div class="mt-1">
+          <input v-model="form.iframe" type="text" name="iframe" id="iframe" class="focus:ring-teknikfokus-primary-light focus:border-tekring-teknikfokus-primary-light block w-full max-w-md px-2 sm:text-sm border-gray-300 rounded-md shadow-sm"/>
+        </div>
+      </div>
+
+      <div v-if="displayiFrame" class="max-w-[400px]">
+        <youtubeiFrame :src="displayiFrame" />
+      </div>
+
+      <div>
         <label class="block text-sm font-medium text-gray-700">We offer:</label>
         <div class="mt-1">
           <input type="checkbox" id="summer_internship" value="summer_internship" v-model="form.summer_internship" >
@@ -65,6 +76,7 @@
 
 <script>
 import NavBar from '@/components/NavBar.vue'
+import youtubeiFrame from '@/components/iFrame.vue'
 import Editor from '@tinymce/tinymce-vue'
 import {http} from '@/axios'
 
@@ -72,17 +84,20 @@ export default {
   components: {
     NavBar,
     Editor,
+    youtubeiFrame,
   },
   data() {
     return {
       form: {
         name: '',
         information: '',
+        iframe: '',
         meeting_link: '',
         summer_internship: false,
         master_thesis: false,
         trainee_programme: false,
       },
+      displayiFrame: null,
       status: null,
       error: null,
     }
@@ -113,7 +128,7 @@ export default {
           this.error = "Wrong credentials."
         }
       }
-    }
+    },
   }
 }
 </script>

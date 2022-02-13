@@ -7,6 +7,10 @@
       <div v-html="company.information"></div>
     </div>
 
+    <div v-if="company.iframe" class="max-w-[400px] mx-auto">
+      <youtubeiFrame :src="company.iframe" />
+    </div>
+
     <div v-if="company.meeting_link" class="text-center mt-14">
       <h3 class="text-4xl font-semibold">Want to chat further with the company?</h3>
       <a :href="getClickableLink" target="_blank" class="mt-6 relative inline-block justify-center py-6 px-12 border border-transparent text-lg font-medium rounded-md text-white bg-teknikfokus-primary hover:bg-teknikfokus-primary-lightest focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teknikfokus-primary-light">
@@ -22,6 +26,7 @@
 
 <script>
 import NavBar from '@/components/NavBar.vue'
+import youtubeiFrame from '@/components/iFrame.vue'
 import {http, endpoint} from '@/axios'
 import JobGrid from '../components/JobGrid.vue';
 
@@ -29,6 +34,7 @@ export default {
   components: {
     NavBar,
     JobGrid,
+    youtubeiFrame,
   },
   data() {
     return {

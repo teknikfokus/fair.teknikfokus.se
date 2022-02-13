@@ -22,13 +22,22 @@ export class CompanyProfileService {
       private readonly companyProfileRepository: Repository<CompanyProfileEntity>
     ) {}
 
+    iframeSrc(string: string) {
+      var regex = new RegExp("<iframe.*?src=(?:'|\")(.*?)(?:'|\")");
+      let result = regex.exec(string); 
+      Logger.warn(result);
+      return result ? result[1] : "";
+    }
+
   registerCompanyProfile(profile: CompanyProfile, user_id: number): Observable<CompanyProfile> {
-    const { name, information, meeting_link, fair_day , summer_internship, master_thesis, trainee_programme } = profile;
+    const { name, information, iframe, meeting_link, fair_day , summer_internship, master_thesis, trainee_programme } = profile;
+    const videoSrc = this.iframeSrc(iframe);
     return from(
       this.companyProfileRepository.save({
         name,
         slug_name: slugify(name),
         information,
+        iframe: videoSrc,
         fair_day,
         meeting_link,
         summer_internship,
@@ -67,6 +76,9 @@ export class CompanyProfileService {
           map((profile: CompanyProfile) => {
             newdata.image_path = profile.image_path;
             newdata.slug_name = slugify(newdata.name)
+            if(newdata.iframe !== "") {
+              newdata.iframe = this.iframeSrc(newdata.iframe);
+            }
             from(this.companyProfileRepository.update(profile.id,newdata));
             return newdata;
           }),
