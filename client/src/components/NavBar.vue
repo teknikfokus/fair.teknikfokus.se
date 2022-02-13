@@ -1,9 +1,13 @@
 <template>
-  <div class="flex justify-between">
+  <div class="flex justify-between items-center">
       <span @click="goBack()" class="text-gray-600 flex items-center group text-lg hover:cursor-pointer">
         <ChevronDoubleLeftIcon class="w-4 h-4 pt-0.5"/>
         <span class="group-hover:underline">Back</span>
       </span>
+
+      <div v-if="title">
+        <p class="font-semibold">{{ title }}</p>
+      </div>
 
       <div class="flex">
         <router-link :to="homeButton" >
@@ -25,6 +29,9 @@ export default {
     HomeIcon,
     ChevronDoubleLeftIcon,
     LogoutIcon,
+  },
+  props: {
+    title: String,
   },
   methods: {
     hasHistory () { 

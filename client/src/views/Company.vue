@@ -1,8 +1,8 @@
 <template>
   <section class="pt-8 px-4 max-w-5xl mx-auto">
-    <nav-bar />
+    <nav-bar :title="company.name"/>
 
-    <h1 class="mt-16 text-7xl font-semibold">{{ company.name }}</h1>
+    <img class="mt-16 max-w-[250px] w-full mx-auto h-auto block" :src="endpoint + '/image/' + company.image_path" />
     <div class="mt-12 prose lg:prose-xl max-w-full">
       <div v-html="company.information"></div>
     </div>
@@ -22,7 +22,7 @@
 
 <script>
 import NavBar from '@/components/NavBar.vue'
-import {http} from '@/axios'
+import {http, endpoint} from '@/axios'
 import JobGrid from '../components/JobGrid.vue';
 
 export default {
@@ -34,6 +34,11 @@ export default {
     return {
       company: {},
     };
+  },
+  setup() {
+    return {
+      endpoint,
+    }
   },
   mounted() {
     const config = {
