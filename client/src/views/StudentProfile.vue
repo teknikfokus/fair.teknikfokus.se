@@ -46,7 +46,14 @@
       <div>
         <label for="linkedin_url" class="block text-sm font-medium text-gray-700">LinkedIn</label>
         <div class="mt-1">
-          <input v-model="form.linkedin_url" type="text" name="linkedin_url" id="linkedin_url" class="focus:ring-teknikfokus-primary-light focus:border-tekring-teknikfokus-primary-light block w-full max-w-md px-2 sm:text-sm border-gray-300 rounded-md shadow-sm" required/>
+          <input v-model="form.linkedin_url" type="text" name="linkedin_url" id="linkedin_url" class="focus:ring-teknikfokus-primary-light focus:border-tekring-teknikfokus-primary-light block w-full max-w-md px-2 sm:text-sm border-gray-300 rounded-md shadow-sm"/>
+        </div>
+      </div>
+
+      <div>
+        <label for="gdpr" class="block text-sm font-medium text-gray-700">I here by conset to how Teknikfokus handles my personal data, read more <a href="/integritetspolicy" class="underline" target="_blank">here</a></label>
+        <div class="mt-1">
+          <input type="checkbox" name="gdpr" id="gdpr" class="focus:ring-teknikfokus-primary-light focus:border-tekring-teknikfokus-primary-light block px-2 sm:text-sm border-gray-300 rounded-md shadow-sm" required/>
         </div>
       </div>
 
