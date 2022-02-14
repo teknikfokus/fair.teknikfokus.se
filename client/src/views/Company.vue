@@ -1,5 +1,5 @@
 <template>
-  <section class="pt-8 px-4 max-w-5xl mx-auto">
+  <section class="py-8 px-4 max-w-5xl mx-auto">
     <nav-bar :title="company.name"/>
 
     <img class="mt-16 max-w-[250px] w-full mx-auto h-auto block" :src="endpoint + '/image/' + company.image_path" />
