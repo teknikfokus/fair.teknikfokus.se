@@ -14,6 +14,9 @@ export class CompanyProfileEntity {
     @Column()
     information: string;
 
+    @Column({ nullable: true })
+    iframe: string;
+
     @Column({ default: 'default.jpg' })
     image_path: string;
 

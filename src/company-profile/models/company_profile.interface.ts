@@ -3,6 +3,7 @@ export interface CompanyProfile {
     name?: string;
     slug_name?: string;
     information?: string;
+    iframe?: string;
     fair_day?: number;
     image_path?: string;
     meeting_link?: string;

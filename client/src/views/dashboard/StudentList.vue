@@ -46,7 +46,7 @@
             <td class="text-sm text-gray-800 px-6 py-4 whitespace-nowrap">{{ student.contact_email }}</td>
             <td class="text-sm text-gray-800 px-6 py-4 whitespace-nowrap" :title="student.programme">{{ student.programme.substring(0,15) }}...</td>
             <td class="text-sm text-gray-800 px-6 py-4 whitespace-nowrap">{{ student.graduation_year }}</td>
-            <td class="text-sm text-gray-800 px-6 py-4 whitespace-nowrap">
+            <td class="text-sm text-gray-800 px-6 py-4 whitespace-nowrap overflow-hidden max-w-[300px]">
               <a :href="student.linkedin_url" class="hover:underline">{{ student.linkedin_url }}</a>
             </td>
             <td class="text-sm text-gray-800 px-6 py-4 whitespace-nowrap">

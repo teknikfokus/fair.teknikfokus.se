@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Index from '@/views/Index.vue'
+import GDPR from '@/views/GDPR.vue'
 import EmailVerified from '@/views/EmailVerified.vue'
 import Login from '@/views/Login.vue'
 import ForgotPassword from '@/views/ForgotPassword.vue'
@@ -24,6 +25,7 @@ import ListJobs from '@/views/dashboard/job/List.vue/'
 
 const routes = [
     { path: '/', component: Index },
+    { path: '/integritetspolicy', component: GDPR },
     { path: '/login', component: Login },
     { path: '/registration', component: Registration },
     { path: '/forgotpassword', component: ForgotPassword },

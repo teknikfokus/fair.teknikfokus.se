@@ -33,6 +33,13 @@
       />
 
       <div>
+        <label for="iframe" class="block text-sm font-medium text-gray-700">Iframe with video (youtube / vimeo)</label>
+        <div class="mt-1">
+          <input v-model="form.iframe" type="text" name="iframe" id="iframe" class="focus:ring-teknikfokus-primary-light focus:border-tekring-teknikfokus-primary-light block w-full max-w-md px-2 sm:text-sm border-gray-300 rounded-md shadow-sm"/>
+        </div>
+      </div>
+
+      <div>
         <label class="block text-sm font-medium text-gray-700">What days is your company attending the fair?</label>
         <div class="mt-1">
           <input type="radio" id="day1" value="1" v-model="form.fair_day">
@@ -90,6 +97,7 @@ export default {
       form: {
         name: '',
         information: '',
+        iframe: '',
         fair_day: null,
         meeting_link: '',
         summer_internship: false,
