@@ -21,7 +21,7 @@ import { join } from 'path';
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: process.env.URL === 'localhost:3000' ? true : false,
     }),
     AuthenticationModule,
     CompanyProfileModule,
