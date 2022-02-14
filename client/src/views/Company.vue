@@ -54,6 +54,7 @@ export default {
     .then(
       (response) => {
         this.company = response.data;
+        document.title = this.company.name + " | Teknikfokus 2022";
       }
     );
   },
