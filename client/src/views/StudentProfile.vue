@@ -51,7 +51,7 @@
       </div>
 
       <div>
-        <label for="gdpr" class="block text-sm font-medium text-gray-700">I here by conset to how Teknikfokus handles my personal data, read more <a href="/integritetspolicy" class="underline" target="_blank">here</a></label>
+        <label for="gdpr" class="block text-sm font-medium text-gray-700">I hereby consent to how Teknikfokus handles my personal data, read more <a href="/integritetspolicy" class="underline" target="_blank">here</a></label>
         <div class="mt-1">
           <input type="checkbox" name="gdpr" id="gdpr" class="focus:ring-teknikfokus-primary-light focus:border-tekring-teknikfokus-primary-light block px-2 sm:text-sm border-gray-300 rounded-md shadow-sm" required/>
         </div>
