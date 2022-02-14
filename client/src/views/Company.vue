@@ -1,8 +1,8 @@
 <template>
-  <section class="pt-8 px-4 max-w-5xl mx-auto">
+  <section class="py-8 px-4 max-w-5xl mx-auto">
     <nav-bar :title="company.name"/>
 
-    <img class="mt-16 max-w-[250px] w-full mx-auto h-auto block" :src="endpoint + '/image/' + company.image_path" />
+    <img class="mt-16 max-w-[150px] w-full mx-auto h-auto block" :src="endpoint + '/image/' + company.image_path" />
     <div class="mt-12 prose lg:prose-xl max-w-full">
       <div v-html="company.information"></div>
     </div>
@@ -54,6 +54,7 @@ export default {
     .then(
       (response) => {
         this.company = response.data;
+        document.title = this.company.name + " | Teknikfokus 2022";
       }
     );
   },

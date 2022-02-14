@@ -24,6 +24,7 @@ http.interceptors.response.use(function (response) {
   return response;
 }, function (error) {
   if(error.response.status === 401) {
+    localStorage.removeItem('token');
     return localStorage.getItem('company_slug') || window.location.pathname.includes("/dashboard")
      ? router.push("/dashboard")
      : router.push("/");
