@@ -76,8 +76,10 @@ export class CompanyProfileService {
           map((profile: CompanyProfile) => {
             newdata.image_path = profile.image_path;
             newdata.slug_name = slugify(newdata.name)
-            if(newdata.iframe !== "") {
+            if(newdata.iframe && newdata.iframe !== "") {
               newdata.iframe = this.iframeSrc(newdata.iframe);
+            } else {
+              newdata.iframe = profile.iframe;
             }
             from(this.companyProfileRepository.update(profile.id,newdata));
             return newdata;
