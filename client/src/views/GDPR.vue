@@ -2,7 +2,7 @@
   <div class="pt-8 px-4 max-w-5xl mx-auto">
     <nav-bar />
   </div>
-  <div class="prose py-8 mx-auto">
+  <div class="prose px-4 py-8 mx-auto">
     <h1>Integritetspolicy</h1>
     <p>Att skapa en profil på mässdagarna är helt frivilligt. Det betyder att studenter kan besöka mässan 
       utan att dela sina uppgifter. Företag på mässan har tillgång till CV, e-postadress, Linkedin, program och 
